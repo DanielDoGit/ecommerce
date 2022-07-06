@@ -33,13 +33,24 @@
 			<version>1.2</version>
 			<scope>provided</scope>
 		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
+	
 	<dependency>
-   	 <groupId>org.webjars</groupId>
-   	 <artifactId>bootstrap</artifactId>
-  	  <version>5.0.1</version>
-	</dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate</artifactId>
+			<version>3.2.5.ga</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.transaction</groupId>
+					<artifactId>jta</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.2</version>
+		</dependency>
 
 
 	</dependencies>
