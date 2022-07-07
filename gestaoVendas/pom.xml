@@ -19,6 +19,12 @@
 			<artifactId>commons-email</artifactId>
 			<version>1.1</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1</version>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -44,6 +50,12 @@
 					<artifactId>jta</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>1.1</version>
 		</dependency>
 		
 		<dependency>

@@ -4,13 +4,13 @@ public class Cidade {
 	
 	private Integer idCidade;
 	private String nomeCidade;
-	private char[] ufcidade;
+	private String ufCidade;
 	
 	public Integer getIdCidade() {
 		return idCidade;
 	}
-	public void setIdCidade(Integer idCidade) {
-		this.idCidade = idCidade;
+	public void setIdCidade(Integer id) {
+		this.idCidade = id;
 	}
 	public String getNomeCidade() {
 		return nomeCidade;
@@ -18,17 +18,17 @@ public class Cidade {
 	public void setNomeCidade(String nomeCidade) {
 		this.nomeCidade = nomeCidade;
 	}
-	public char[] getUfcidade() {
-		return ufcidade;
+	public String getUfCidade() {
+		return this.ufCidade;
 	}
-	public void setUfcidade(char[] ufcidade) {
-		this.ufcidade = ufcidade;
+	public void setUfCidade(String ufcidade) {
+		this.ufCidade = ufcidade;
 	}
-	public Cidade(Integer idCidade, String nomeCidade, char[] ufcidade) {
+	public Cidade(Integer idCidade, String nomeCidade,String ufcidade) {
 		super();
 		this.idCidade = idCidade;
 		this.nomeCidade = nomeCidade;
-		this.ufcidade = ufcidade;
+		this.ufCidade = ufcidade;
 	}
 	public Cidade() {
 		super();

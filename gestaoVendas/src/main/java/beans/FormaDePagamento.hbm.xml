@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 7 de jul. de 2022 11:33:37 by Hibernate Tools 3.6.2.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class dynamic-insert="false" dynamic-update="false" mutable="true" name="beans.FormaDePagamento" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="FORMADEPAGAMENTO">
+        <id name="idFormaDePagamento" type="java.lang.Integer">
+            <column name="IDFORMADEPAGAMENTO"/>
+            <generator class="assigned"/>
+        </id>
+        <property generated="never" lazy="false" name="compensacaoposbaixa" optimistic-lock="true" type="char" unique="false">
+            <column name="COMPENSACAOPOSBAIXA"/>
+        </property>
+        <property generated="never" lazy="false" name="nomeFormapagamento" optimistic-lock="true" type="java.lang.String" unique="false">
+            <column name="NOMEFORMAPAGAMENTO"/>
+        </property>
+    </class>
+</hibernate-mapping>
