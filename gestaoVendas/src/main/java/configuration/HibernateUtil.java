@@ -20,7 +20,8 @@ public class HibernateUtil {
 		config.setProperty("hibernate.connection.password", "LSJ6PGFB2000");
 		config.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
 		config.setProperty("hibernate.current_session_context_class", "thread");
-		config.setProperty("hibernate.show_sql", "false");
+		config.setProperty("hibernate.show_sql", "true");
+		config.setProperty("hibernate.enable_lazy_load_no_trans", "true");
 		config.addClass(Cidade.class);
 		
 			sessionFactory = config.buildSessionFactory();

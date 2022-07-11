@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import comum.Redirecionador;
 import configuration.HibernateUtil;
 
 @WebServlet(urlPatterns =  "/LoginAction")
@@ -29,13 +30,14 @@ public class LoginAction extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
-		if (request.getParameter("Campousuario") != null) {
+		if (request.getParameter("Campousuario") != null 
+			&& request.getParameter("Password") != null) {
 			
-			
-		System.out.println(new HibernateUtil());
+			Redirecionador.redirecionar(request, response, "Inicial.jsp");
+		
 			
 		}else {
-			throw new NullPointerException("O campo usuário esta nulo");
+			throw new NullPointerException("O campo usuário ou senha esta nulo");
 		}
 	}
 

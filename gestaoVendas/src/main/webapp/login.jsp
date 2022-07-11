@@ -8,11 +8,11 @@
 <head>
 <jsp:include page="/jsputeis/includecss.html"></jsp:include>
 <meta charset="UTF-8">
-<title>Bem-vindo ao Icommerce</title>
+<title>Bem-vindo ao Ecommerce</title>
 </head>
 <body>
 
- 	<form  action="/gestaoVendas/LoginAction?" method="post">
+ 	<form  action="/gestaoVendas/LoginAction" method="post">
  
 
 		<div style='margin-top: 90px; font-size: 20px;'>
@@ -29,7 +29,7 @@
 
 			<!-- Password input -->
 			<div class="form-outline mb-4">
-				<input type="password" id="form2Example2" class="form-control" /> <label
+				<input type="password" id="form2Example2" class="form-control" name="Password"/> <label
 					class="form-label" for="form2Example2">Password</label>
 			</div>
 

@@ -1,7 +1,9 @@
 package configuration;
 
 import org.hibernate.HibernateException;
+
 import org.hibernate.Session;
+
 
 import beans.Cidade;
 
@@ -18,17 +20,20 @@ public class Principal {
 			
 		
 			session.beginTransaction();
-			Cidade c = (Cidade) session.load(Cidade.class, 2);
+			Cidade c = (Cidade) session.get(Cidade.class, 3);
+			
 			session.getTransaction().commit();
 			session.close();
 			
-			System.out.println(c);
+			System.out.println(c.getNomeCidade());
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}catch (NullPointerException e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println(System.getProperty("os.name"));
 		
 	}
 
