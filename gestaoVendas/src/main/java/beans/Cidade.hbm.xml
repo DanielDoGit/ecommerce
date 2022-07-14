@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 7 de jul. de 2022 15:27:04 by Hibernate Tools 3.6.2.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 de jul. de 2022 14:25:02 by Hibernate Tools 3.6.2.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class dynamic-insert="false" dynamic-update="false" mutable="true" name="beans.Cidade" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="CIDADE">
         <id name="idCidade" type="java.lang.Integer">
-            <column name="id"/>
+            <column name="IDCIDADE"/>
             <generator class="assigned"/>
         </id>
         <property generated="never" lazy="false" name="nomeCidade" optimistic-lock="true" type="java.lang.String" unique="false">
-            <column name="nome"/>
+            <column name="NOMECIDADE"/>
         </property>
         <property generated="never" lazy="false" name="ufCidade" optimistic-lock="true" type="java.lang.String" unique="false">
-            <column name="uf"/>
+            <column name="UFCIDADE"/>
         </property>
     </class>
 </hibernate-mapping>

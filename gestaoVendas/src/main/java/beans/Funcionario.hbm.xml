@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 7 de jul. de 2022 11:33:37 by Hibernate Tools 3.6.2.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 de jul. de 2022 14:25:02 by Hibernate Tools 3.6.2.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class dynamic-insert="false" dynamic-update="false" mutable="true" name="beans.Funcionario" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="FUNCIONARIO">
         <id name="idFuncionario" type="java.lang.Integer">
@@ -17,6 +17,9 @@
         </many-to-one>
         <many-to-one class="beans.CategoriaFuncionario" embed-xml="true" fetch="join" insert="true" name="categoriaFuncionario" not-found="exception" optimistic-lock="true" unique="false" update="true">
             <column name="CATEGORIAFUNCIONARIO"/>
+        </many-to-one>
+        <many-to-one class="beans.Cidade" embed-xml="true" fetch="join" insert="true" name="cidade" not-found="exception" optimistic-lock="true" unique="false" update="true">
+            <column name="CIDADE"/>
         </many-to-one>
     </class>
 </hibernate-mapping>

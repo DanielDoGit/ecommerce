@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 7 de jul. de 2022 11:33:37 by Hibernate Tools 3.6.2.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 de jul. de 2022 14:18:49 by Hibernate Tools 3.6.2.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <subclass discriminator-value="ClienteFisico" dynamic-insert="false" dynamic-update="false" extends="beans.Cliente" lazy="false" name="beans.ClienteFisico" select-before-update="false">
         <property generated="never" lazy="false" name="nome" optimistic-lock="true" type="java.lang.String" unique="false">
