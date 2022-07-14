@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 public class EjetaException {
 		
-	public  EjetaException(Exception e) {
+	public EjetaException(Exception e) {
 		try{
 				
 //				File arquivo = new File();

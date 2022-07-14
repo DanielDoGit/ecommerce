@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import comum.Redirecionador;
-import configuration.HibernateUtil;
+import persistence.HibernateUtil;
 
 @WebServlet(urlPatterns =  "/LoginAction")
 public class LoginAction extends HttpServlet {
@@ -32,6 +32,8 @@ public class LoginAction extends HttpServlet {
 	
 		if (request.getParameter("Campousuario") != null 
 			&& request.getParameter("Password") != null) {
+			
+			
 			
 			Redirecionador.redirecionar(request, response, "Inicial.jsp");
 		

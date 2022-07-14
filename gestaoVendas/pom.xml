@@ -19,13 +19,7 @@
 			<artifactId>commons-email</artifactId>
 			<version>1.1</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>0.9.1</version>
-		</dependency>
-
+	
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -40,23 +34,7 @@
 			<scope>provided</scope>
 		</dependency>
 	
-	<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate</artifactId>
-			<version>3.2.5.ga</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.transaction</groupId>
-					<artifactId>jta</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		
-		<dependency>
-			<groupId>javax.transaction</groupId>
-			<artifactId>jta</artifactId>
-			<version>1.1</version>
-		</dependency>
+	
 		
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -64,12 +42,7 @@
 			<version>42.2.2</version>
 		</dependency>
 		
-		<!-- https://mvnrepository.com/artifact/org.apache.ant/ant -->
-<dependency>
-    <groupId>org.apache.ant</groupId>
-    <artifactId>ant</artifactId>
-    <version>1.10.12</version>
-</dependency>
+
 
 
 
