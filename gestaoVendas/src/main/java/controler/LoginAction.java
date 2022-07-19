@@ -30,22 +30,20 @@ public class LoginAction extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String usuario = request.getParameter("Campousuario");
-		String senha = request.getParameter("Password");
 		
-		if (usuario != null && senha != null) {
+		String usuario = request.getParameter("Campousuario").replaceAll("\\s+", "");
+		String senha =  request.getParameter("Password").replaceAll("\\s+", "");
+	
+		
+		if ( (usuario != null && usuario.isEmpty()) && (senha != null && senha.isEmpty()) ){
+		 
 			
-			usuario.replaceAll("", "");
-			senha.replaceAll("", "");
-			if(!usuario.isEmpty() && !senha.isEmpty()) {
-				Redirecionador.redirecionar(request, response, "Inicial.jsp");
-			}else {
-				
-			}
-
+			Redirecionador.redirecionar(request, response, "loginPopup.jsp");
+			
 		}else {
-			throw new NullPointerException("O campo usuário ou senha esta nulo");
+			Redirecionador.redirecionar(request, response, "Inicial.jsp");
 		}
+			
 	}
-
+	
 }
