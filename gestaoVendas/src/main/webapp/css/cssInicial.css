@@ -2,8 +2,6 @@
 
 body{
 	
-	margin:0;
-	padding:0;
 	background: url("imagens/download.jpeg") no-repeat fixed; 
 	background-size: 100% 100vh;
 }
@@ -30,3 +28,4 @@ body{
 .alinhamentocentro{
 	text-align: center;
 }
+

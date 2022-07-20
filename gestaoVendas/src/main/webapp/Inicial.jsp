@@ -19,7 +19,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav me-auto mb-5 mb-lg-0">
        
        <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle"  id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -208,11 +208,16 @@
           </ul>
        
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
+      
+				<form class="d-flex ms-auto" style='position:relative; margin-left:760px;'>
+					<div class="input-group">
+						<input class="form-control border-0 mr-2" type="search"
+							placeholder="Pesquisar" aria-label="Pesquisar" >
+						<button class="btn btn-outline-success border-0" type="submit" >Pesquisar</button>
+					</div>
+				</form>
+			</div>
+		
   </div>
 </nav>
 
