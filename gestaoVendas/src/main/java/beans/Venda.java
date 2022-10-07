@@ -6,8 +6,9 @@ import java.util.List;
 
 public class Venda {
 	
+	private Integer id;
 	private Cliente cliente;
-	private List<Produto> listaProduto = new ArrayList<Produto>();
+	
 	
 	
 
