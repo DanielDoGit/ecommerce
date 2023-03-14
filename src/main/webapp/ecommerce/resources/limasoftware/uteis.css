@@ -1,0 +1,57 @@
+@CHARSET "UTF-8";
+
+.colunaEditar {
+	width: 70px;
+	text-align: center;
+}
+
+.colunaExcluir {
+	width: 70px;
+	text-align: center;
+}
+
+.colunaAceitar {
+	width: 70px;
+	text-align: center;
+}
+
+.colunaCopiar {
+	width: 70px;
+	text-align: center;
+}
+
+th.left {
+	text-align: left;
+}
+
+th.right {
+	text-align: right;
+}
+
+th.center {
+	text-align: center;
+}
+
+.rodape {
+	color: gray;
+	font-size: 9pt;
+}
+
+/* Essa configuração de CSS sobrepõe a configuração original de TH 
+do Bootstrap para que a linha divisória inferior do cabeçário tenha  
+a mesma espessura das demais linhas da TABLE */
+.table thead th {
+	border-bottom: 1px solid #dee2e6;
+}
+
+.divcentral {
+	width: 1280px;
+	box-shadow: 1px 1px 15px black;
+	min-height: 95vh;
+}
+
+.error {
+	color: red;
+	font-family: sans-serif;
+	font-size: 10pt;
+}

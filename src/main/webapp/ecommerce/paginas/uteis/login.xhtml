@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<h:head>
+	<title>Gem</title>
+	<ui:include src="/gem/paginas/uteis/scripts.xhtml" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+<h:body class="bg-info" onload="setFocus('form:txtusuario');">
+	<h:form id="form">
+		<div class="container bg-light rounded-bottom divcentral">
+			<br />
+			<div class="row d-none">
+				<div class="col" align="center">
+					<h:messages showDetail="false" showSummary="true" globalOnly="true" infoClass="text-info mensagemInfo" warnClass="text-warning mensagemWarning" errorClass="text-dark mensagemError" layout="list" />
+				</div>
+			</div>
+			<h1 align="center">Login de Usuário - Gem</h1>
+			<div align="center"><i>versão 2.0.32</i></div>
+			<div class="row mb-3 mt-5">
+				<div class="col-4 offset-4">
+					<label>Usuário</label>
+					<h:inputText value="#{loginControllerGem.login}" class="form-control" id="txtusuario" autocomplete="off" required="true"></h:inputText>
+					<h:message for="txtusuario" showDetail="false" showSummary="true" styleClass="error"  />
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-4 offset-4">
+					<label>Senha</label>
+					<h:inputSecret value="#{loginControllerGem.senha}" class="form-control" id="txtsenha" autocomplete="off" required="true" redisplay="true"></h:inputSecret>
+					<h:message for="txtsenha" showDetail="false" showSummary="true" styleClass="error"  />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-4 offset-4" align="right">
+					<h:commandButton action="#{loginControllerGem.realizarLogin}" class="btn btn-primary" style="width: 120px" value="Entrar"></h:commandButton>
+				</div>
+			</div>
+		</div>
+	</h:form>
+</h:body>
+</html>

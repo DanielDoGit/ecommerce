@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	<div class="row">
+		<div class="col" align="center">
+			<h:inputHidden id="token" value="#{gerenciadorTokenGem.clienteToken}"></h:inputHidden>
+		</div> 
+	</div> 
+	<div class="row d-none">
+		<div class="col" align="center">
+			<h:messages id="mensagens" showDetail="false" showSummary="true" globalOnly="true" styleClass="mt-4" infoClass="text-info mensagemInfo" warnClass="text-warning mensagemWarning" errorClass="text-dark mensagemError" layout="list" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col mt-2" align="center">
+			<h:commandLink style="color: gray; font-size: 8pt" action="#{loginControllerGem.realizarLogout}">
+				<span class='far fa-user'></span>
+			</h:commandLink>
+			<label>&#160;</label>
+			<h:commandLink style="color: gray; font-size: 8pt" value="Usuário atual: #{loginControllerGem.usuarioDtoGem.nome} (clique aqui para trocar de usuário)" action="#{loginControllerGem.realizarLogout}" immediate="true"></h:commandLink>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col" align="center">
+			<h:commandLink class="btn btn-light" action="#{menuController.acessarMenuCadastro}" immediate="true">Cadastros</h:commandLink>
+			<h:commandLink class="btn btn-light" action="#{menuController.acessarMenuProcesso}" immediate="true">Processos</h:commandLink>
+			<h:commandLink class="btn btn-light" action="#{menuController.acessarMenuRelatorio}" immediate="true">Relatórios</h:commandLink>
+		</div>
+	</div>	
+</ui:composition>

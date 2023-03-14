@@ -1,0 +1,44 @@
+@CHARSET "UTF-8";
+
+body {
+	font-family: sans-serif;
+	font-size: 8pt;
+}
+
+table {
+	width: 190mm;
+	border: 1px;
+	border-style: solid;
+	border-color: white;
+	empty-cells: show;
+}
+
+hr {
+	width: 100%;
+	color: rgb(192, 192, 192);
+	size: 1pt;
+}
+
+td {
+	text-align: left;
+	font-family: sans-serif;
+	font-size: 8pt;
+}
+
+th {
+	text-align: left;
+	font-weight: bold;
+	font-family: sans-serif;
+	font-size: 8pt;
+}
+
+h1 {
+	font-size: 24pt;
+	text-align: center;
+	color: gray;
+}
+
+.totalizador {
+	font-size: 10pt;
+	font-weight: bold;
+}
