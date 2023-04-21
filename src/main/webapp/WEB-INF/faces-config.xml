@@ -6,15 +6,15 @@
 	version="4.0">
 
 	<factory>
-		<exception-handler-factory>gem.gem_uteis.JsfExceptionHandlerFactory</exception-handler-factory>
+		<exception-handler-factory>ecommerce.uteis.JsfExceptionHandlerFactory</exception-handler-factory>
 	</factory>
 
 	<lifecycle>
-		<phase-listener>gem.gem_uteis.ControleAcessoPhaseListener</phase-listener>
+		<phase-listener>ecommerce.uteis.ControleAcessoPhaseListener</phase-listener>
 	</lifecycle>
 
 	<application>
-		<message-bundle>gem.gem_uteis.mensagens</message-bundle>
+		<message-bundle>ecommerce.uteis.mensagens</message-bundle>
 	</application>
 
 </faces-config>

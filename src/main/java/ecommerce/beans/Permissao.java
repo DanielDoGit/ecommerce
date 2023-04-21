@@ -24,6 +24,11 @@ public class Permissao implements Serializable {
 		super();
 	}
 
+	public Permissao(Integer id, String nome) {
+		this.id = id;
+		this.nome = nome;
+	}
+
 	public Integer getId() {
 		return id;
 	}
