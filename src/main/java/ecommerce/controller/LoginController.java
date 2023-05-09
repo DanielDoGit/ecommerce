@@ -1,5 +1,6 @@
 package ecommerce.controller;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +17,9 @@ import jakarta.transaction.Transactional;
 @Named
 @SessionScoped
 @Transactional
-public class LoginController {
+public class LoginController implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Inject
 	private PermissaoDao permissaoDao;

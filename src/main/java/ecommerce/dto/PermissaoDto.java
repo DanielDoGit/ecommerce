@@ -1,9 +1,12 @@
 package ecommerce.dto;
 
+import java.io.Serializable;
+
 import ecommerce.beans.Permissao;
 
-public class PermissaoDto {
+public class PermissaoDto implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private Integer idPermissao;
 	private String nomePermissao;
 	

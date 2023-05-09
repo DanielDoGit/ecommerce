@@ -9,8 +9,8 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
-@SessionScoped
 @Named
+@SessionScoped
 public class PermissaoDao extends Dao<Permissao> {
 
 	public PermissaoDao() {

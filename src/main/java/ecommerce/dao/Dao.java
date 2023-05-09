@@ -1,5 +1,6 @@
 package ecommerce.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import jakarta.enterprise.context.Dependent;
@@ -10,8 +11,10 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
 @Dependent
-public class Dao<T> {
+public class Dao<T> implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	private Class<T> klass;
 
 	@PersistenceContext
