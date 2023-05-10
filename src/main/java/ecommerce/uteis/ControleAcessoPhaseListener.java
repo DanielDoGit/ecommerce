@@ -20,10 +20,10 @@ public class ControleAcessoPhaseListener implements PhaseListener {
 		try {
 			FacesContext context = event.getFacesContext();
 			if (context.getViewRoot() != null) {
-				if (!context.getViewRoot().getViewId().equals("ecommerce/paginas/nuteis/login.xhtml")) {
+				if (!context.getViewRoot().getViewId().equals("/ecommerce/paginas/nuteis/login.xhtml")) {
 					if (loginUsuario.getFuncionarioDto() == null) {
 						HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-						context.getExternalContext().redirect(request.getContextPath() + "ecommerce/paginas/nuteis/login.xhtml");
+						context.getExternalContext().redirect(request.getContextPath() + "/ecommerce/paginas/nuteis/login.xhtml");
 					}
 				}
 			}

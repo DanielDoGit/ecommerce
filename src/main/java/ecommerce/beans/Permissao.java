@@ -16,7 +16,7 @@ public class Permissao implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Integer codigo;
 	
 	private String nome;
 
@@ -24,17 +24,17 @@ public class Permissao implements Serializable {
 		super();
 	}
 
-	public Permissao(Integer id, String nome) {
-		this.id = id;
+	public Permissao(Integer codigo, String nome) {
+		this.codigo = codigo;
 		this.nome = nome;
 	}
 
-	public Integer getId() {
-		return id;
+	public Integer getCodigo() {
+		return codigo;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
 	}
 
 	public String getNome() {

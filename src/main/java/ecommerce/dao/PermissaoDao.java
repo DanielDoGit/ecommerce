@@ -13,6 +13,8 @@ import jakarta.persistence.criteria.Root;
 @SessionScoped
 public class PermissaoDao extends Dao<Permissao> {
 
+	private static final long serialVersionUID = 1L;
+
 	public PermissaoDao() {
 		super(Permissao.class);
 	}

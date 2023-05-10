@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:p="http://primefaces.org/ui">
-<h:head>
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
 
-	<title> Ecommerce </title>
+    <h:head>
+            <h:outputStylesheet library="webjars" name="primeflex/2.0.0/primeflex.min.css" />
 
-</h:head>
+        <title> Ecommerce </title>
 
-<h:body>
-	<p:panel >
-		
-		<p:outputLabel>Hello World</p:outputLabel>
-	</p:panel>
-</h:body>
+    </h:head>
+
+    <h:body class="bg-darkg-info">
+    
+        <div class="container bg-light" align="center">
+            <h:form>
+
+                <h:panelGrid columns="3" cellpadding="7" >
+                    <h5 class="mt-0">Basic</h5>
+                    <p:outputLabel for="name" value="Name"/>
+                    <p:inputText id="name" />
+                    <h:outputText id="display" />
+                </h:panelGrid>
+                <p:commandButton value="Submit" update="display" styleClass="mt-3" />
+            </h:form>
+        </div>
+    </h:body>
 </html>

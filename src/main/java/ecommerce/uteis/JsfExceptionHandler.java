@@ -41,7 +41,7 @@ public class JsfExceptionHandler extends ExceptionHandlerWrapper {
 			ExceptionQueuedEventContext context = (ExceptionQueuedEventContext) event.getSource();
 			Throwable exception = context.getException();
 			gravarLog(exception);
-			redirect("/paginas/uteis/errogenerico.xhtml");
+			redirect("/ecommerce/paginas/uteis/errogenerico.xhtml");
 			events.remove();
 		}
 		getWrapped().handle();

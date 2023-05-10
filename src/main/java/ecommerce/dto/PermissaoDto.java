@@ -18,7 +18,7 @@ public class PermissaoDto implements Serializable {
 	}
 	
 	public PermissaoDto(Permissao permissao) {
-		this.idPermissao = permissao.getId();
+		this.idPermissao = permissao.getCodigo();
 		this.nomePermissao = permissao.getNome();
 	}
 

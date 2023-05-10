@@ -19,59 +19,59 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class LoginController implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Inject
-	private PermissaoDao permissaoDao;
+    @Inject
+    private PermissaoDao permissaoDao;
 
-	private FuncionarioDto funcionarioDto;
-	private String login;
-	private String senha;
-	private List<PermissaoDto> listaPermissaoExistente = new ArrayList<>();
+    private FuncionarioDto funcionarioDto;
+    private String login;
+    private String senha;
+    private List<PermissaoDto> listaPermissaoExistente = new ArrayList<>();
 
-	@PostConstruct
-	public void carregarPermissoes() {
-		listaPermissaoExistente = permissaoDao.listarTodos().stream().map(PermissaoDto::new).collect(Collectors.toList());
-	}
+    @PostConstruct
+    public void carregarPermissoes() {
+        listaPermissaoExistente = permissaoDao.listarTodos().stream().map(PermissaoDto::new).collect(Collectors.toList());
+    }
 
-	public String getLogin() {
-		return login; 
-	}
+    public String getLogin() {
+        return login;
+    }
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
-	public String getSenha() {
-		return senha;
-	}
+    public String getSenha() {
+        return senha;
+    }
 
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 
-	public FuncionarioDto getFuncionarioDto() {
-		return funcionarioDto;
-	}
+    public FuncionarioDto getFuncionarioDto() {
+        return funcionarioDto;
+    }
 
-	public void setFuncionarioDto(FuncionarioDto funcionarioDto) {
-		this.funcionarioDto = funcionarioDto;
-	}
+    public void setFuncionarioDto(FuncionarioDto funcionarioDto) {
+        this.funcionarioDto = funcionarioDto;
+    }
 
-	public PermissaoDao getPermissaoDao() {
-		return permissaoDao;
-	}
+    public PermissaoDao getPermissaoDao() {
+        return permissaoDao;
+    }
 
-	public void setPermissaoDao(PermissaoDao permissaoDao) {
-		this.permissaoDao = permissaoDao;
-	}
+    public void setPermissaoDao(PermissaoDao permissaoDao) {
+        this.permissaoDao = permissaoDao;
+    }
 
-	public List<PermissaoDto> getListaPermissaoExistente() {
-		return listaPermissaoExistente;
-	}
+    public List<PermissaoDto> getListaPermissaoExistente() {
+        return listaPermissaoExistente;
+    }
 
-	public void setListaPermissaoExistente(List<PermissaoDto> listaPermissaoExistente) {
-		this.listaPermissaoExistente = listaPermissaoExistente;
-	}
+    public void setListaPermissaoExistente(List<PermissaoDto> listaPermissaoExistente) {
+        this.listaPermissaoExistente = listaPermissaoExistente;
+    }
 
 }
