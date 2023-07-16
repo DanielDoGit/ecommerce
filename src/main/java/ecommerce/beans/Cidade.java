@@ -7,41 +7,37 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="cidade", uniqueConstraints = @UniqueConstraint(columnNames = { "nome"}))
 public class Cidade implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Integer codigo;
 	
 	private String nome;
 	
 	private String uf;
-
-	public Cidade(Integer id, String nome, String uf) {
+	
+	public Cidade() {
 		super();
-		this.id = id;
+	}
+
+	public Cidade(Integer codigo, String nome, String uf) {
+		super();
+		this.codigo = codigo;
 		this.nome = nome;
 		this.uf = uf;
 	}
 
-	public Cidade() {
-		super();
-
+	public Integer getCodigo() {
+		return codigo;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
 	}
 
 	public String getNome() {
@@ -62,7 +58,7 @@ public class Cidade implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, nome, uf);
+		return Objects.hash(codigo, nome);
 	}
 
 	@Override
@@ -74,7 +70,7 @@ public class Cidade implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Cidade other = (Cidade) obj;
-		return Objects.equals(id, other.id) && Objects.equals(nome, other.nome) && Objects.equals(uf, other.uf);
+		return Objects.equals(codigo, other.codigo) && Objects.equals(nome, other.nome);
 	}
 
 }

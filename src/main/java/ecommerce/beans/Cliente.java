@@ -1,12 +1,15 @@
 package ecommerce.beans;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -18,54 +21,54 @@ public class Cliente implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Integer codigo;
 	
 	private String nome;
 	
 	private String cpf;
 	
-	private String rg;
-	
-	private String contato;
-	
-	private Cidade cidade;
+	private String endereco;
 	
 	private String bairro;
 	
-	private String endereco;
+	private String contato;
 	
-	private String numero;
+	@ManyToOne
+	@JoinColumn(name="cidade")
+	private Cidade cidade;
 	
-	private String credito;
+	private BigDecimal credito;
 	
 	private boolean ativo;
+	
+	private LocalDate dataCadastro;
+	
 
-	public Cliente(Integer id, String nome, String cpf, String rg, String contato, Cidade cidade, String bairro,
-			String endereco, String numero, String credito, boolean ativo) {
+	public Cliente(Integer codigo, String nome, String cpf, String endereco, String bairro, String contato,
+			Cidade cidade, BigDecimal credito, boolean ativo, LocalDate dataCadastro) {
 		super();
-		this.id = id;
+		this.codigo = codigo;
 		this.nome = nome;
 		this.cpf = cpf;
-		this.rg = rg;
+		this.endereco = endereco;
+		this.bairro = bairro;
 		this.contato = contato;
 		this.cidade = cidade;
-		this.bairro = bairro;
-		this.endereco = endereco;
-		this.numero = numero;
 		this.credito = credito;
 		this.ativo = ativo;
+		this.dataCadastro = dataCadastro;
 	}
 
 	public Cliente() {
 		super();
 	}
-
-	public Integer getId() {
-		return id;
+	
+	public Integer getCodigo() {
+		return codigo;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
 	}
 
 	public String getNome() {
@@ -84,12 +87,20 @@ public class Cliente implements Serializable {
 		this.cpf = cpf;
 	}
 
-	public String getRg() {
-		return rg;
+	public String getEndereco() {
+		return endereco;
 	}
 
-	public void setRg(String rg) {
-		this.rg = rg;
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
 	}
 
 	public String getContato() {
@@ -108,35 +119,11 @@ public class Cliente implements Serializable {
 		this.cidade = cidade;
 	}
 
-	public String getBairro() {
-		return bairro;
-	}
-
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
-	}
-
-	public String getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
-	}
-
-	public String getNumero() {
-		return numero;
-	}
-
-	public void setNumero(String numero) {
-		this.numero = numero;
-	}
-
-	public String getCredito() {
+	public BigDecimal getCredito() {
 		return credito;
 	}
 
-	public void setCredito(String credito) {
+	public void setCredito(BigDecimal credito) {
 		this.credito = credito;
 	}
 
@@ -148,25 +135,13 @@ public class Cliente implements Serializable {
 		this.ativo = ativo;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(ativo, bairro, cidade, contato, cpf, credito, endereco, id, nome, numero, rg);
+	public LocalDate getDataCadastro() {
+		return dataCadastro;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Cliente other = (Cliente) obj;
-		return ativo == other.ativo && Objects.equals(bairro, other.bairro) && Objects.equals(cidade, other.cidade)
-				&& Objects.equals(contato, other.contato) && Objects.equals(cpf, other.cpf)
-				&& Objects.equals(credito, other.credito) && Objects.equals(endereco, other.endereco)
-				&& Objects.equals(id, other.id) && Objects.equals(nome, other.nome)
-				&& Objects.equals(numero, other.numero) && Objects.equals(rg, other.rg);
+	public void setDataCadastro(LocalDate dataCadastro) {
+		this.dataCadastro = dataCadastro;
 	}
+
 
 }

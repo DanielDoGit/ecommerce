@@ -1,6 +1,8 @@
 package ecommerce.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
@@ -9,24 +11,23 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "funcionario", uniqueConstraints = @UniqueConstraint(columnNames = { "nome", "cpf", }))
 public class Funcionario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Integer codigo;
 	
 	private String nome;
 	
 	private String cpf;
 	
-	private String rg;
+	private String bairro;
+	
+	private String endereco;
 	
 	@ManyToOne
 	@JoinColumn(name = "cidade")
@@ -37,30 +38,35 @@ public class Funcionario implements Serializable {
 	private String senha;
 	
 	private boolean ativo;
+	
+	private List<FuncionarioPermissao> listaFuncionarioPermissao = new ArrayList<>();
+	
 
-	public Funcionario(Integer id, String nome, String cpf, String rg, Cidade cidade, String login, String senha,
-			boolean ativo) {
+	public Funcionario(Integer codigo, String nome, String cpf, String bairro, String endereco, Cidade cidade,
+			String login, String senha, boolean ativo, List<FuncionarioPermissao> listaFuncionarioPermissao) {
 		super();
-		this.id = id;
+		this.codigo = codigo;
 		this.nome = nome;
 		this.cpf = cpf;
-		this.rg = rg;
+		this.bairro = bairro;
+		this.endereco = endereco;
 		this.cidade = cidade;
 		this.login = login;
 		this.senha = senha;
 		this.ativo = ativo;
+		this.listaFuncionarioPermissao = listaFuncionarioPermissao;
 	}
 
 	public Funcionario() {
 		super();
 	}
 
-	public Integer getId() {
-		return id;
+	public Integer getCodigo() {
+		return codigo;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
 	}
 
 	public String getNome() {
@@ -79,12 +85,20 @@ public class Funcionario implements Serializable {
 		this.cpf = cpf;
 	}
 
-	public String getRg() {
-		return rg;
+	public String getBairro() {
+		return bairro;
 	}
 
-	public void setRg(String rg) {
-		this.rg = rg;
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
 	}
 
 	public Cidade getCidade() {
@@ -119,24 +133,30 @@ public class Funcionario implements Serializable {
 		this.ativo = ativo;
 	}
 
+	public List<FuncionarioPermissao> getListaFuncionarioPermissao() {
+		return listaFuncionarioPermissao;
+	}
+
+	public void setListaFuncionarioPermissao(List<FuncionarioPermissao> listaFuncionarioPermissao) {
+		this.listaFuncionarioPermissao = listaFuncionarioPermissao;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(ativo, cidade, cpf, id, login, nome, rg, senha);
+		return Objects.hash(ativo, nome);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
-			return true;
+			return true;	
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Funcionario other = (Funcionario) obj;
-		return ativo == other.ativo && Objects.equals(cidade, other.cidade) && Objects.equals(cpf, other.cpf)
-				&& Objects.equals(id, other.id) && Objects.equals(login, other.login)
-				&& Objects.equals(nome, other.nome) && Objects.equals(rg, other.rg)
-				&& Objects.equals(senha, other.senha);
+		return ativo == other.ativo && Objects.equals(nome, other.nome);
 	}
 
+	
 }
