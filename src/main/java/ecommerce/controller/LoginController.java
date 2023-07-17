@@ -33,6 +33,14 @@ public class LoginController implements Serializable {
     public void carregarPermissoes() {
         listaPermissaoExistente = permissaoDao.listarTodos().stream().map(PermissaoDto::new).collect(Collectors.toList());
     }
+    
+    public String realizarLogin() {
+    	return null;
+    }
+    
+    public String realizarLogout() {
+    	return null;
+    }
 
     public String getLogin() {
         return login;

@@ -23,8 +23,7 @@ public class PermissaoDao extends Dao<Permissao> {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Permissao> cq = cb.createQuery(Permissao.class);
 		Root<Permissao> root = cq.from(Permissao.class);
-		cq.select(root);
-		List<Permissao> listaPermissao = em.createQuery(cq).getResultList();
+		List<Permissao> listaPermissao = em.createQuery(cq.select(root)).getResultList();
 		return listaPermissao;
 	}
 
