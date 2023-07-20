@@ -32,8 +32,7 @@ public class Caixa implements Serializable{
 
 	@ManyToOne
 	@JoinColumn(name="venda")
-	private Venda venda;
-	
+	private Venda venda;	
 	
 
 	public Integer getCodigo() {

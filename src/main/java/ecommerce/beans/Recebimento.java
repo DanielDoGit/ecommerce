@@ -39,6 +39,33 @@ public class Recebimento implements Serializable {
 	
 	@OneToMany(mappedBy = "recebimento", fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<Parcela> listaParcelas = new ArrayList<>();
+	
+	@ManyToOne
+	@JoinColumn(name="formaPagamento")
+	private FormaPagamento formaPagamento;
+	
+	@ManyToOne
+	@JoinColumn(name="condicaopagamento")
+	private CondicaoPagamento condicaopagamento;
+
+	public Recebimento() {
+		super();
+	}
+
+	public Recebimento(Integer codigo, BigDecimal valor, LocalDate dataEmissao, LocalDate dataVencimento,
+			boolean quitado, Venda venda, List<Parcela> listaParcelas, FormaPagamento formaPagamento,
+			CondicaoPagamento condicaopagamento) {
+		super();
+		this.codigo = codigo;
+		this.valor = valor;
+		this.dataEmissao = dataEmissao;
+		this.dataVencimento = dataVencimento;
+		this.quitado = quitado;
+		this.venda = venda;
+		this.listaParcelas = listaParcelas;
+		this.formaPagamento = formaPagamento;
+		this.condicaopagamento = condicaopagamento;
+	}
 
 	public Integer getCodigo() {
 		return codigo;
@@ -111,6 +138,22 @@ public class Recebimento implements Serializable {
 			return false;
 		Recebimento other = (Recebimento) obj;
 		return Objects.equals(codigo, other.codigo);
+	}
+
+	public FormaPagamento getFormaPagamento() {
+		return formaPagamento;
+	}
+
+	public void setFormaPagamento(FormaPagamento formaPagamento) {
+		this.formaPagamento = formaPagamento;
+	}
+
+	public CondicaoPagamento getCondicaopagamento() {
+		return condicaopagamento;
+	}
+
+	public void setCondicaopagamento(CondicaoPagamento condicaopagamento) {
+		this.condicaopagamento = condicaopagamento;
 	}
 	
 	

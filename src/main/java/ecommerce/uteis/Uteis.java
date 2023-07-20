@@ -15,6 +15,7 @@ public class Uteis implements Serializable {
 
 	@Inject
 	private ServletContext servletContext;
+	
 
 	public String getCaminhoInicial() {
 		return "/paginas/uteis/inicial.xhtml";

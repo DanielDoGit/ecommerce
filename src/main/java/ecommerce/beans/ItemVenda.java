@@ -12,36 +12,58 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class ItemVenda implements Serializable{
+public class ItemVenda implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer codigo;
-	
+
 	@ManyToOne
-	@JoinColumn(name="produto")
+	@JoinColumn(name = "produto")
 	private Produto produto;
-	
+
 	private BigDecimal quantidade;
-	
+
 	private BigDecimal valorUnitario;
-	
+
 	private BigDecimal totalUnitario;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "venda")
+	private Venda venda;
+
 	public ItemVenda(Integer codigo, Produto produto, BigDecimal quantidade, BigDecimal valorUnitario,
-			BigDecimal totalUnitario) {
+			BigDecimal totalUnitario, Venda venda) {
 		super();
 		this.codigo = codigo;
 		this.produto = produto;
 		this.quantidade = quantidade;
 		this.valorUnitario = valorUnitario;
 		this.totalUnitario = totalUnitario;
+		this.venda = venda;
 	}
-	
+
 	public ItemVenda() {
 		super();
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(codigo);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ItemVenda other = (ItemVenda) obj;
+		return Objects.equals(codigo, other.codigo);
 	}
 
 	public Integer getCodigo() {
@@ -84,22 +106,12 @@ public class ItemVenda implements Serializable{
 		this.totalUnitario = totalUnitario;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(codigo);
+	public Venda getVenda() {
+		return venda;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ItemVenda other = (ItemVenda) obj;
-		return Objects.equals(codigo, other.codigo);
+	public void setVenda(Venda venda) {
+		this.venda = venda;
 	}
-	
-	
+
 }

@@ -16,7 +16,6 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class AjusteEstoque implements Serializable{
 
-
 	private static final long serialVersionUID = 1L;
 	
 	@Id
