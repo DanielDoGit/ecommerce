@@ -12,13 +12,13 @@ import jakarta.inject.Named;
 @ConversationScoped
 public class MenuController implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	@Inject
 	private GerenciadorConversa gerenciadorConversa;
 
 	@Inject
 	private Uteis uteis;
-
-	private static final long serialVersionUID = 1L;
 
 	public String acessarMenuCadastro() {
 		gerenciadorConversa.finalizar();

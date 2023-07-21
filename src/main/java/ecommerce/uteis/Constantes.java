@@ -1,13 +1,18 @@
 package ecommerce.uteis;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 import ecommerce.beans.AjusteEstoque;
 import ecommerce.beans.ItemVenda;
+import jakarta.enterprise.context.RequestScoped;
 
-public class Constantes {
+@RequestScoped
+public class Constantes implements Serializable{
 
+	private static final long serialVersionUID = 1L;
+	
 	public static final String ENTRADA = "Entrada";
 	public static final String SAIDA = "Saida";
 	public static final String CREDITO = "Credito";

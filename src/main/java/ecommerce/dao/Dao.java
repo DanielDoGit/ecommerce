@@ -20,9 +20,11 @@ public class Dao<T> implements Serializable{
 	@PersistenceContext
 	protected EntityManager em;
 	
-	protected Dao(Class<T> klass) {
+	public Dao(Class<T> klass) {
 		this.klass = klass;
 	}
+	
+	public Dao() {}
 	
 	public void cadastrar(T object) {
 		em.persist(object);

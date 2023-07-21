@@ -16,15 +16,15 @@ public class Permissao implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer codigo;
 	
-	private String nome;
+	private String descricao;
 
 	public Permissao() {
 		super();
 	}
 
-	public Permissao(Integer codigo, String nome) {
+	public Permissao(Integer codigo, String descricao) {
 		this.codigo = codigo;
-		this.nome = nome;
+		this.descricao = descricao;
 	}
 
 	public Integer getCodigo() {
@@ -35,17 +35,17 @@ public class Permissao implements Serializable {
 		this.codigo = codigo;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(codigo, nome);
+		return Objects.hash(codigo, descricao);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class Permissao implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Permissao other = (Permissao) obj;
-		return Objects.equals(codigo, other.codigo) && Objects.equals(nome, other.nome);
+		return Objects.equals(codigo, other.codigo) && Objects.equals(descricao, other.descricao);
 	}
 
 }

@@ -3,11 +3,15 @@ package ecommerce.uteis;
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.servlet.ServletContext;
 
+@Named
+@RequestScoped
 public class Uteis implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -18,19 +22,19 @@ public class Uteis implements Serializable {
 	
 
 	public String getCaminhoInicial() {
-		return "/paginas/uteis/inicial.xhtml";
+		return "/ecommerce/paginas/uteis/inicial.xhtml";
 	}
 
 	public String getCaminhoMenuCadastros() {
-		return "/paginas/uteis/menucadastro.xhtml";
+		return "/ecommerce/paginas/uteis/menucadastro.xhtml";
 	}
 
 	public String getCaminhoMenuProcesso() {
-		return "/paginas/uteis/menuprocesso.xhtml";
+		return "/ecommerce/paginas/uteis/menuprocesso.xhtml";
 	}
 
 	public String getCaminhoMenuRelatorio() {
-		return "/paginas/uteis/menurelatorio.xhtml";
+		return "/ecommerce/paginas/uteis/menurelatorio.xhtml";
 	}
 
 	public void adicionarMensagemSucessoExclusao() {

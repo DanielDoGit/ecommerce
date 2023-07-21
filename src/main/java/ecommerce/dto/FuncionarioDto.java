@@ -1,10 +1,14 @@
 package ecommerce.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import ecommerce.beans.Funcionario;
+import ecommerce.beans.FuncionarioPermissao;
+import ecommerce.dao.CidadeDao;
+import ecommerce.dao.PermissaoDao;
 
 public class FuncionarioDto implements Serializable {
 
@@ -30,7 +34,7 @@ public class FuncionarioDto implements Serializable {
 
 	private boolean ativo;
 	
-	private List<PermissaoDto> listaPermissoes;
+	private List<PermissaoDto> listaPermissoes = new ArrayList<PermissaoDto>();
 	
 	public FuncionarioDto(Funcionario func) {
 		this.codigo = func.getCodigo();
@@ -44,6 +48,26 @@ public class FuncionarioDto implements Serializable {
 		this.senha = func.getSenha();
 		this.ativo = func.isAtivo();
 		listaPermissoes = func.getListaFuncionarioPermissao().stream().map(e -> new PermissaoDto(e.getPermissao())).collect(Collectors.toList());
+	}
+	
+	public Funcionario toFuncionario(PermissaoDao permissaoDao) {
+		Funcionario funcionario = new Funcionario();
+		funcionario.setCodigo(codigo);
+		funcionario.setNome(nome);
+		funcionario.setCpf(cpf);
+		funcionario.setBairro(bairro);
+		funcionario.setEndereco(endereco);
+		funcionario.setAtivo(ativo);
+		funcionario.setLogin(login);
+		funcionario.setSenha(senha);
+		funcionario.setCidade(new CidadeDao().getById(Integer.valueOf(idCidade)));
+		for (PermissaoDto permissaoDto : listaPermissoes) {
+			FuncionarioPermissao funcionarioPermissao = new FuncionarioPermissao();
+			funcionarioPermissao.setFuncionario(funcionario);
+			funcionarioPermissao.setPermissao(permissaoDao.getById(permissaoDto.getIdPermissao()));
+			funcionario.getListaFuncionarioPermissao().add(funcionarioPermissao);
+		}
+		return funcionario; 
 	}
 
 	public Integer getCodigo() {
