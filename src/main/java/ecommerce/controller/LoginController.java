@@ -3,8 +3,11 @@ package ecommerce.controller;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import ecommerce.beans.Funcionario;
+import ecommerce.dao.FuncionarioDao;
 import ecommerce.dao.PermissaoDao;
 import ecommerce.dto.FuncionarioDto;
 import ecommerce.dto.PermissaoDto;
@@ -24,6 +27,9 @@ public class LoginController implements Serializable {
     @Inject
     private PermissaoDao permissaoDao;
 
+    @Inject
+    private FuncionarioDao funcionarioDao;
+    
     private FuncionarioDto funcionarioDto;
     private String login;
     private String senha;
@@ -35,6 +41,9 @@ public class LoginController implements Serializable {
     }
     
     public String realizarLogin() {
+    	
+    	Optional<Funcionario> funcionario = funcionarioDao.realizarlogin(login, senha);
+    	funcionario.i;
     	
     	return null;
     }
