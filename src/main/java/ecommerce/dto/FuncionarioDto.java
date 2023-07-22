@@ -42,8 +42,10 @@ public class FuncionarioDto implements Serializable {
 		this.cpf = func.getCpf();
 		this.bairro = func.getBairro();
 		this.endereco = func.getEndereco();
-		this.idCidade = func.getCidade().getCodigo().toString();
-		this.nomeCidade = func.getCidade().getNome();
+		if (func.getCidade() != null) {
+			this.idCidade = func.getCidade().getCodigo().toString();
+			this.nomeCidade = func.getCidade().getNome();
+		}
 		this.login = func.getLogin();
 		this.senha = func.getSenha();
 		this.ativo = func.isAtivo();
