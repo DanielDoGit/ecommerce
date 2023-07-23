@@ -36,7 +36,13 @@ public class Uteis implements Serializable {
 	public String getCaminhoMenuRelatorio() {
 		return "/ecommerce/paginas/uteis/menurelatorio.xhtml";
 	}
+	
 
+	public String getCaminhoLogin() {
+		return "/ecommerce/paginas/uteis/login.xhtml";
+	}
+	
+	
 	public void adicionarMensagemSucessoExclusao() {
 		adicionarMensagemInformativa("Exclusão realizada com sucesso!");
 	}

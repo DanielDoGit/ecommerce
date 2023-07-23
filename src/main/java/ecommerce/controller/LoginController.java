@@ -23,82 +23,83 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class LoginController implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Inject
-	private PermissaoDao permissaoDao;
+    @Inject
+    private PermissaoDao permissaoDao;
 
-	@Inject
-	private FuncionarioDao funcionarioDao;
+    @Inject
+    private FuncionarioDao funcionarioDao;
 
-	@Inject
-	private Uteis uteis;
+    @Inject
+    private Uteis uteis;
 
-	private FuncionarioDto funcionarioDto;
-	private String login;
-	private String senha;
-	private List<PermissaoDto> listaPermissaoExistente = new ArrayList<>();
+    private FuncionarioDto funcionarioDto;
+    private String login;
+    private String senha;
+    private List<PermissaoDto> listaPermissaoExistente = new ArrayList<>();
 
-	@PostConstruct
-	public void carregarPermissoes() {
-		listaPermissaoExistente = permissaoDao.listarTodos().stream().map(PermissaoDto::new).collect(Collectors.toList());
-	}
-
-	public String realizarLogin() {
-    	Optional<Funcionario> funcionario = funcionarioDao.realizarlogin(login, senha);
-    	login = null;
-    	senha = null;
-    	if (funcionario.isPresent()) {
-    		funcionarioDto = new FuncionarioDto(funcionario.get());
-    		return uteis.getCaminhoInicial();
-    	} else {
-    		uteis.adicionarMensagemAdvertencia("Usuário ou senha incorretos. Verifique as credenciais e tente novamente!");
-    		return null;
-    	}
+    @PostConstruct
+    public void carregarPermissoes() {
+        listaPermissaoExistente = permissaoDao.listarTodos().stream().map(PermissaoDto::new).collect(Collectors.toList());
     }
 
-	public String realizarLogout() {
-		return null;
-	}
+    public String realizarLogin() {
+        Optional<Funcionario> funcionario = funcionarioDao.realizarlogin(login, senha);
+        login = null;
+        senha = null;
+        if (funcionario.isPresent()) {
+            funcionarioDto = new FuncionarioDto(funcionario.get());
+            return uteis.getCaminhoInicial();
+        } else {
+            uteis.adicionarMensagemAdvertencia("Usuário ou senha incorretos. Verifique as credenciais e tente novamente!");
+            return null;
+        }
+    }
 
-	public String getLogin() {
-		return login;
-	}
+    public String realizarLogout() {
+        funcionarioDto = null;
+        return uteis.getCaminhoLogin();
+    }
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
+    public String getLogin() {
+        return login;
+    }
 
-	public String getSenha() {
-		return senha;
-	}
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
+    public String getSenha() {
+        return senha;
+    }
 
-	public FuncionarioDto getFuncionarioDto() {
-		return funcionarioDto;
-	}
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 
-	public void setFuncionarioDto(FuncionarioDto funcionarioDto) {
-		this.funcionarioDto = funcionarioDto;
-	}
+    public FuncionarioDto getFuncionarioDto() {
+        return funcionarioDto;
+    }
 
-	public PermissaoDao getPermissaoDao() {
-		return permissaoDao;
-	}
+    public void setFuncionarioDto(FuncionarioDto funcionarioDto) {
+        this.funcionarioDto = funcionarioDto;
+    }
 
-	public void setPermissaoDao(PermissaoDao permissaoDao) {
-		this.permissaoDao = permissaoDao;
-	}
+    public PermissaoDao getPermissaoDao() {
+        return permissaoDao;
+    }
 
-	public List<PermissaoDto> getListaPermissaoExistente() {
-		return listaPermissaoExistente;
-	}
+    public void setPermissaoDao(PermissaoDao permissaoDao) {
+        this.permissaoDao = permissaoDao;
+    }
 
-	public void setListaPermissaoExistente(List<PermissaoDto> listaPermissaoExistente) {
-		this.listaPermissaoExistente = listaPermissaoExistente;
-	}
+    public List<PermissaoDto> getListaPermissaoExistente() {
+        return listaPermissaoExistente;
+    }
+
+    public void setListaPermissaoExistente(List<PermissaoDto> listaPermissaoExistente) {
+        this.listaPermissaoExistente = listaPermissaoExistente;
+    }
 
 }
