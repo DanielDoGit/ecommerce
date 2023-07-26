@@ -1,14 +1,14 @@
-./asadmin add-library /home/limasoftware/postgresql-42.2.2.jar
-./asadmin create-jdbc-connection-pool --datasourceClassname=org.postgresql.ds.PGSimpleDataSource --resType=javax.sql.DataSource postgres-pool
-./asadmin set resources.jdbc-connection-pool.postgres-pool.property.password=LSJ6PGFB2000
-./asadmin set resources.jdbc-connection-pool.postgres-pool.property.databaseName=mib
-./asadmin set resources.jdbc-connection-pool.postgres-pool.property.serverName=localhost
-./asadmin set resources.jdbc-connection-pool.postgres-pool.property.user=postgres
-./asadmin set resources.jdbc-connection-pool.postgres-pool.property.portNumber=5432
+./asadmin add-library C:\ferramentas\SQLWorkbench\Drivers\postgres\postgresql-42.2.2.jar
+./asadmin create-jdbc-connection-pool --datasourceClassname=org.postgresql.ds.PGSimpleDataSource --resType=javax.sql.DataSource ecommerce-pool
+./asadmin set resources.jdbc-connection-pool.ecommerce-pool.property.password=LSJ6PGFB2000
+./asadmin set resources.jdbc-connection-pool.ecommerce-pool.property.databaseName=ecommerce
+./asadmin set resources.jdbc-connection-pool.ecommerce-pool.property.serverName=dev.limasoftware.com.br
+./asadmin set resources.jdbc-connection-pool.ecommerce-pool.property.user=postgres
+./asadmin set resources.jdbc-connection-pool.ecommerce-pool.property.portNumber=5432
 
-./asadmin ping-connection-pool postgres-pool
+./asadmin ping-connection-pool ecommerce-pool
 
-./asadmin create-jdbc-resource --enabled=true --poolName=postgres-pool --target=domain jdbc/localpostgres
-./asadmin create-resource-ref --enabled=true --target=server jdbc/localpostgres
+./asadmin create-jdbc-resource --enabled=true --poolName=ecommerce-pool --target=domain jdbc/cloudpostgres
+./asadmin create-resource-ref --enabled=true --target=server jdbc/cloudpostgres
 
 
