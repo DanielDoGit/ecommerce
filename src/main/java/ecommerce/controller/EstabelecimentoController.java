@@ -13,8 +13,10 @@ import ecommerce.uteis.Uteis;
 import jakarta.enterprise.context.ConversationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.transaction.Transactional;
 
 @Named
+@Transactional
 @ConversationScoped
 public class EstabelecimentoController implements Serializable {
 
@@ -41,19 +43,17 @@ public class EstabelecimentoController implements Serializable {
 	private EstabelecimentoDto dto;
 	
 	public String alterarEstabelecimento() {
-		
 		try {
 			conversa.iniciar();
 			controller.possuiPermissao("Alterar Estabelecimento");
 			token.gerarToken();
 			Estabelecimento e = dao.getById(1);
 			dto = new EstabelecimentoDto(e);
-			return "/ecommerce/cadastros/estabelecimento.xhtml";
+			return "/ecommerce/paginas/cadastros/estabelecimento.xhtml";
 		} catch (PermissaoExeption e) {
 			uteis.adicionarMensagemErro(e);
 			return null;
 		}
-		
 	}
 	
 	

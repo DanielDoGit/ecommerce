@@ -43,8 +43,7 @@ public class LoginController implements Serializable {
 
 	@PostConstruct
 	public void carregarPermissoes() {
-		listaPermissaoExistente = permissaoDao.listarTodos().stream().map(PermissaoDto::new)
-				.collect(Collectors.toList());
+		listaPermissaoExistente = permissaoDao.listarTodos().stream().map(PermissaoDto::new).collect(Collectors.toList());
 	}
 
 	public String realizarLogin() {
@@ -55,8 +54,7 @@ public class LoginController implements Serializable {
 			funcionarioDto = new FuncionarioDto(funcionario.get());
 			return uteis.getCaminhoInicial();
 		} else {
-			uteis.adicionarMensagemAdvertencia(
-					"Usuário ou senha incorretos. Verifique as credenciais e tente novamente!");
+			uteis.adicionarMensagemAdvertencia("Usuário ou senha incorretos. Verifique as credenciais e tente novamente!");
 			return null;
 		}
 	}
@@ -69,16 +67,17 @@ public class LoginController implements Serializable {
 	public void possuiPermissao(String arg) throws PermissaoExeption {
 		boolean e = funcionarioDto.getListaPermissoes().stream().anyMatch(es -> arg.equals(es.getNomePermissao()));
 		if (!e) {
-			verificarPermissao(arg);
+			verificarExistenciaPermissao(arg);
 			throw new PermissaoExeption(arg);
 		}
 	}
 
-	public void verificarPermissao(String arg) {
+	public void verificarExistenciaPermissao(String arg) {
 		boolean possui = listaPermissaoExistente.stream().noneMatch(e -> e.getNomePermissao().equals(arg));
 		if (possui) {
 			Permissao p = new Permissao();
 			p.setDescricao(arg);
+			listaPermissaoExistente.add(new PermissaoDto(p));
 			permissaoDao.cadastrar(p);
 		}
 	}
