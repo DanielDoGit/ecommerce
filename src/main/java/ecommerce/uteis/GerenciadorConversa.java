@@ -23,4 +23,8 @@ public class GerenciadorConversa {
 		}
 	}
 
+	public Conversation getConversation() {
+		return conversation;
+	}
+
 }

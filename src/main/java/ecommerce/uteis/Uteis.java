@@ -19,7 +19,6 @@ public class Uteis implements Serializable {
 
 	@Inject
 	private ServletContext servletContext;
-	
 
 	public String getCaminhoInicial() {
 		return "/ecommerce/paginas/uteis/inicial.xhtml";
@@ -36,13 +35,11 @@ public class Uteis implements Serializable {
 	public String getCaminhoMenuRelatorio() {
 		return "/ecommerce/paginas/uteis/menurelatorio.xhtml";
 	}
-	
 
 	public String getCaminhoLogin() {
 		return "/ecommerce/paginas/uteis/login.xhtml";
 	}
-	
-	
+
 	public void adicionarMensagemSucessoExclusao() {
 		adicionarMensagemInformativa("Exclusão realizada com sucesso!");
 	}
@@ -80,6 +77,24 @@ public class Uteis implements Serializable {
 			}
 		}
 		return newText;
+	}
+
+	public boolean validarCNPJ(String arg) {
+		String t = extrairNumeros(arg);
+		return t.length() == 14;
+	}
+	
+	public String formatarCnpj(String arg) {
+		if (validarCNPJ(arg)) {
+			StringBuilder st = new StringBuilder(arg);
+			st.insert(2, ".");
+			st.insert(6, ".");
+			st.insert(10, "/");
+			st.insert(15, "-");
+			return st.toString();
+		}else {
+			return "";
+		}
 	}
 
 	public DateTimeFormatter getPadraoFormatacaoData() {
