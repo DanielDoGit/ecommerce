@@ -17,7 +17,6 @@ import ecommerce.uteis.TokenException;
 import ecommerce.uteis.Uteis;
 import jakarta.enterprise.context.ConversationScoped;
 import jakarta.faces.event.AjaxBehaviorEvent;
-import jakarta.faces.event.AjaxBehaviorListener;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
