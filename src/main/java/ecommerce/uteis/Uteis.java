@@ -47,6 +47,10 @@ public class Uteis implements Serializable {
 	public void adicionarMensagemRelatorioInexistente() {
 		adicionarMensagemAdvertencia("Relatório inexistente!");
 	}
+	
+	public void adicionarMensagemCnpjInconsistente() {
+		adicionarMensagemAdvertencia("Valor do campo cnpj inconsistente. Verifique o campo e tente novamente!");
+	}
 
 	public void adicionarMensagemErro(Exception e) {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -78,14 +82,9 @@ public class Uteis implements Serializable {
 		}
 		return newText;
 	}
-
-	public boolean validarCNPJ(String arg) {
-		String t = extrairNumeros(arg);
-		return t.length() == 14;
-	}
 	
 	public String formatarCnpj(String arg) {
-		if (validarCNPJ(arg)) {
+		if (arg != null && arg.isBlank()) {
 			StringBuilder st = new StringBuilder(arg);
 			st.insert(2, ".");
 			st.insert(6, ".");

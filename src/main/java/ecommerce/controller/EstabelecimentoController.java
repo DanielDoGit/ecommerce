@@ -15,6 +15,7 @@ import ecommerce.uteis.GerenciadorToken;
 import ecommerce.uteis.PermissaoExeption;
 import ecommerce.uteis.TokenException;
 import ecommerce.uteis.Uteis;
+import ecommerce.uteis.ValidadorBean;
 import jakarta.enterprise.context.ConversationScoped;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Inject;
@@ -39,6 +40,9 @@ public class EstabelecimentoController implements Serializable {
 
 	@Inject
 	private LoginController controller;
+	
+	@Inject
+	private ValidadorBean<Estabelecimento> validador;
 
 	@Inject
 	private GerenciadorToken token;
@@ -89,7 +93,9 @@ public class EstabelecimentoController implements Serializable {
 	}
 
 	public void validarCnpj(AjaxBehaviorEvent e) {
-		dto.setCnpj(uteis.formatarCnpj(dto.getCnpj()));
+		if (processarCnpj()) {
+			dto.setCnpj(uteis.formatarCnpj(dto.getCnpj()));
+		}
 	}
 
 	public void carregarCidade(AjaxBehaviorEvent e) {
@@ -114,13 +120,13 @@ public class EstabelecimentoController implements Serializable {
 	}
 
 	private boolean processarCnpj() {
-		boolean a = uteis.validarCNPJ(dto.getCnpj());
+		boolean a = validador.validarCampo("cnpj", dto.toEstabelecimento(cidadeDao));
 		if (a) {
 			dto.setCnpj(uteis.extrairNumeros(dto.getCnpj()));
 			return a;
 		} else {
 			dto.setCnpj("");
-			uteis.adicionarMensagemAdvertencia("CNPJ invalido!");
+			uteis.adicionarMensagemCnpjInconsistente();
 			return a;
 		}
 	}

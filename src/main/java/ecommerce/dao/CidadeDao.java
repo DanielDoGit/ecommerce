@@ -16,14 +16,13 @@ public class CidadeDao extends Dao<Cidade> {
 	public CidadeDao() {
 		super(Cidade.class);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public List<Cidade> consultarCidadeNome(String arg){
+	public List<Cidade> consultarCidadeNome(String arg) {
 		String sql = "select * from cidade where nome ilike ?";
 		Query q = em.createNativeQuery(sql, Cidade.class);
-		q.setParameter(1, "%"+arg+"%");
+		q.setParameter(1, "%" + arg + "%");
 		return q.getResultList();
 	}
 
-	
 }

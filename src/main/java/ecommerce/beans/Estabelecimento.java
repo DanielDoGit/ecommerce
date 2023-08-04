@@ -1,7 +1,10 @@
 package ecommerce.beans;
 
 import java.io.Serializable;
+
 import java.util.Objects;
+
+import org.hibernate.validator.constraints.br.CNPJ;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +30,7 @@ public class Estabelecimento implements Serializable {
 	
 	private String bairro;
 	
+	@CNPJ
 	private String cnpj;
 	
 	@ManyToOne
