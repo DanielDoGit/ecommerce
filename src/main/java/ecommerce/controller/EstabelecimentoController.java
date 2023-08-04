@@ -1,6 +1,7 @@
 package ecommerce.controller;
 
 import java.io.Serializable;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -120,7 +121,7 @@ public class EstabelecimentoController implements Serializable {
 	}
 
 	private boolean processarCnpj() {
-		boolean a = validador.validarCampo("cnpj", dto.toEstabelecimento(cidadeDao));
+		boolean a = validador.validarCampo("cnpj", dto.toEstabelecimento(cidadeDao).getCnpj());
 		if (a) {
 			dto.setCnpj(uteis.extrairNumeros(dto.getCnpj()));
 			return a;

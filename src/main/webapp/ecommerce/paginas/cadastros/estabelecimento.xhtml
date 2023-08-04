@@ -20,7 +20,7 @@
 					<h:messages showDetail="false" id="msg" showSummary="true"
 						globalOnly="true" infoClass="text-info mensagemInfo"
 						warnClass="text-warning mensagemWarning"
-						errorClass="text-dark mensagemError" layout="list" />
+						errorClass="text-dark mensagemError" layout="list"/>
 				</div>
 			</div>
 			<div class="row mb-3 ml-5 pl-4">
@@ -40,7 +40,7 @@
 						class="form-control" id="txtcnpj" autocomplete="off"
 						required="true">
 						<f:ajax listener="#{estabelecimentoController.validarCnpj}"
-							execute="txtcnpj" render="txtcnpj"></f:ajax>
+							execute="txtcnpj" render="txtcnpj" update="@form mensagens"></f:ajax>
 					</h:inputText>
 					<h:message for="txtcnpj" showDetail="false" showSummary="true"
 						styleClass="error" />

@@ -48,6 +48,10 @@ public class Uteis implements Serializable {
 		adicionarMensagemAdvertencia("Relatório inexistente!");
 	}
 	
+	public void adicionarMensagemSucessoRegistro() {
+		adicionarMensagemInformativa("Registro salvo com sucesso!");
+	}
+	
 	public void adicionarMensagemCnpjInconsistente() {
 		adicionarMensagemAdvertencia("Valor do campo cnpj inconsistente. Verifique o campo e tente novamente!");
 	}
@@ -70,6 +74,10 @@ public class Uteis implements Serializable {
 		FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_WARN, mensagem, "");
 		facesContext.addMessage(null, facesMessage);
 	}
+	
+	public void adicionarMensagemRegistroConstraintViolation() {
+		adicionarMensagemAdvertencia("O registro que você está excluindo, está sendo usado por outros registros!");
+	}
 
 	public String extrairNumeros(String text) {
 		String newText = "";
@@ -84,8 +92,8 @@ public class Uteis implements Serializable {
 	}
 	
 	public String formatarCnpj(String arg) {
-		if (arg != null && arg.isBlank()) {
-			StringBuilder st = new StringBuilder(arg);
+		if (arg != null && !arg.isBlank()) {
+			StringBuilder st = new StringBuilder(extrairNumeros(arg));
 			st.insert(2, ".");
 			st.insert(6, ".");
 			st.insert(10, "/");

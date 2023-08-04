@@ -27,7 +27,7 @@
 								<span class="fas fa-search"></span>
 							</h:commandLink>
 							&nbsp;
-							<h:commandLink action="#{usuarioController.prepararCadastro}" class="btn btn-primary">
+							<h:commandLink action="#{cidadeController.prepararCadastro}" class="btn btn-primary">
 								<span class="fas fa-plus"></span>
 							</h:commandLink>
 						</div>
@@ -36,12 +36,12 @@
 			</div>
 			<div class="row">
 				<div class="col-12">
-					<h:dataTable id="table" border="0" value="#{usuarioController.listaUsuariosPesquisados}" var="s" class="table table-hover" columnClasses="center, left, colunaEditar, colunaExcluir">
+					<h:dataTable id="table" border="0" value="#{cidadeController.listaCidadeDto}" var="s" class="table table-hover" columnClasses="center, left, colunaEditar, colunaExcluir">
 						<h:column id="column1">
 							<f:facet name="header">
-								<h:outputText value="ID"></h:outputText>
+								<h:outputText value="Código"></h:outputText>
 							</f:facet>
-							<h:outputText value="#{s.id}"></h:outputText>
+							<h:outputText value="#{s.codigo}"></h:outputText>
 						</h:column>
 						<h:column id="column2">
 							<f:facet name="header">
@@ -49,29 +49,36 @@
 							</f:facet>
 							<h:outputText value="#{s.nome}"></h:outputText>
 						</h:column>
+						
 						<h:column id="column3">
 							<f:facet name="header">
-								<h:outputText value="Alterar"></h:outputText>
+								<h:outputText value="UF"></h:outputText>
 							</f:facet>
-							<h:commandLink action="#{usuarioController.prepararAlteracao(s.id)}" class="btn btn-success">
-								<span class="fas fa-pen"></span>
-							</h:commandLink>
+							<h:outputText value="#{s.uf}"></h:outputText>
 						</h:column>
 						<h:column id="column4">
 							<f:facet name="header">
+								<h:outputText value="Alterar"></h:outputText>
+							</f:facet>
+							<h:commandLink action="#{cidadeController.prepararAlteracao(s.codigo)}" class="btn btn-success">
+								<span class="fas fa-pen"></span>
+							</h:commandLink>
+						</h:column>
+						<h:column id="column5">
+							<f:facet name="header">
 								<h:outputText value="Excluir"></h:outputText>
 							</f:facet>
-							<button type="button" class="btn btn-danger" value="" onclick="return excluir('tiposolicitacao#{s.id}')">
+							<button type="button" class="btn btn-danger" value="" onclick="return excluir('cidade#{s.codigo}')">
 								<span class="fas fa-trash-alt"></span>
 							</button>
-							<h:commandLink action="#{usuarioController.excluir(s.id)}" class="tiposolicitacao#{s.id}"></h:commandLink>
+							<h:commandLink action="#{cidadeController.excluir(s.codigo)}" class="cidade#{s.codigo}"></h:commandLink>
 						</h:column>
 					</h:dataTable>
 				</div>
 			</div>
 			<div class="row mb-4">
 				<div class="col-12" align="center">
-					<h:outputLabel style="color: gray; font-size: 9pt" value="#{usuarioController.mensagemRodape}"></h:outputLabel>
+					<h:outputLabel style="color: gray; font-size: 9pt" value="#{cidadeController.mensagem}"></h:outputLabel>
 				</div>
 			</div>
 		</div>

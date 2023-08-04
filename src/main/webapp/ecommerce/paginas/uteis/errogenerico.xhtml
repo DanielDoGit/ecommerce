@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
 	<title>Ecommerce</title>
 	<ui:include src="/ecommerce/paginas/uteis/scripts.xhtml" />
@@ -8,6 +11,15 @@
 </h:head>
 <h:body class="bg-info">
 	<h:form>
+		<div class="row d-none">
+			<div class="col" align="center">
+				<h:messages id="mensagens" showDetail="false" showSummary="true"
+					globalOnly="true" styleClass="mt-4"
+					infoClass="text-info mensagemInfo"
+					warnClass="text-warning mensagemWarning"
+					errorClass="text-dark mensagemError" layout="list" />
+			</div>
+		</div>
 		<div class="container bg-light rounded-bottom divcentral">
 			<div class="row">
 				<div class="col mt-3" align="center">
@@ -15,15 +27,19 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-8 offset-2 mt-4 text-dark" style="text-align: center;">
-					Ocorreu uma exceção no sistema. Por favor entre em contato com o suporte. <br /> <br />
+				<div class="col-8 offset-2 mt-4 text-dark"
+					style="text-align: center;">
+					Ocorreu uma exceção no sistema. Por favor entre em contato com o
+					suporte. <br /> <br />
 					<h:commandLink action="/ecommerce/paginas/uteis/inicial.xhtml">
 						<span style="font-size: 20pt;" class="fas fa-home text-info"></span>
 					</h:commandLink>
 					<h:outputLabel>&#160;</h:outputLabel>
-					<h:commandLink action="/ecommerce/paginas/uteis/inicial.xhtml" value="Ir para a tela inicial" class="text-info"></h:commandLink>
+					<h:commandLink action="/ecommerce/paginas/uteis/inicial.xhtml"
+						value="Ir para a tela inicial" class="text-info"></h:commandLink>
 					<br /> <br />
-					<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#erro">
+					<button type="button" class="btn btn-info" data-toggle="collapse"
+						data-target="#erro">
 						<span class="fas fa-list-ul"></span> Mostrar detalhes
 					</button>
 				</div>
@@ -31,7 +47,8 @@
 			<div class="row">
 				<div class="col mt-3">
 					<div id="erro" class="collapse">
-						<h:inputTextarea value="#{erroGenericoController.mensagem}" rows="16" style="font-size: 9pt; width: 1110px">
+						<h:inputTextarea value="#{erroGenericoController.mensagem}"
+							rows="16" style="font-size: 9pt; width: 1110px">
 						</h:inputTextarea>
 					</div>
 				</div>

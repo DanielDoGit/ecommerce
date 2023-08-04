@@ -30,8 +30,8 @@ public class ValidadorBean<T> implements Serializable {
 		return validator.validate(e);
 	}
 
-	public boolean validarCampo(String campo, T valor) {
-		return validator.validateValue(valor.getClass(), campo, valor).iterator().hasNext();
+	public boolean validarCampo(String campo, Object valor) {
+		return validator.validateValue(valor.getClass(), campo, valor).isEmpty();
 	}
 
 	public ConstraintViolation<?> getConstraintField(String campo, T valor) {

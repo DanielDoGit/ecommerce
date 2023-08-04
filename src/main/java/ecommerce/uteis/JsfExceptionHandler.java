@@ -14,6 +14,8 @@ import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.ExceptionQueuedEvent;
 import jakarta.faces.event.ExceptionQueuedEventContext;
+import jakarta.inject.Inject;
+import jakarta.validation.ConstraintViolationException;
 
 @SuppressWarnings("deprecation")
 @RequestScoped
@@ -22,6 +24,9 @@ public class JsfExceptionHandler extends ExceptionHandlerWrapper {
 	private ExceptionHandler wrapped;
 
 	private String caminhoLog;
+
+	@Inject
+	private Uteis uteis;
 
 	public JsfExceptionHandler(ExceptionHandler wrapped, String caminhoLog) {
 		this.wrapped = wrapped;
@@ -41,10 +46,18 @@ public class JsfExceptionHandler extends ExceptionHandlerWrapper {
 			ExceptionQueuedEventContext context = (ExceptionQueuedEventContext) event.getSource();
 			Throwable exception = context.getException();
 			gravarLog(exception);
+			adicionarMensagem(exception);
 			redirect("/ecommerce/paginas/uteis/errogenerico.xhtml");
 			events.remove();
 		}
 		getWrapped().handle();
+	}
+
+	private void adicionarMensagem(Throwable exception) {
+		if (exception instanceof ConstraintViolationException) {
+			uteis.adicionarMensagemRegistroConstraintViolation();
+		}
+
 	}
 
 	private void gravarLog(Throwable throwable) {

@@ -3,7 +3,10 @@ package ecommerce.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import jakarta.ejb.SessionContext;
+import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.Dependent;
+import jakarta.jms.Session;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -55,8 +58,24 @@ public class Dao<T> implements Serializable{
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(klass);
 		Root<T> root =  cq.from(klass);
-		cq.select(root).where(cb.equal(root.get(atributeName), argQuery));
+		cq.select(root).where(cb.like(root.get(atributeName), "%"+argQuery+"%"));
 		return em.createQuery(cq).getResultList();
+	}
+	
+	public void teste() {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<T> cq = cb.createQuery(klass);
+		Root<T> root =  cq.from(klass);
+		cb.like(cb.low)
+	}
+	
+
+	public T buscarExatidao(String atributeName, String argQuery){
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<T> cq = cb.createQuery(klass);
+		Root<T> root =  cq.from(klass);
+		cq.select(root).where(cb.equal(root.get(atributeName), argQuery));
+		return em.createQuery(cq).getSingleResult();
 	}
 	
 	@SuppressWarnings("unchecked")
