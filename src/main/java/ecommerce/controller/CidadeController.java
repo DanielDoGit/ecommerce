@@ -17,8 +17,10 @@ import ecommerce.uteis.Uteis;
 import jakarta.enterprise.context.ConversationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.transaction.Transactional;
 
 @Named
+@Transactional
 @ConversationScoped
 public class CidadeController implements Serializable {
 
@@ -129,13 +131,13 @@ public class CidadeController implements Serializable {
 		try {
 			loginController.possuiPermissao("Cadastrar cidade");
 			inclusao = true;
+			cidadeDto = new CidadeDto();
 			token.gerarToken();
 			return cadastrarCidade;
 		} catch (PermissaoExeption e) {
 			uteis.adicionarMensagemErro(e);
 			return null;
 		}
-
 	}
 
 	public String confirmar() {
@@ -147,12 +149,11 @@ public class CidadeController implements Serializable {
 			Cidade c = cidadeDto.toCidade();
 			if (inclusao) {
 				cidadeDao.cadastrar(c);
-				;
 			} else {
 				cidadeDao.editar(c);
 			}
 			uteis.adicionarMensagemSucessoRegistro();
-			return cadastrarCidade;
+			return consultarCidade;
 		} catch (TokenException e) {
 			uteis.adicionarMensagemErro(e);
 			return null;

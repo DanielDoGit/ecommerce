@@ -11,16 +11,8 @@
 </h:head>
 <h:body class="bg-info">
 	<h:form>
-		<div class="row d-none">
-			<div class="col" align="center">
-				<h:messages id="mensagens" showDetail="false" showSummary="true"
-					globalOnly="true" styleClass="mt-4"
-					infoClass="text-info mensagemInfo"
-					warnClass="text-warning mensagemWarning"
-					errorClass="text-dark mensagemError" layout="list" />
-			</div>
-		</div>
 		<div class="container bg-light rounded-bottom divcentral">
+			<br></br>
 			<div class="row">
 				<div class="col mt-3" align="center">
 					<span style="font-size: 80pt;" class="fas fa-exclamation text-info"></span>
@@ -48,8 +40,9 @@
 				<div class="col mt-3">
 					<div id="erro" class="collapse">
 						<h:inputTextarea value="#{erroGenericoController.mensagem}"
-							rows="16" style="font-size: 9pt; width: 1110px">
+							id="mensagemErro" rows="16" style="font-size: 9pt; width: 1110px">
 						</h:inputTextarea>
+						<h:message for="mensagemErro" rendered="true"></h:message>
 					</div>
 				</div>
 			</div>

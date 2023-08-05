@@ -40,7 +40,7 @@
 						class="form-control" id="txtcnpj" autocomplete="off"
 						required="true">
 						<f:ajax listener="#{estabelecimentoController.validarCnpj}"
-							execute="txtcnpj" render="txtcnpj" update="@form mensagens"></f:ajax>
+							execute="txtcnpj" render="txtcnpj"></f:ajax>
 					</h:inputText>
 					<h:message for="txtcnpj" showDetail="false" showSummary="true"
 						styleClass="error" />
