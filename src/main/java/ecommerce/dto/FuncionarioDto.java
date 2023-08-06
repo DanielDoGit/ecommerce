@@ -36,6 +36,8 @@ public class FuncionarioDto implements Serializable {
 	
 	private List<PermissaoDto> listaPermissoes = new ArrayList<PermissaoDto>();
 	
+	public FuncionarioDto() {}
+	
 	public FuncionarioDto(Funcionario func) {
 		this.codigo = func.getCodigo();
 		this.nome = func.getNome();
@@ -52,7 +54,7 @@ public class FuncionarioDto implements Serializable {
 		listaPermissoes = func.getListaFuncionarioPermissao().stream().map(e -> new PermissaoDto(e.getPermissao())).collect(Collectors.toList());
 	}
 	
-	public Funcionario toFuncionario(PermissaoDao permissaoDao) {
+	public Funcionario toFuncionario(PermissaoDao permissaoDao, CidadeDao cidadeDao) {
 		Funcionario funcionario = new Funcionario();
 		funcionario.setCodigo(codigo);
 		funcionario.setNome(nome);
@@ -62,7 +64,7 @@ public class FuncionarioDto implements Serializable {
 		funcionario.setAtivo(ativo);
 		funcionario.setLogin(login);
 		funcionario.setSenha(senha);
-		funcionario.setCidade(new CidadeDao().getById(Integer.valueOf(idCidade)));
+		funcionario.setCidade(cidadeDao.getById(Integer.valueOf(idCidade)));
 		for (PermissaoDto permissaoDto : listaPermissoes) {
 			FuncionarioPermissao funcionarioPermissao = new FuncionarioPermissao();
 			funcionarioPermissao.setFuncionario(funcionario);

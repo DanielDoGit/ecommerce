@@ -37,7 +37,7 @@ public class CidadeController implements Serializable {
 
 	private String opcaoBuscaSelecionada;
 
-	private final List<String> opcaoBusca = Arrays.asList("Código", "Nome", "UF");
+	private final List<String> opcaoBusca = Arrays.asList("Nome", "UF", "Código");
 
 	@Inject
 	private CidadeDao cidadeDao;
@@ -63,9 +63,8 @@ public class CidadeController implements Serializable {
 			loginController.possuiPermissao("Pesquisar cidade");
 			conversa.iniciar();
 			token.gerarToken();
-			listaCidadeDto = cidadeDao.buscarUltimosCadastrados().stream().map(CidadeDto::new).collect(Collectors.toList());
+			atualizarUltimosCadatrados();
 			atualizarMensagemRodape();
-			argumentoBusca = "";
 			return consultarCidade;
 		} catch (PermissaoExeption e) {
 			uteis.adicionarMensagemErro(e);
@@ -75,13 +74,13 @@ public class CidadeController implements Serializable {
 
 	public void atualizarPesquisa() {
 		try {
-			if (opcaoBusca.get(0).equals(opcaoBuscaSelecionada)) {
+			if ("Código".equals(opcaoBuscaSelecionada)) {
 				listaCidadeDto.clear();
 				Cidade c = cidadeDao.getById(Integer.valueOf(argumentoBusca));
 				if (c != null) {
 					listaCidadeDto.add(new CidadeDto(c));
 				}
-			} else if (opcaoBusca.get(1).equals(opcaoBuscaSelecionada)) {
+			} else if ("Nome".equals(opcaoBuscaSelecionada)) {
 				listaCidadeDto = cidadeDao.buscarSimilaridade("nome", argumentoBusca).stream().map(CidadeDto::new)
 						.collect(Collectors.toList());
 			} else {
@@ -133,6 +132,7 @@ public class CidadeController implements Serializable {
 			inclusao = true;
 			cidadeDto = new CidadeDto();
 			token.gerarToken();
+			argumentoBusca = "";
 			return cadastrarCidade;
 		} catch (PermissaoExeption e) {
 			uteis.adicionarMensagemErro(e);
@@ -152,6 +152,7 @@ public class CidadeController implements Serializable {
 			} else {
 				cidadeDao.editar(c);
 			}
+			atualizarUltimosCadatrados();
 			uteis.adicionarMensagemSucessoRegistro();
 			return consultarCidade;
 		} catch (TokenException e) {
@@ -182,6 +183,10 @@ public class CidadeController implements Serializable {
 			}
 		}
 		return resultado;
+	}
+
+	private void atualizarUltimosCadatrados() {
+		listaCidadeDto = cidadeDao.buscarUltimosCadastrados().stream().map(CidadeDto::new).collect(Collectors.toList());
 	}
 
 	public String getMensagem() {

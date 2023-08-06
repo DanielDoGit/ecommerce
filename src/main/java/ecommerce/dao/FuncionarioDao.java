@@ -27,6 +27,8 @@ public class FuncionarioDao extends Dao<Funcionario>{
 		List<Funcionario> listaFuncionario = q.getResultList();
 		return Optional.ofNullable(listaFuncionario.size() == 1 ? listaFuncionario.get(0) : null);
 	}
+	
+	
 
 
 }
