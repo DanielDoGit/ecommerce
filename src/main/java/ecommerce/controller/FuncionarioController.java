@@ -55,8 +55,8 @@ public class FuncionarioController implements Serializable {
 	private List<PermissaoDto> listaPermissaoExistente;
 	private FuncionarioDto funcionarioDto;
 	
-	private final String paginaConsulta = "";
-	private final String paginaCadastro = "";
+	private final String paginaConsulta = "/ecommerce/paginas/cadastros/consultarFuncionario.xhtml";
+	private final String paginaCadastro = "/ecommerce/paginas/cadastros/cadastrarFuncionario.xhtml";
 	private List<String> opcaoBusca = Arrays.asList("Nome", "Código", "Cidade");
 	private String opcaoBuscaSelecionada;
 	private String argumentoBusca;
@@ -164,6 +164,170 @@ public class FuncionarioController implements Serializable {
 		} catch (NumberFormatException e) {
 			uteis.adicionarMensagemAdvertencia("O argumento de busca é invalido!");
 		}
+	}
+	
+	public String prepararAlteracao(Integer id) {
+		try {
+			loginController.possuiPermissao("Alterar funcionario");
+			token.gerarToken();
+			funcionarioDto = new FuncionarioDto(funcionarioDao.getById(id));
+			inclusao = false;
+			return paginaCadastro;
+		} catch (PermissaoExeption e) {
+			uteis.adicionarMensagemErro(e);
+			return null;
+		}
+	}
+	
+	public String excluir(Integer id) {
+		
+		try {
+			loginController.possuiPermissao("Excluir funcionario");
+			token.validarToken();
+			funcionarioDao.excluir(id);
+			atualizarPesquisa();
+			return paginaConsulta;
+		} catch (PermissaoExeption | TokenException e) {
+			uteis.adicionarMensagemErro(e);
+			return null;
+		}
+	}
+	
+	public String cancelar() {
+		funcionarioDto = null;
+		return paginaConsulta;
+	}
+
+	public CidadeDao getCidadeDao() {
+		return cidadeDao;
+	}
+
+	public void setCidadeDao(CidadeDao cidadeDao) {
+		this.cidadeDao = cidadeDao;
+	}
+
+	public FuncionarioDao getFuncionarioDao() {
+		return funcionarioDao;
+	}
+
+	public void setFuncionarioDao(FuncionarioDao funcionarioDao) {
+		this.funcionarioDao = funcionarioDao;
+	}
+
+	public LoginController getLoginController() {
+		return loginController;
+	}
+
+	public void setLoginController(LoginController loginController) {
+		this.loginController = loginController;
+	}
+
+	public PermissaoDao getPermissaoDao() {
+		return permissaoDao;
+	}
+
+	public void setPermissaoDao(PermissaoDao permissaoDao) {
+		this.permissaoDao = permissaoDao;
+	}
+
+	public GerenciadorConversa getConversa() {
+		return conversa;
+	}
+
+	public void setConversa(GerenciadorConversa conversa) {
+		this.conversa = conversa;
+	}
+
+	public GerenciadorToken getToken() {
+		return token;
+	}
+
+	public void setToken(GerenciadorToken token) {
+		this.token = token;
+	}
+
+	public Uteis getUteis() {
+		return uteis;
+	}
+
+	public void setUteis(Uteis uteis) {
+		this.uteis = uteis;
+	}
+
+	public List<FuncionarioDto> getListaFuncionarioDto() {
+		return listaFuncionarioDto;
+	}
+
+	public void setListaFuncionarioDto(List<FuncionarioDto> listaFuncionarioDto) {
+		this.listaFuncionarioDto = listaFuncionarioDto;
+	}
+
+	public List<PermissaoDto> getListaPermissaoExistente() {
+		return listaPermissaoExistente;
+	}
+
+	public void setListaPermissaoExistente(List<PermissaoDto> listaPermissaoExistente) {
+		this.listaPermissaoExistente = listaPermissaoExistente;
+	}
+
+	public FuncionarioDto getFuncionarioDto() {
+		return funcionarioDto;
+	}
+
+	public void setFuncionarioDto(FuncionarioDto funcionarioDto) {
+		this.funcionarioDto = funcionarioDto;
+	}
+
+	public List<String> getOpcaoBusca() {
+		return opcaoBusca;
+	}
+
+	public void setOpcaoBusca(List<String> opcaoBusca) {
+		this.opcaoBusca = opcaoBusca;
+	}
+
+	public String getOpcaoBuscaSelecionada() {
+		return opcaoBuscaSelecionada;
+	}
+
+	public void setOpcaoBuscaSelecionada(String opcaoBuscaSelecionada) {
+		this.opcaoBuscaSelecionada = opcaoBuscaSelecionada;
+	}
+
+	public String getArgumentoBusca() {
+		return argumentoBusca;
+	}
+
+	public void setArgumentoBusca(String argumentoBusca) {
+		this.argumentoBusca = argumentoBusca;
+	}
+
+	public String getMensagem() {
+		return mensagem;
+	}
+
+	public void setMensagem(String mensagem) {
+		this.mensagem = mensagem;
+	}
+
+	public boolean isInclusao() {
+		return inclusao;
+	}
+
+	public void setInclusao(boolean inclusao) {
+		this.inclusao = inclusao;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getPaginaConsulta() {
+		return paginaConsulta;
+	}
+
+	public String getPaginaCadastro() {
+		return paginaCadastro;
 	}
 
 	
