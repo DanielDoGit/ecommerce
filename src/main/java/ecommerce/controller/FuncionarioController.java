@@ -65,7 +65,7 @@ public class FuncionarioController implements Serializable {
 	private String mensagem;
 	private boolean inclusao = false;
 	private boolean marcarTodos = true;
-
+	
 	@PostConstruct
 	public void carregarPermissoes() {
 		listaPermissaoExistente = permissaoDao.listarTodos().stream().map(PermissaoDto::new)
@@ -178,7 +178,8 @@ public class FuncionarioController implements Serializable {
 		try {
 			loginController.possuiPermissao("Alterar funcionario");
 			token.gerarToken();
-			funcionarioDto = new FuncionarioDto(funcionarioDao.realizarlogin("1","1").get());
+			funcionarioDto = new FuncionarioDto(funcionarioDao.consultaIdComPermissoes(id));
+			carregarPermissoes();
 			inclusao = false;
 			return paginaCadastro;
 		} catch (PermissaoExeption e) {
@@ -190,9 +191,13 @@ public class FuncionarioController implements Serializable {
 	public String excluir(Integer id) {
 
 		try {
-			loginController.possuiPermissao("Excluir funcionario");
 			token.validarToken();
-			funcionarioDao.excluir(id);
+			loginController.possuiPermissao("Excluir funcionario");
+			Funcionario f = funcionarioDao.getById(id);
+			if (f.getCodigo().equals(loginController.getFuncionarioDto().getCodigo())) {
+				uteis.adicionarMensagemAdvertencia("Não é possível excluir um funcionário que está conectado ao sistema.");
+			}
+			funcionarioDao.excluir(f);
 			atualizarPesquisa();
 			return paginaConsulta;
 		} catch (PermissaoExeption | TokenException e) {
@@ -202,6 +207,7 @@ public class FuncionarioController implements Serializable {
 	}
 
 	public void selecionarTodos() {
+		System.out.println(funcionarioDto.getListaPermissoes());
 		funcionarioDto.getListaPermissoes().clear();
 		if (marcarTodos) {
 			funcionarioDto.getListaPermissoes().addAll(listaPermissaoExistente);

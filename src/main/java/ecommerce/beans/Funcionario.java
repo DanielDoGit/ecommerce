@@ -44,7 +44,6 @@ public class Funcionario implements Serializable {
 	
 	@OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<FuncionarioPermissao> listaFuncionarioPermissao = new ArrayList<>();
-	
 
 	public Funcionario(Integer codigo, String nome, String cpf, String bairro, String endereco, Cidade cidade,
 			String login, String senha, boolean ativo, List<FuncionarioPermissao> listaFuncionarioPermissao) {

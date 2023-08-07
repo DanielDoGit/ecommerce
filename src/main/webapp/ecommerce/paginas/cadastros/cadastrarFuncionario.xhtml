@@ -104,11 +104,11 @@
 								<label class="col-12">Cidade</label>
 								<div class="form-inline">
 									<div class="form-group ml-3">
-										<h:inputText value="#{funcionarioController.funcionarioDto.idCidade}"
+										<h:inputText
+											value="#{funcionarioController.funcionarioDto.idCidade}"
 											class="form-control col-2" id="txtIdCidade"
 											autocomplete="off" required="true">
-											<f:ajax
-												listener="#{funcionarioController.carregarCidade}"
+											<f:ajax listener="#{funcionarioController.carregarCidade}"
 												execute="txtIdCidade" render="txtIdCidade txtNomeCidade"></f:ajax>
 										</h:inputText>
 										<label>&#160;</label>
@@ -146,17 +146,20 @@
 							<div align="right">
 								<h:commandLink value="Marcar todas permissões"
 									class="btn btn-outline-light text-dark btn-sm mt-3"
-									action="#{funcionarioController.selecionarTodos}">
-									<f:ajax execute="@all" render="@all"></f:ajax>
+									action="#{funcionarioController.selecionarTodos}" id="lista">
+									<f:ajax execute="lista" render="teste"></f:ajax>
 								</h:commandLink>
 							</div>
 							<div class="row mb-3 mt-4">
-								<h:selectManyCheckbox value="#{funcionarioController.funcionarioDto.listaPermissoes}"
-									 layout="pageDirection" border="0"
+								<h:selectManyCheckbox
+									value="#{funcionarioController.funcionarioDto.listaPermissoes}"
+									layout="pageDirection" border="0" id="teste"
 									class="table-borderless table-hover">
-									<f:selectItems value="#{funcionarioController.listaPermissaoExistente}"
-										var="p" itemLabel="#{p.nomePermissao}" itemValue="#{p}"></f:selectItems>
+									<f:selectItems
+										value="#{funcionarioController.listaPermissaoExistente}"
+										var="p" itemLabel="#{p.nomePermissao}" itemValue="#{p}"/>
 								</h:selectManyCheckbox>
+
 							</div>
 						</div>
 					</div>
