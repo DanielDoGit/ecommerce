@@ -3,7 +3,6 @@ package ecommerce.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import ecommerce.beans.Funcionario;
 import ecommerce.beans.FuncionarioPermissao;
@@ -51,7 +50,9 @@ public class FuncionarioDto implements Serializable {
 		this.login = func.getLogin();
 		this.senha = func.getSenha();
 		this.ativo = func.isAtivo();
-		listaPermissoes = func.getListaFuncionarioPermissao().stream().map(e -> new PermissaoDto(e.getPermissao())).collect(Collectors.toList());
+		for (FuncionarioPermissao fp : func.getListaFuncionarioPermissao()) {
+			listaPermissoes.add(new PermissaoDto(fp.getPermissao()));
+		}
 	}
 	
 	public Funcionario toFuncionario(PermissaoDao permissaoDao, CidadeDao cidadeDao) {
@@ -68,7 +69,7 @@ public class FuncionarioDto implements Serializable {
 		for (PermissaoDto permissaoDto : listaPermissoes) {
 			FuncionarioPermissao funcionarioPermissao = new FuncionarioPermissao();
 			funcionarioPermissao.setFuncionario(funcionario);
-			funcionarioPermissao.setPermissao(permissaoDao.getById(permissaoDto.getIdPermissao()));
+			funcionarioPermissao.setPermissao(permissaoDao.buscarExatidao("descricao", permissaoDto.getNomePermissao()));
 			funcionario.getListaFuncionarioPermissao().add(funcionarioPermissao);
 		}
 		return funcionario; 

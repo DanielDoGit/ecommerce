@@ -5,7 +5,6 @@ import java.util.Set;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.Dependent;
-import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -15,15 +14,16 @@ public class ValidadorBean<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Inject
-	private Uteis uteis;
-
 	private Validator validator;
 
 	@PostConstruct
 	private void buildValidator() {
 		var v = Validation.buildDefaultValidatorFactory();
 		validator = v.getValidator();
+	}
+	
+	public ValidadorBean() {
+		buildValidator();
 	}
 
 	public Set<ConstraintViolation<T>> getConstraints(T e) {
@@ -32,6 +32,10 @@ public class ValidadorBean<T> implements Serializable {
 
 	public boolean validarCampo(String campo, Object valor) {
 		return validator.validateValue(valor.getClass(), campo, valor).isEmpty();
+	}
+	
+	public boolean validarCampo(Class<T> classe, String campo, Object valor) {
+		return validator.validateValue(classe, campo, valor).isEmpty();
 	}
 
 	public ConstraintViolation<?> getConstraintField(String campo, T valor) {

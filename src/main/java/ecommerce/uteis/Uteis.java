@@ -90,19 +90,6 @@ public class Uteis implements Serializable {
 		}
 		return newText;
 	}
-	
-	public String formatarCnpj(String arg) {
-		if (arg != null && !arg.isBlank()) {
-			StringBuilder st = new StringBuilder(extrairNumeros(arg));
-			st.insert(2, ".");
-			st.insert(6, ".");
-			st.insert(10, "/");
-			st.insert(15, "-");
-			return st.toString();
-		}else {
-			return "";
-		}
-	}
 
 	public DateTimeFormatter getPadraoFormatacaoData() {
 		return padraoFormatacaoData;

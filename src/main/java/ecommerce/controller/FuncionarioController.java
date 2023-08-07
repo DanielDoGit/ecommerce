@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ecommerce.beans.Cidade;
 import ecommerce.beans.Funcionario;
 import ecommerce.dao.CidadeDao;
 import ecommerce.dao.FuncionarioDao;
@@ -19,6 +20,7 @@ import ecommerce.uteis.TokenException;
 import ecommerce.uteis.Uteis;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ConversationScoped;
+import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
@@ -38,23 +40,23 @@ public class FuncionarioController implements Serializable {
 
 	@Inject
 	private LoginController loginController;
-	
+
 	@Inject
 	private PermissaoDao permissaoDao;
-	
+
 	@Inject
 	private GerenciadorConversa conversa;
-	
+
 	@Inject
 	private GerenciadorToken token;
-	
+
 	@Inject
 	private Uteis uteis;
-	
+
 	private List<FuncionarioDto> listaFuncionarioDto = new ArrayList<FuncionarioDto>();
 	private List<PermissaoDto> listaPermissaoExistente;
 	private FuncionarioDto funcionarioDto;
-	
+
 	private final String paginaConsulta = "/ecommerce/paginas/cadastros/consultarFuncionario.xhtml";
 	private final String paginaCadastro = "/ecommerce/paginas/cadastros/cadastrarFuncionario.xhtml";
 	private List<String> opcaoBusca = Arrays.asList("Nome", "Código", "Cidade");
@@ -62,19 +64,21 @@ public class FuncionarioController implements Serializable {
 	private String argumentoBusca;
 	private String mensagem;
 	private boolean inclusao = false;
-	
+	private boolean marcarTodos = true;
 
 	@PostConstruct
 	public void carregarPermissoes() {
-		listaPermissaoExistente = permissaoDao.listarTodos().stream().map(PermissaoDto::new).collect(Collectors.toList());
+		listaPermissaoExistente = permissaoDao.listarTodos().stream().map(PermissaoDto::new)
+				.collect(Collectors.toList());
 	}
-	
+
 	public String prepararConsulta() {
 		try {
 			conversa.iniciar();
 			loginController.possuiPermissao("Pesquisar funcionario");
 			token.gerarToken();
-			listaFuncionarioDto = funcionarioDao.buscarUltimosCadastrados().stream().map(FuncionarioDto::new).collect(Collectors.toList());
+			listaFuncionarioDto = funcionarioDao.buscarUltimosCadastrados().stream().map(FuncionarioDto::new)
+					.collect(Collectors.toList());
 			atualizarMensagem();
 			return paginaConsulta;
 		} catch (PermissaoExeption e) {
@@ -82,12 +86,13 @@ public class FuncionarioController implements Serializable {
 			return null;
 		}
 	}
-	
+
 	public String prepararCadastro() {
 		try {
 			loginController.possuiPermissao("Cadastrar funcionario");
 			token.gerarToken();
 			funcionarioDto = new FuncionarioDto();
+			carregarPermissoes();
 			argumentoBusca = "";
 			inclusao = true;
 			return paginaCadastro;
@@ -96,12 +101,11 @@ public class FuncionarioController implements Serializable {
 			return null;
 		}
 	}
-	
+
 	private Funcionario criarFuncionario() {
 		return funcionarioDto.toFuncionario(permissaoDao, cidadeDao);
 	}
-	
-	
+
 	public String confirmar() {
 		try {
 			token.validarToken();
@@ -111,26 +115,28 @@ public class FuncionarioController implements Serializable {
 			Funcionario f = criarFuncionario();
 			if (inclusao) {
 				funcionarioDao.cadastrar(f);
-			}else {
+			} else {
 				funcionarioDao.editar(f);
 			}
+			if (f.getCodigo().equals(loginController.getFuncionarioDto().getCodigo())) {
+				loginController.getFuncionarioDto().setListaPermissoes(funcionarioDto.getListaPermissoes());
+			}
 			uteis.adicionarMensagemSucessoRegistro();
-			atualizarPesquisa();
 			return paginaConsulta;
 		} catch (TokenException e) {
 			uteis.adicionarMensagemErro(e);
 			return null;
 		}
 	}
-	
+
 	private boolean validarDados() {
 		boolean resultado = false;
 		List<Funcionario> listaFuncionario = funcionarioDao.buscarSimilaridade("login", funcionarioDto.getLogin());
 		if (listaFuncionario.isEmpty()) {
 			resultado = true;
-		}else if (listaFuncionario.size() > 1) {
+		} else if (listaFuncionario.size() > 1) {
 			resultado = false;
-		}else {
+		} else {
 			Funcionario f = listaFuncionario.get(0);
 			if (funcionarioDto.getCodigo().equals(f.getCodigo())) {
 				resultado = true;
@@ -141,12 +147,12 @@ public class FuncionarioController implements Serializable {
 		}
 		return resultado;
 	}
-	
-	
+
 	private void atualizarMensagem() {
-		mensagem = listaFuncionarioDto.isEmpty() ? "Não há funcionarios cadastrados." : "Ultimos funcionarios cadastrados.";
+		mensagem = listaFuncionarioDto.isEmpty() ? "Não há funcionarios cadastrados."
+				: "Ultimos funcionarios cadastrados.";
 	}
-	
+
 	public void atualizarPesquisa() {
 		try {
 			if ("Código".equals(opcaoBuscaSelecionada)) {
@@ -155,22 +161,24 @@ public class FuncionarioController implements Serializable {
 				if (f != null) {
 					listaFuncionarioDto.add(new FuncionarioDto(f));
 				}
-			}else if ("Nome".equals(opcaoBuscaSelecionada)) {
-				listaFuncionarioDto = funcionarioDao.buscarSimilaridade("nome", argumentoBusca).stream().map(FuncionarioDto::new).collect(Collectors.toList());
-			}else {
-				listaFuncionarioDto = funcionarioDao.buscarSimilaridade("cidade", argumentoBusca).stream().map(FuncionarioDto::new).collect(Collectors.toList());
+			} else if ("Nome".equals(opcaoBuscaSelecionada)) {
+				listaFuncionarioDto = funcionarioDao.buscarSimilaridade("nome", argumentoBusca).stream()
+						.map(FuncionarioDto::new).collect(Collectors.toList());
+			} else {
+				listaFuncionarioDto = funcionarioDao.buscarSimilaridade("cidade", argumentoBusca).stream()
+						.map(FuncionarioDto::new).collect(Collectors.toList());
 			}
 			atualizarMensagem();
 		} catch (NumberFormatException e) {
 			uteis.adicionarMensagemAdvertencia("O argumento de busca é invalido!");
 		}
 	}
-	
+
 	public String prepararAlteracao(Integer id) {
 		try {
 			loginController.possuiPermissao("Alterar funcionario");
 			token.gerarToken();
-			funcionarioDto = new FuncionarioDto(funcionarioDao.getById(id));
+			funcionarioDto = new FuncionarioDto(funcionarioDao.realizarlogin("1","1").get());
 			inclusao = false;
 			return paginaCadastro;
 		} catch (PermissaoExeption e) {
@@ -178,9 +186,9 @@ public class FuncionarioController implements Serializable {
 			return null;
 		}
 	}
-	
+
 	public String excluir(Integer id) {
-		
+
 		try {
 			loginController.possuiPermissao("Excluir funcionario");
 			token.validarToken();
@@ -192,7 +200,36 @@ public class FuncionarioController implements Serializable {
 			return null;
 		}
 	}
-	
+
+	public void selecionarTodos() {
+		funcionarioDto.getListaPermissoes().clear();
+		if (marcarTodos) {
+			funcionarioDto.getListaPermissoes().addAll(listaPermissaoExistente);
+		}
+		marcarTodos = !marcarTodos;
+	}
+
+	public void carregarCidade(AjaxBehaviorEvent e) {
+		try {
+			String id = funcionarioDto.getIdCidade();
+			Cidade c = cidadeDao.getById(Integer.valueOf(id));
+			mostrarCidade(c);
+		} catch (NumberFormatException e1) {
+			uteis.adicionarMensagemAdvertencia("Argumento de pesquisa inválido!");
+			mostrarCidade(null);
+		}
+	}
+
+	private void mostrarCidade(Cidade c) {
+		if (c != null) {
+			funcionarioDto.setIdCidade(Integer.toString(c.getCodigo()));
+			funcionarioDto.setNomeCidade(c.getNome());
+		} else {
+			funcionarioDto.setIdCidade(null);
+			funcionarioDto.setNomeCidade(null);
+		}
+	}
+
 	public String cancelar() {
 		funcionarioDto = null;
 		return paginaConsulta;
@@ -330,5 +367,4 @@ public class FuncionarioController implements Serializable {
 		return paginaCadastro;
 	}
 
-	
 }

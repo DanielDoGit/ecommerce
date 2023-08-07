@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -41,7 +42,7 @@ public class Funcionario implements Serializable {
 	
 	private boolean ativo;
 	
-	@OneToMany(mappedBy = "funcionario", fetch = FetchType.EAGER, orphanRemoval = true)
+	@OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<FuncionarioPermissao> listaFuncionarioPermissao = new ArrayList<>();
 	
 
@@ -146,19 +147,19 @@ public class Funcionario implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(ativo, nome);
+		return Objects.hash(codigo);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
-			return true;	
+			return true;
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Funcionario other = (Funcionario) obj;
-		return ativo == other.ativo && Objects.equals(nome, other.nome);
+		return Objects.equals(codigo, other.codigo);
 	}
 
 	

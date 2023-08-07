@@ -11,6 +11,7 @@ import ecommerce.dao.CidadeDao;
 import ecommerce.dao.EstabelecimentoDao;
 import ecommerce.dto.CidadeDto;
 import ecommerce.dto.EstabelecimentoDto;
+import ecommerce.uteis.Formatadores;
 import ecommerce.uteis.GerenciadorConversa;
 import ecommerce.uteis.GerenciadorToken;
 import ecommerce.uteis.PermissaoExeption;
@@ -56,6 +57,8 @@ public class EstabelecimentoController implements Serializable {
 	private String argumentoBusca = "";
 
 	private List<CidadeDto> listaCidadePesquisada;
+	
+	private Formatadores formatadores = new Formatadores();
 
 	public String alterarEstabelecimento() {
 		try {
@@ -64,7 +67,7 @@ public class EstabelecimentoController implements Serializable {
 			token.gerarToken();
 			Estabelecimento e = dao.getById(1);
 			dto = new EstabelecimentoDto(e);
-			dto.setCnpj(uteis.formatarCnpj(dto.getCnpj()));
+			dto.setCnpj(formatadores.formatarCnpj(dto.getCnpj()));
 			return "/ecommerce/paginas/cadastros/estabelecimento.xhtml";
 		} catch (PermissaoExeption e) {
 			uteis.adicionarMensagemErro(e);
@@ -80,9 +83,6 @@ public class EstabelecimentoController implements Serializable {
 	public String confirmar() {
 		try {
 			token.validarToken();
-			if (!processarCnpj()) {
-				return null;
-			}
 			Estabelecimento e = dto.toEstabelecimento(cidadeDao);
 			dao.editar(e);
 			uteis.adicionarMensagemInformativa("Estabelecimento alterado com sucesso !");
@@ -90,12 +90,6 @@ public class EstabelecimentoController implements Serializable {
 		} catch (TokenException e) {
 			uteis.adicionarMensagemErro(e);
 			return null;
-		}
-	}
-
-	public void validarCnpj(AjaxBehaviorEvent e) {
-		if (processarCnpj()) {
-			dto.setCnpj(uteis.formatarCnpj(dto.getCnpj()));
 		}
 	}
 
@@ -117,18 +111,6 @@ public class EstabelecimentoController implements Serializable {
 		} else {
 			dto.setIdCidade(null);
 			dto.setNomeCidade(null);
-		}
-	}
-
-	private boolean processarCnpj() {
-		boolean a = validador.validarCampo("cnpj", dto.toEstabelecimento(cidadeDao).getCnpj());
-		if (a) {
-			dto.setCnpj(uteis.extrairNumeros(dto.getCnpj()));
-			return a;
-		} else {
-			dto.setCnpj("");
-			uteis.adicionarMensagemCnpjInconsistente();
-			return a;
 		}
 	}
 

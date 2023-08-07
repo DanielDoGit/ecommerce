@@ -1,6 +1,7 @@
 package ecommerce.beans;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,10 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "funcionariopermissao")
 public class FuncionarioPermissao implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -49,6 +48,23 @@ public class FuncionarioPermissao implements Serializable {
 
 	public void setPermissao(Permissao permissao) {
 		this.permissao = permissao;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(codigo);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FuncionarioPermissao other = (FuncionarioPermissao) obj;
+		return Objects.equals(codigo, other.codigo);
 	}
 
 }

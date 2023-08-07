@@ -75,6 +75,14 @@ public class Dao<T> implements Serializable{
 		Query q = em.createQuery(cq).setMaxResults(quantidade_registros);
 		return q.getResultList();
 	}
+
+	public EntityManager getEm() {
+		return em;
+	}
+
+	public void setEm(EntityManager em) {
+		this.em = em;
+	}
 	
 	
 }

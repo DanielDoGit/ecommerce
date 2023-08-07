@@ -38,9 +38,7 @@
 					<label>CNPJ</label>
 					<h:inputText value="#{estabelecimentoController.dto.cnpj}"
 						class="form-control" id="txtcnpj" autocomplete="off"
-						required="true">
-						<f:ajax listener="#{estabelecimentoController.validarCnpj}"
-							execute="txtcnpj" render="txtcnpj"></f:ajax>
+						required="true" converter="converterCNPJ">
 					</h:inputText>
 					<h:message for="txtcnpj" showDetail="false" showSummary="true"
 						styleClass="error" />

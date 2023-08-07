@@ -28,7 +28,12 @@ public class FuncionarioDao extends Dao<Funcionario>{
 		return Optional.ofNullable(listaFuncionario.size() == 1 ? listaFuncionario.get(0) : null);
 	}
 	
-	
+	public Funcionario consultaIdComPermissoes(Integer id){
+		String sql = "select * from funcionario as f, funcionariopermissao as fp where f.codigo = ? and fp.funcionario = f.codigo";
+		Query q = em.createNativeQuery(sql,Funcionario.class);
+		q.setParameter(1, id);
+		return (Funcionario) q.getResultList().get(0);
+	}
 
 
 }
