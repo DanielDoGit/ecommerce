@@ -68,8 +68,7 @@ public class FuncionarioController implements Serializable {
 	
 	@PostConstruct
 	public void carregarPermissoes() {
-		listaPermissaoExistente = permissaoDao.listarTodos().stream().map(PermissaoDto::new)
-				.collect(Collectors.toList());
+		listaPermissaoExistente = permissaoDao.listarTodos().stream().map(PermissaoDto::new).collect(Collectors.toList());
 	}
 
 	public String prepararConsulta() {
@@ -92,7 +91,6 @@ public class FuncionarioController implements Serializable {
 			loginController.possuiPermissao("Cadastrar funcionario");
 			token.gerarToken();
 			funcionarioDto = new FuncionarioDto();
-			carregarPermissoes();
 			argumentoBusca = "";
 			inclusao = true;
 			return paginaCadastro;
@@ -122,6 +120,7 @@ public class FuncionarioController implements Serializable {
 				loginController.getFuncionarioDto().setListaPermissoes(funcionarioDto.getListaPermissoes());
 			}
 			uteis.adicionarMensagemSucessoRegistro();
+			atualizarPesquisa();
 			return paginaConsulta;
 		} catch (TokenException e) {
 			uteis.adicionarMensagemErro(e);
@@ -179,7 +178,6 @@ public class FuncionarioController implements Serializable {
 			loginController.possuiPermissao("Alterar funcionario");
 			token.gerarToken();
 			funcionarioDto = new FuncionarioDto(funcionarioDao.consultaIdComPermissoes(id));
-			carregarPermissoes();
 			inclusao = false;
 			return paginaCadastro;
 		} catch (PermissaoExeption e) {
@@ -196,6 +194,7 @@ public class FuncionarioController implements Serializable {
 			Funcionario f = funcionarioDao.getById(id);
 			if (f.getCodigo().equals(loginController.getFuncionarioDto().getCodigo())) {
 				uteis.adicionarMensagemAdvertencia("Não é possível excluir um funcionário que está conectado ao sistema.");
+				return null;
 			}
 			funcionarioDao.excluir(f);
 			atualizarPesquisa();
@@ -207,7 +206,6 @@ public class FuncionarioController implements Serializable {
 	}
 
 	public void selecionarTodos() {
-		System.out.println(funcionarioDto.getListaPermissoes());
 		funcionarioDto.getListaPermissoes().clear();
 		if (marcarTodos) {
 			funcionarioDto.getListaPermissoes().addAll(listaPermissaoExistente);
@@ -237,7 +235,6 @@ public class FuncionarioController implements Serializable {
 	}
 
 	public String cancelar() {
-		funcionarioDto = null;
 		return paginaConsulta;
 	}
 
@@ -372,5 +369,4 @@ public class FuncionarioController implements Serializable {
 	public String getPaginaCadastro() {
 		return paginaCadastro;
 	}
-
 }

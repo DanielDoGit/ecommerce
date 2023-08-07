@@ -151,14 +151,17 @@
 								</h:commandLink>
 							</div>
 							<div class="row mb-3 mt-4">
-								<h:selectManyCheckbox
+								<h:selectManyCheckbox 
 									value="#{funcionarioController.funcionarioDto.listaPermissoes}"
-									layout="pageDirection" border="0" id="teste"
+									layout="pageDirection" border="0" id="teste" converter="converterPermissoesToString"
 									class="table-borderless table-hover">
+
 									<f:selectItems
 										value="#{funcionarioController.listaPermissaoExistente}"
-										var="p" itemLabel="#{p.nomePermissao}" itemValue="#{p}"/>
+										var="p" itemLabel="#{p.nomePermissao}">
+									</f:selectItems>
 								</h:selectManyCheckbox>
+
 
 							</div>
 						</div>

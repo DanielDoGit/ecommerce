@@ -1,6 +1,7 @@
 package ecommerce.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import ecommerce.beans.Permissao;
 
@@ -36,6 +37,23 @@ public class PermissaoDto implements Serializable {
 
 	public void setNomePermissao(String nomePermissao) {
 		this.nomePermissao = nomePermissao;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(idPermissao);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PermissaoDto other = (PermissaoDto) obj;
+		return Objects.equals(idPermissao, other.idPermissao);
 	}
 
 }
