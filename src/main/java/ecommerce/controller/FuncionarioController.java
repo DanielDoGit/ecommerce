@@ -91,6 +91,7 @@ public class FuncionarioController implements Serializable {
 			loginController.possuiPermissao("Cadastrar funcionario");
 			token.gerarToken();
 			funcionarioDto = new FuncionarioDto();
+			carregarPermissoes();
 			argumentoBusca = "";
 			inclusao = true;
 			return paginaCadastro;
@@ -177,6 +178,7 @@ public class FuncionarioController implements Serializable {
 		try {
 			loginController.possuiPermissao("Alterar funcionario");
 			token.gerarToken();
+			carregarPermissoes();
 			funcionarioDto = new FuncionarioDto(funcionarioDao.consultaIdComPermissoes(id));
 			inclusao = false;
 			return paginaCadastro;
