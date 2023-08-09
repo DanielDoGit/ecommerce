@@ -60,6 +60,7 @@ public class LoginController implements Serializable {
 	}
 
 	public String realizarLogout() {
+		funcionarioDto.getListaPermissoes().clear();
 		funcionarioDto = null;
 		return uteis.getCaminhoLogin();
 	}

@@ -20,19 +20,13 @@ public class FuncionarioDao extends Dao<Funcionario>{
 	
 	@SuppressWarnings("unchecked")
 	public Optional<Funcionario> realizarlogin(String login, String senha) {
-		String sql = "select * from funcionario where login = ? and senha = ?";
+		String sql = "select * from funcionario where login = ? and senha = ? and ativo = ?";
 		Query q = em.createNativeQuery(sql, Funcionario.class);
 		q.setParameter(1, login);
 		q.setParameter(2, senha);
+		q.setParameter(3, "true");
 		List<Funcionario> listaFuncionario = q.getResultList();
 		return Optional.ofNullable(listaFuncionario.size() == 1 ? listaFuncionario.get(0) : null);
-	}
-	
-	public Funcionario consultaIdComPermissoes(Integer id){
-		String sql = "select * from funcionario where codigo = ?";
-		Query q = em.createNativeQuery(sql,Funcionario.class);
-		q.setParameter(1, id);
-		return (Funcionario) q.getResultList().get(0);
 	}
 
 

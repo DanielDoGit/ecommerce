@@ -162,7 +162,7 @@
 										action="#{estabelecimentoController.selecionarCidade(t)}"
 										class="btn btn-success" pt:data-dismiss="modal">
 										<span class="fas fa-check"></span>
-										<f:ajax render="txtIdCidade txtNomeCidade"></f:ajax>
+										<f:ajax render="@form:txtIdCidade @form:txtNomeCidade"></f:ajax>
 									</h:commandLink>
 								</h:column>
 							</h:dataTable>

@@ -2,7 +2,10 @@ package ecommerce.beans;
 
 import java.io.Serializable;
 
+import ecommerce.uteis.TipoPessoa;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,7 +23,7 @@ public class Fornecedor implements Serializable {
 	
 	private String nome;
 	
-	private String cpf;
+	private String cpfCnpj;
 	
 	private String bairro;
 	
@@ -33,18 +36,22 @@ public class Fornecedor implements Serializable {
 	private Cidade cidade;
 
 	private boolean ativo;
+	
+	@Enumerated(value =  EnumType.ORDINAL)
+	private TipoPessoa fiscajuridica;
 
-	public Fornecedor(Integer codigo, String nome, String cpf, String bairro, String endereco, String contato,
-			Cidade cidade, boolean ativo) {
+	public Fornecedor(Integer codigo, String nome, String cpfCnpj, String bairro, String endereco, String contato,
+			Cidade cidade, boolean ativo, TipoPessoa fiscajuridica) {
 		super();
 		this.codigo = codigo;
 		this.nome = nome;
-		this.cpf = cpf;
+		this.cpfCnpj = cpfCnpj;
 		this.bairro = bairro;
 		this.endereco = endereco;
 		this.contato = contato;
 		this.cidade = cidade;
 		this.ativo = ativo;
+		this.fiscajuridica = fiscajuridica;
 	}
 
 	public Fornecedor() {
@@ -65,14 +72,6 @@ public class Fornecedor implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
 	}
 
 	public String getBairro() {
@@ -113,6 +112,22 @@ public class Fornecedor implements Serializable {
 
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
+	}
+
+	public String getCpfCnpj() {
+		return cpfCnpj;
+	}
+
+	public void setCpfCnpj(String cpfCnpj) {
+		this.cpfCnpj = cpfCnpj;
+	}
+
+	public TipoPessoa getFiscajuridica() {
+		return fiscajuridica;
+	}
+
+	public void setFiscajuridica(TipoPessoa fiscajuridica) {
+		this.fiscajuridica = fiscajuridica;
 	}
 	
 	

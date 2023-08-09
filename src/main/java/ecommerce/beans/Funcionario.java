@@ -128,13 +128,6 @@ public class Funcionario implements Serializable {
 		this.senha = senha;
 	}
 
-	public boolean isAtivo() {
-		return ativo;
-	}
-
-	public void setAtivo(boolean ativo) {
-		this.ativo = ativo;
-	}
 
 	public List<FuncionarioPermissao> getListaFuncionarioPermissao() {
 		return listaFuncionarioPermissao;
@@ -161,5 +154,12 @@ public class Funcionario implements Serializable {
 		return Objects.equals(codigo, other.codigo);
 	}
 
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
 	
 }
