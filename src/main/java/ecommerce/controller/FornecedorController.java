@@ -3,13 +3,16 @@ package ecommerce.controller;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import ecommerce.beans.Fornecedor;
 import ecommerce.dao.CidadeDao;
 import ecommerce.dao.FornecedorDao;
 import ecommerce.dto.FornecedorDto;
 import ecommerce.uteis.GerenciadorConversa;
 import ecommerce.uteis.GerenciadorToken;
 import ecommerce.uteis.PermissaoExeption;
+import ecommerce.uteis.TokenException;
 import ecommerce.uteis.Uteis;
 import jakarta.enterprise.context.ConversationScoped;
 import jakarta.inject.Inject;
@@ -42,6 +45,7 @@ public class FornecedorController implements Serializable{
 	private GerenciadorToken token;
 	
 	private FornecedorDto fornecedorDto;
+	private List<FornecedorDto> listaFornecedoresCadastrados;
 	
 	private final String paginaConsulta = "/ecommerce/cadastros/consultarFornecedor.xhtml";
 	private final String paginaCadastro = "/ecommerce/cadastros/cadastrarFornecedor.xhtml";
@@ -49,87 +53,200 @@ public class FornecedorController implements Serializable{
 	private final List<String> opcoesBusca = Arrays.asList("Nome", "Cidade", "Código");
 	private String argumentoBusca;
 	private String opcaoBuscaSelecionada;
+	private String mensagem;
+	private boolean inclusao = false;
 	
 	public String prepararConsulta() {
 		try {
 			conversa.iniciar();
+			token.gerarToken();
 			loginController.possuiPermissao("Consultar fornecedor");
-			return null;
+			listaFornecedoresCadastrados = fornecedorDao.buscarUltimosCadastrados().stream().map(FornecedorDto::new).collect(Collectors.toList());
+			atualizarMensagem();
+			return paginaConsulta;
 		} catch (PermissaoExeption e) {
+			uteis.adicionarMensagemErro(e);
 			return null;
 		}
 	}
 	
+	private void atualizarMensagem() {
+		mensagem = listaFornecedoresCadastrados.isEmpty() ? "Não há fornecedores listados..." : "Quantidade fornecedores listados: "+listaFornecedoresCadastrados.size();
+	}
 	
+	public String prepararCadastro() {
+		try {
+			loginController.possuiPermissao("Cadastrar fornecedor");
+			token.gerarToken();
+			fornecedorDto = new FornecedorDto();
+			argumentoBusca = "";
+			inclusao = true;
+			return paginaCadastro;
+		} catch (PermissaoExeption e) {
+			uteis.adicionarMensagemErro(e);
+			return null;
+		}
+	}
 	
+	public String prepararAlteracao(Integer id) {
+		try {
+			loginController.possuiPermissao("Alterar fornecedor");
+			token.gerarToken();
+			fornecedorDto = new FornecedorDto(fornecedorDao.getById(id));
+			inclusao = true;
+			return paginaCadastro;
+		} catch (PermissaoExeption e) {
+			uteis.adicionarMensagemErro(e);
+			return null;
+		}
+	}
 	
+
+	public void atualizarPesquisa() {
+		try {
+			if (opcoesBusca.get(2).equals(opcaoBuscaSelecionada)) {
+				listaFornecedoresCadastrados.clear();
+				Fornecedor f = fornecedorDao.getById(Integer.valueOf(argumentoBusca));
+				if (f != null) {
+					listaFornecedoresCadastrados.add(new FornecedorDto(f));
+				}
+			}else if (opcoesBusca.get(1).equals(opcaoBuscaSelecionada)) {
+				listaFornecedoresCadastrados = fornecedorDao.buscarSimilaridade("nome", argumentoBusca).stream().map(FornecedorDto::new).collect(Collectors.toList());
+			}else {
+				listaFornecedoresCadastrados = fornecedorDao.buscarCidade(argumentoBusca).stream().map(FornecedorDto::new).collect(Collectors.toList());
+			}
+			atualizarMensagem();
+		} catch (NumberFormatException e) {
+			uteis.adicionarMensagemAdvertencia("O argumento digitado é inválido para a pesquisa!");
+		}
+	}
+	
+	public String excluir(Integer id) {
+		try {
+			token.validarToken();
+			loginController.possuiPermissao("Excluir fornecedor");
+			fornecedorDao.excluir(id);
+			atualizarPesquisa();
+			uteis.adicionarMensagemSucessoExclusao();
+			return paginaConsulta;
+		} catch (PermissaoExeption | TokenException e) {
+			uteis.adicionarMensagemErro(e);
+			return null;
+		} 
+	}
+
 	public LoginController getLoginController() {
 		return loginController;
 	}
+
 	public void setLoginController(LoginController loginController) {
 		this.loginController = loginController;
 	}
+
 	public FornecedorDao getFornecedorDao() {
 		return fornecedorDao;
 	}
+
 	public void setFornecedorDao(FornecedorDao fornecedorDao) {
 		this.fornecedorDao = fornecedorDao;
 	}
+
 	public CidadeDao getCidadeDao() {
 		return cidadeDao;
 	}
+
 	public void setCidadeDao(CidadeDao cidadeDao) {
 		this.cidadeDao = cidadeDao;
 	}
+
 	public Uteis getUteis() {
 		return uteis;
 	}
+
 	public void setUteis(Uteis uteis) {
 		this.uteis = uteis;
 	}
+
 	public GerenciadorConversa getConversa() {
 		return conversa;
 	}
+
 	public void setConversa(GerenciadorConversa conversa) {
 		this.conversa = conversa;
 	}
+
 	public GerenciadorToken getToken() {
 		return token;
 	}
+
 	public void setToken(GerenciadorToken token) {
 		this.token = token;
 	}
+
 	public FornecedorDto getFornecedorDto() {
 		return fornecedorDto;
 	}
+
 	public void setFornecedorDto(FornecedorDto fornecedorDto) {
 		this.fornecedorDto = fornecedorDto;
 	}
+
+	public List<FornecedorDto> getListaFornecedoresCadastrados() {
+		return listaFornecedoresCadastrados;
+	}
+
+	public void setListaFornecedoresCadastrados(List<FornecedorDto> listaFornecedoresCadastrados) {
+		this.listaFornecedoresCadastrados = listaFornecedoresCadastrados;
+	}
+
 	public String getArgumentoBusca() {
 		return argumentoBusca;
 	}
+
 	public void setArgumentoBusca(String argumentoBusca) {
 		this.argumentoBusca = argumentoBusca;
 	}
+
 	public String getOpcaoBuscaSelecionada() {
 		return opcaoBuscaSelecionada;
 	}
+
 	public void setOpcaoBuscaSelecionada(String opcaoBuscaSelecionada) {
 		this.opcaoBuscaSelecionada = opcaoBuscaSelecionada;
 	}
+
+	public String getMensagem() {
+		return mensagem;
+	}
+
+	public void setMensagem(String mensagem) {
+		this.mensagem = mensagem;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
 	public String getPaginaConsulta() {
 		return paginaConsulta;
 	}
+
 	public String getPaginaCadastro() {
 		return paginaCadastro;
 	}
+
 	public List<String> getOpcoesBusca() {
 		return opcoesBusca;
 	}
-	
-	
 
+	public boolean isInclusao() {
+		return inclusao;
+	}
+
+	public void setInclusao(boolean inclusao) {
+		this.inclusao = inclusao;
+	}
+	
+	
+	
 }

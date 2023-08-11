@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 
 import jakarta.enterprise.context.RequestScoped;
@@ -50,8 +52,10 @@ public class JsfExceptionHandler extends ExceptionHandlerWrapper {
 	private void gravarLog(Throwable throwable) {
 		try (FileOutputStream fos = new FileOutputStream(new File(caminhoLog))) {
 			PrintWriter pw = new PrintWriter(fos);
+			pw.print(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)+": ");
 			throwable.printStackTrace(pw);
 			pw.flush();
+			fos.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
