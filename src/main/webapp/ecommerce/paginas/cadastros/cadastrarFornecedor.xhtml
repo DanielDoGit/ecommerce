@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Ecommerce</title>
+	<ui:include src="/ecommerce/paginas/uteis/scripts.xhtml" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+<h:body class="bg-info">
+	<h:form>
+		<div class="container bg-light rounded-bottom divcentral">
+			<ui:include src="/ecommerce/paginas/uteis/barramenu.xhtml" />
+			<br></br>
+			<div class="row d-none">
+				<div class="col" align="center">
+					<h:messages showDetail="false" id="msg" showSummary="true"
+						globalOnly="true" infoClass="text-info mensagemInfo"
+						warnClass="text-warning mensagemWarning"
+						errorClass="text-dark mensagemError" layout="list"/>
+				</div>
+			</div>
+			<div class="row mb-3 ml-5 pl-4">
+				<div class="col-7 offset-2">
+					<label>Razão Social</label>
+					<h:inputText value="#{estabelecimentoController.dto.nome}"
+						class="form-control" align="center" id="txtusuario"
+						autocomplete="off" required="true"></h:inputText>
+					<h:message for="txtusuario" showDetail="false" showSummary="true"
+						styleClass="error" />
+				</div>
+			</div>
+			<div class="row mb-3 ml-5 pl-4">
+				<div class="col-3 offset-2">
+					<label>CNPJ</label>
+					<h:inputText value="#{estabelecimentoController.dto.cnpj}"
+						class="form-control" id="txtcnpj" autocomplete="off"
+						required="true" converter="converterCNPJ">
+					</h:inputText>
+					<h:message for="txtcnpj" showDetail="false" showSummary="true"
+						styleClass="error" />
+				</div>
+			</div>
+
+			<div class="row mb-3 ml-5 pl-4">
+				<div class="col-7 offset-2">
+					<label>Contato</label>
+					<h:inputText value="#{estabelecimentoController.dto.contato}"
+						class="form-control" id="txtcontato" autocomplete="off"
+						immediate="true"></h:inputText>
+					<h:message for="txtcontato" showDetail="false" showSummary="true"
+						styleClass="error" />
+				</div>
+			</div>
+
+			<div class="row mb-3 ml-5 pl-4">
+				<div class="col-7 offset-2">
+					<label>Endereço</label>
+					<h:inputText value="#{estabelecimentoController.dto.endereco}"
+						class="form-control" id="txtendereco" autocomplete="off"
+						immediate="true"></h:inputText>
+					<h:message for="txtendereco" showDetail="false" showSummary="true"
+						styleClass="error" />
+				</div>
+			</div>
+
+			<div class="row mb-3 ml-5 pl-4">
+				<div class="col-4 offset-2">
+					<label>Bairro</label>
+					<h:inputText value="#{estabelecimentoController.dto.bairro}"
+						class="form-control" id="txtbairro" autocomplete="off"
+						immediate="true"></h:inputText>
+					<h:message for="txtbairro" showDetail="false" showSummary="true"
+						styleClass="error" />
+				</div>
+			</div>
+
+
+			<div class="row mb-3 ml-5 pl-4">
+				<label class="col-12 offset-2">Cidade</label>
+				<div class="form-inline offset-2">
+					<div class="form-group ml-3">
+						<h:inputText value="#{estabelecimentoController.dto.idCidade}"
+							class="form-control col-2" id="txtIdCidade" autocomplete="off"
+							required="true">
+							<f:ajax listener="#{estabelecimentoController.carregarCidade}"
+								execute="txtIdCidade" render="txtIdCidade txtNomeCidade"></f:ajax>
+						</h:inputText>
+						<label>&#160;</label>
+						<h:inputText value="#{estabelecimentoController.dto.nomeCidade}"
+							class="form-control col-8" id="txtNomeCidade" autocomplete="off"
+							required="true" disabled="true"></h:inputText>
+						<label>&#160;</label>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pesquisarModalCidade" id="botaoProcurar">
+							<span class="fas fa-search"></span>
+						</button>
+						<h:message for="txtIdCidade" showDetail="false" showSummary="true"
+							styleClass="error" />
+					</div>
+				</div>
+
+			</div>
+
+			<div class="row mb-2 ml-5 pl-3">
+				<div class="col-6 offset-3" align="right">
+					<h:commandButton action="#{estabelecimentoController.cancelar}"
+						value="Cancelar" immediate="true" class="btn btn-primary"
+						style="width: 120px; margin: 5px"></h:commandButton>
+					<h:commandButton action="#{estabelecimentoController.confirmar}"
+						value="Gravar" class="btn btn-primary"
+						style="width: 120px; margin: 5px"
+						onclick="return validarSubmit();"></h:commandButton>
+				</div>
+			</div>
+
+			<div class="modal" id="pesquisarModalCidade">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-body">
+							<h4>Pesquisa de Cidade</h4>
+							<div class="input-group-append">
+								<h:inputText value="#{estabelecimentoController.argumentoBusca}" class="form-control"
+									id="nomeCidadePesquisa" autocomplete="off" style="width: 100%">
+								</h:inputText>
+								<h:commandLink class="btn btn-primary" type="button"
+									action="#{estabelecimentoController.pesquisarCidade}">
+									<span class="fas fa-search"></span>
+									<f:ajax execute="nomeCidadePesquisa" render="tabela"></f:ajax>
+								</h:commandLink>
+							</div>
+							<br /> <br />
+							<h:dataTable border="0"
+								value="#{estabelecimentoController.listaCidadePesquisada}"
+								var="t" class="table table-hover"
+								columnClasses="center, left, colunaAceitar" id="tabela">
+								<h:column id="column1">
+									<f:facet name="header">
+										<h:outputText value="ID"></h:outputText>
+									</f:facet>
+									<h:outputText value="#{t.codigo}"></h:outputText>
+								</h:column>
+								<h:column id="column2">
+									<f:facet name="header">
+										<h:outputText value="Nome"></h:outputText>
+									</f:facet>
+									<h:outputText value="#{t.nome}"></h:outputText>
+								</h:column>
+								<h:column id="column3">
+									<f:facet name="header">
+										<h:outputText value="UF"></h:outputText>
+									</f:facet>
+									<h:outputText value="#{t.uf}"></h:outputText>
+								</h:column>
+								<h:column id="column4">
+									<f:facet name="header">
+										<h:outputText value="Selecionar"></h:outputText>
+									</f:facet>
+									<h:commandLink
+										action="#{estabelecimentoController.selecionarCidade(t)}"
+										class="btn btn-success" pt:data-dismiss="modal">
+										<span class="fas fa-check"></span>
+										<f:ajax render="@form:txtIdCidade @form:txtNomeCidade"></f:ajax>
+									</h:commandLink>
+								</h:column>
+							</h:dataTable>
+							<br />
+							<div align="right">
+								<button type="button" class="btn btn-danger"
+									data-dismiss="modal" style="width: 120px">Sair</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<br></br>
+		</div>
+	</h:form>
+</h:body>
+</html>
