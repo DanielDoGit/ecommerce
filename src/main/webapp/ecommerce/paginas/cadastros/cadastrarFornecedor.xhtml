@@ -20,13 +20,24 @@
 					<h:messages showDetail="false" id="msg" showSummary="true"
 						globalOnly="true" infoClass="text-info mensagemInfo"
 						warnClass="text-warning mensagemWarning"
-						errorClass="text-dark mensagemError" layout="list"/>
+						errorClass="text-dark mensagemError" layout="list" />
 				</div>
 			</div>
 			<div class="row mb-3 ml-5 pl-4">
 				<div class="col-7 offset-2">
+					<label>Tipo titular</label>
+					<h:selectOneMenu class="form-control"
+						value="#{fornecedorController.fornecedorDto.pessoaFisicaJuridica}">
+						<f:converter converterId="customEnumConverter" />
+						<f:selectItems value="#{fornecedorController.getValuesTipoPessoa()}" var="s" itemLabel="#{s}" />
+					</h:selectOneMenu>
+				</div>
+			</div>
+
+			<div class="row mb-3 ml-5 pl-4">
+				<div class="col-7 offset-2">
 					<label>Razão Social</label>
-					<h:inputText value="#{estabelecimentoController.dto.nome}"
+					<h:inputText value="#{fornecedorController.fornecedorDto.nome}"
 						class="form-control" align="center" id="txtusuario"
 						autocomplete="off" required="true"></h:inputText>
 					<h:message for="txtusuario" showDetail="false" showSummary="true"
@@ -36,7 +47,7 @@
 			<div class="row mb-3 ml-5 pl-4">
 				<div class="col-3 offset-2">
 					<label>CNPJ</label>
-					<h:inputText value="#{estabelecimentoController.dto.cnpj}"
+					<h:inputText value="#{fornecedorController.fornecedorDto.cpfCnpj}"
 						class="form-control" id="txtcnpj" autocomplete="off"
 						required="true" converter="converterCNPJ">
 					</h:inputText>
@@ -48,7 +59,7 @@
 			<div class="row mb-3 ml-5 pl-4">
 				<div class="col-7 offset-2">
 					<label>Contato</label>
-					<h:inputText value="#{estabelecimentoController.dto.contato}"
+					<h:inputText value="#{fornecedorController.fornecedorDto.contato}"
 						class="form-control" id="txtcontato" autocomplete="off"
 						immediate="true"></h:inputText>
 					<h:message for="txtcontato" showDetail="false" showSummary="true"
@@ -59,7 +70,7 @@
 			<div class="row mb-3 ml-5 pl-4">
 				<div class="col-7 offset-2">
 					<label>Endereço</label>
-					<h:inputText value="#{estabelecimentoController.dto.endereco}"
+					<h:inputText value="#{fornecedorController.fornecedorDto.endereco}"
 						class="form-control" id="txtendereco" autocomplete="off"
 						immediate="true"></h:inputText>
 					<h:message for="txtendereco" showDetail="false" showSummary="true"
@@ -70,7 +81,7 @@
 			<div class="row mb-3 ml-5 pl-4">
 				<div class="col-4 offset-2">
 					<label>Bairro</label>
-					<h:inputText value="#{estabelecimentoController.dto.bairro}"
+					<h:inputText value="#{fornecedorController.fornecedorDto.bairro}"
 						class="form-control" id="txtbairro" autocomplete="off"
 						immediate="true"></h:inputText>
 					<h:message for="txtbairro" showDetail="false" showSummary="true"
@@ -83,18 +94,21 @@
 				<label class="col-12 offset-2">Cidade</label>
 				<div class="form-inline offset-2">
 					<div class="form-group ml-3">
-						<h:inputText value="#{estabelecimentoController.dto.idCidade}"
+						<h:inputText
+							value="#{fornecedorController.fornecedorDto.idCidade}"
 							class="form-control col-2" id="txtIdCidade" autocomplete="off"
 							required="true">
-							<f:ajax listener="#{estabelecimentoController.carregarCidade}"
+							<f:ajax listener="#{fornecedorController.carregarCidade}"
 								execute="txtIdCidade" render="txtIdCidade txtNomeCidade"></f:ajax>
 						</h:inputText>
 						<label>&#160;</label>
-						<h:inputText value="#{estabelecimentoController.dto.nomeCidade}"
+						<h:inputText
+							value="#{fornecedorController.fornecedorDto.nomeCidade}"
 							class="form-control col-8" id="txtNomeCidade" autocomplete="off"
 							required="true" disabled="true"></h:inputText>
 						<label>&#160;</label>
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pesquisarModalCidade" id="botaoProcurar">
+						<button type="button" class="btn btn-primary" data-toggle="modal"
+							data-target="#pesquisarModalCidade" id="botaoProcurar">
 							<span class="fas fa-search"></span>
 						</button>
 						<h:message for="txtIdCidade" showDetail="false" showSummary="true"
@@ -104,12 +118,24 @@
 
 			</div>
 
+			<div class="row mb-3 ml-5 pl-4">
+				<div class="col-2 offset-2">
+					<label>Ativo</label>
+					<h:selectBooleanCheckbox
+						value="#{funcionarioController.funcionarioDto.ativo}"
+						class="form-control" required="true" id="ativo" autocomplete="off"
+						redisplay="true"></h:selectBooleanCheckbox>
+					<h:message for="ativo" showDetail="false" showSummary="true"
+						styleClass="error" />
+				</div>
+			</div>
+
 			<div class="row mb-2 ml-5 pl-3">
 				<div class="col-6 offset-3" align="right">
-					<h:commandButton action="#{estabelecimentoController.cancelar}"
+					<h:commandButton action="#{fornecedorController.cancelar}"
 						value="Cancelar" immediate="true" class="btn btn-primary"
 						style="width: 120px; margin: 5px"></h:commandButton>
-					<h:commandButton action="#{estabelecimentoController.confirmar}"
+					<h:commandButton action="#{fornecedorController.confirmar}"
 						value="Gravar" class="btn btn-primary"
 						style="width: 120px; margin: 5px"
 						onclick="return validarSubmit();"></h:commandButton>
@@ -122,19 +148,20 @@
 						<div class="modal-body">
 							<h4>Pesquisa de Cidade</h4>
 							<div class="input-group-append">
-								<h:inputText value="#{estabelecimentoController.argumentoBusca}" class="form-control"
-									id="nomeCidadePesquisa" autocomplete="off" style="width: 100%">
+								<h:inputText value="#{fornecedorController.argumentoBusca}"
+									class="form-control" id="nomeCidadePesquisa" autocomplete="off"
+									style="width: 100%">
 								</h:inputText>
 								<h:commandLink class="btn btn-primary" type="button"
-									action="#{estabelecimentoController.pesquisarCidade}">
+									action="#{fornecedorController.pesquisarCidade}">
 									<span class="fas fa-search"></span>
 									<f:ajax execute="nomeCidadePesquisa" render="tabela"></f:ajax>
 								</h:commandLink>
 							</div>
 							<br /> <br />
 							<h:dataTable border="0"
-								value="#{estabelecimentoController.listaCidadePesquisada}"
-								var="t" class="table table-hover"
+								value="#{fornecedorController.listaCidadePesquisada}" var="t"
+								class="table table-hover"
 								columnClasses="center, left, colunaAceitar" id="tabela">
 								<h:column id="column1">
 									<f:facet name="header">
@@ -159,7 +186,7 @@
 										<h:outputText value="Selecionar"></h:outputText>
 									</f:facet>
 									<h:commandLink
-										action="#{estabelecimentoController.selecionarCidade(t)}"
+										action="#{fornecedorController.selecionarCidade(t)}"
 										class="btn btn-success" pt:data-dismiss="modal">
 										<span class="fas fa-check"></span>
 										<f:ajax render="@form:txtIdCidade @form:txtNomeCidade"></f:ajax>

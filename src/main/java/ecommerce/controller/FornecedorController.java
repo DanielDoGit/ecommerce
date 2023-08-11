@@ -5,16 +5,22 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ecommerce.beans.Cidade;
 import ecommerce.beans.Fornecedor;
 import ecommerce.dao.CidadeDao;
 import ecommerce.dao.FornecedorDao;
+import ecommerce.dto.CidadeDto;
 import ecommerce.dto.FornecedorDto;
 import ecommerce.uteis.GerenciadorConversa;
 import ecommerce.uteis.GerenciadorToken;
 import ecommerce.uteis.PermissaoExeption;
+import ecommerce.uteis.TipoPessoa;
 import ecommerce.uteis.TokenException;
 import ecommerce.uteis.Uteis;
 import jakarta.enterprise.context.ConversationScoped;
+import jakarta.faces.convert.EnumConverter;
+import jakarta.faces.convert.FacesConverter;
+import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
@@ -22,46 +28,49 @@ import jakarta.transaction.Transactional;
 @Named
 @Transactional
 @ConversationScoped
-public class FornecedorController implements Serializable{
+@FacesConverter(forClass = EnumConverter.class)
+public class FornecedorController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
 	private LoginController loginController;
-	
+
 	@Inject
 	private FornecedorDao fornecedorDao;
-	
+
 	@Inject
 	private CidadeDao cidadeDao;
-	
+
 	@Inject
 	private Uteis uteis;
-	
+
 	@Inject
 	private GerenciadorConversa conversa;
-	
+
 	@Inject
 	private GerenciadorToken token;
-	
+
 	private FornecedorDto fornecedorDto;
 	private List<FornecedorDto> listaFornecedoresCadastrados;
-	
-	private final String paginaConsulta = "/ecommerce/cadastros/consultarFornecedor.xhtml";
-	private final String paginaCadastro = "/ecommerce/cadastros/cadastrarFornecedor.xhtml";
+	private List<CidadeDto> listaCidadePesquisada;
+
+	private final String paginaConsulta = "/ecommerce/paginas/cadastros/consultarFornecedor.xhtml";
+	private final String paginaCadastro = "/ecommerce/paginas/cadastros/cadastrarFornecedor.xhtml";
 
 	private final List<String> opcoesBusca = Arrays.asList("Nome", "Cidade", "Código");
 	private String argumentoBusca;
 	private String opcaoBuscaSelecionada;
 	private String mensagem;
 	private boolean inclusao = false;
-	
+
 	public String prepararConsulta() {
 		try {
 			conversa.iniciar();
 			token.gerarToken();
 			loginController.possuiPermissao("Consultar fornecedor");
-			listaFornecedoresCadastrados = fornecedorDao.buscarUltimosCadastrados().stream().map(FornecedorDto::new).collect(Collectors.toList());
+			listaFornecedoresCadastrados = fornecedorDao.buscarUltimosCadastrados().stream().map(FornecedorDto::new)
+					.collect(Collectors.toList());
 			atualizarMensagem();
 			return paginaConsulta;
 		} catch (PermissaoExeption e) {
@@ -69,11 +78,12 @@ public class FornecedorController implements Serializable{
 			return null;
 		}
 	}
-	
+
 	private void atualizarMensagem() {
-		mensagem = listaFornecedoresCadastrados.isEmpty() ? "Não há fornecedores listados..." : "Quantidade fornecedores listados: "+listaFornecedoresCadastrados.size();
+		mensagem = listaFornecedoresCadastrados.isEmpty() ? "Não há fornecedores listados..."
+				: "Quantidade fornecedores listados: " + listaFornecedoresCadastrados.size();
 	}
-	
+
 	public String prepararCadastro() {
 		try {
 			loginController.possuiPermissao("Cadastrar fornecedor");
@@ -87,7 +97,7 @@ public class FornecedorController implements Serializable{
 			return null;
 		}
 	}
-	
+
 	public String prepararAlteracao(Integer id) {
 		try {
 			loginController.possuiPermissao("Alterar fornecedor");
@@ -100,7 +110,6 @@ public class FornecedorController implements Serializable{
 			return null;
 		}
 	}
-	
 
 	public void atualizarPesquisa() {
 		try {
@@ -110,17 +119,19 @@ public class FornecedorController implements Serializable{
 				if (f != null) {
 					listaFornecedoresCadastrados.add(new FornecedorDto(f));
 				}
-			}else if (opcoesBusca.get(1).equals(opcaoBuscaSelecionada)) {
-				listaFornecedoresCadastrados = fornecedorDao.buscarSimilaridade("nome", argumentoBusca).stream().map(FornecedorDto::new).collect(Collectors.toList());
-			}else {
-				listaFornecedoresCadastrados = fornecedorDao.buscarCidade(argumentoBusca).stream().map(FornecedorDto::new).collect(Collectors.toList());
+			} else if (opcoesBusca.get(1).equals(opcaoBuscaSelecionada)) {
+				listaFornecedoresCadastrados = fornecedorDao.buscarSimilaridade("nome", argumentoBusca).stream()
+						.map(FornecedorDto::new).collect(Collectors.toList());
+			} else {
+				listaFornecedoresCadastrados = fornecedorDao.buscarCidade(argumentoBusca).stream()
+						.map(FornecedorDto::new).collect(Collectors.toList());
 			}
 			atualizarMensagem();
 		} catch (NumberFormatException e) {
 			uteis.adicionarMensagemAdvertencia("O argumento digitado é inválido para a pesquisa!");
 		}
 	}
-	
+
 	public String excluir(Integer id) {
 		try {
 			token.validarToken();
@@ -132,7 +143,41 @@ public class FornecedorController implements Serializable{
 		} catch (PermissaoExeption | TokenException e) {
 			uteis.adicionarMensagemErro(e);
 			return null;
-		} 
+		}
+		
+	}
+
+	public void pesquisarCidade() {
+		List<Cidade> listaCidade = cidadeDao.consultarCidadeNome(argumentoBusca);
+		listaCidadePesquisada = listaCidade.stream().map(CidadeDto::new).collect(Collectors.toList());
+	}
+
+	public void selecionarCidade(CidadeDto t) {
+		mostrarCidade(t.toCidade());
+	}
+
+	public void mostrarCidade(Cidade c) {
+		if (c != null) {
+			fornecedorDto.setIdCidade(c.getCodigo().toString());
+			fornecedorDto.setNomeCidade(c.getNome());
+		} else {
+			fornecedorDto.setIdCidade(null);
+			fornecedorDto.setNomeCidade(null);
+		}
+	}
+	
+	public void carregarCidade(AjaxBehaviorEvent e) {
+		try {
+			Cidade c = cidadeDao.getById(Integer.valueOf(fornecedorDto.getIdCidade()));
+			mostrarCidade(c);
+		} catch (NumberFormatException e1) {
+			uteis.adicionarMensagemAdvertencia("Argumento de pesquisa inválido!");
+			mostrarCidade(null);
+		}
+	}
+
+	public TipoPessoa[] getValuesTipoPessoa() {
+		return TipoPessoa.values();
 	}
 
 	public LoginController getLoginController() {
@@ -246,7 +291,13 @@ public class FornecedorController implements Serializable{
 	public void setInclusao(boolean inclusao) {
 		this.inclusao = inclusao;
 	}
-	
-	
-	
+
+	public List<CidadeDto> getListaCidadePesquisada() {
+		return listaCidadePesquisada;
+	}
+
+	public void setListaCidadePesquisada(List<CidadeDto> listaCidadePesquisada) {
+		this.listaCidadePesquisada = listaCidadePesquisada;
+	}
+
 }

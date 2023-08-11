@@ -7,16 +7,10 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 <h:head>
 	<title>Ecommerce</title>
-	<script>
-		function ativarTabPrincipal() {
-			$('#myTab a[href="#principal"]').tab('show');
-		}
-	</script>
 	<ui:include src="/ecommerce/paginas/uteis/scripts.xhtml" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </h:head>
-<h:body class="bg-info"
-	onload="setFocus('form:nome'); ativarTabPrincipal()">
+<h:body class="bg-info">
 	<h:form id="form" class="needs-validation" pt:novalidate="novalidate">
 		<div class="container bg-light rounded-bottom divcentral">
 			<ui:include src="/ecommerce/paginas/uteis/barramenu.xhtml" />
