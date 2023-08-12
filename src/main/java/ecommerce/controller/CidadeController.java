@@ -163,7 +163,6 @@ public class CidadeController implements Serializable {
 	}
 
 	public String cancelar() {
-		conversa.finalizar();
 		return consultarCidade;
 	}
 

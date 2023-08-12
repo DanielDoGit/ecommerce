@@ -18,8 +18,6 @@ import ecommerce.uteis.TipoPessoa;
 import ecommerce.uteis.TokenException;
 import ecommerce.uteis.Uteis;
 import jakarta.enterprise.context.ConversationScoped;
-import jakarta.faces.convert.EnumConverter;
-import jakarta.faces.convert.FacesConverter;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -28,7 +26,6 @@ import jakarta.transaction.Transactional;
 @Named
 @Transactional
 @ConversationScoped
-@FacesConverter(forClass = EnumConverter.class)
 public class FornecedorController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -103,7 +100,7 @@ public class FornecedorController implements Serializable {
 			loginController.possuiPermissao("Alterar fornecedor");
 			token.gerarToken();
 			fornecedorDto = new FornecedorDto(fornecedorDao.getById(id));
-			inclusao = true;
+			inclusao = false;
 			return paginaCadastro;
 		} catch (PermissaoExeption e) {
 			uteis.adicionarMensagemErro(e);
@@ -174,6 +171,50 @@ public class FornecedorController implements Serializable {
 			uteis.adicionarMensagemAdvertencia("Argumento de pesquisa inválido!");
 			mostrarCidade(null);
 		}
+	}
+	
+	public String confirmar() {
+		try {
+			token.validarToken();
+			if (!validarDados()) {
+				return null;
+			}
+			Fornecedor f = fornecedorDto.toFornecedor(cidadeDao);
+			if (inclusao) {
+				fornecedorDao.cadastrar(f);
+			}else {
+				fornecedorDao.editar(f);
+			}
+			atualizarPesquisa();	
+			uteis.adicionarMensagemSucessoRegistro();
+			return paginaConsulta;
+		} catch (TokenException e) {
+			uteis.adicionarMensagemErro(e);
+			return null;
+		}
+	}
+	
+	private boolean validarDados() {
+		boolean resultado = false;
+		List<Fornecedor> listaFornecedor = fornecedorDao.buscarSimilaridade("nome", fornecedorDto.getNome());
+		if (listaFornecedor.isEmpty()) {
+			resultado = true;
+		} else if (listaFornecedor.size() > 1) {
+			resultado = false;
+		} else {
+			Fornecedor f = listaFornecedor.get(0);
+			if (fornecedorDto.getCodigo().equals(f.getCodigo())) {
+				resultado = true;
+			}
+		}
+		if (resultado == false) {
+			uteis.adicionarMensagemAdvertencia("Fornecedor com nome já cadastrado!");
+		}
+		return resultado;
+	}
+	
+	public String cancelar() {
+		return paginaConsulta;
 	}
 
 	public TipoPessoa[] getValuesTipoPessoa() {

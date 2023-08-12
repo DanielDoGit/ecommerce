@@ -23,16 +23,18 @@
 						errorClass="text-dark mensagemError" layout="list" />
 				</div>
 			</div>
+
 			<div class="row mb-3 ml-5 pl-4">
 				<div class="col-7 offset-2">
 					<label>Tipo titular</label>
 					<h:selectOneMenu class="form-control"
-						value="#{fornecedorController.fornecedorDto.pessoaFisicaJuridica}">
-						<f:converter converterId="customEnumConverter" />
+						value="#{fornecedorController.fornecedorDto.pessoaFisicaJuridica}"
+						converter="tipoPessoaEnumConverter" id="tipoPessoa">
 						<f:selectItems value="#{fornecedorController.getValuesTipoPessoa()}" var="s" itemLabel="#{s}" />
 					</h:selectOneMenu>
 				</div>
 			</div>
+
 
 			<div class="row mb-3 ml-5 pl-4">
 				<div class="col-7 offset-2">
@@ -46,12 +48,12 @@
 			</div>
 			<div class="row mb-3 ml-5 pl-4">
 				<div class="col-3 offset-2">
-					<label>CNPJ</label>
+					<label>CPF/CNPJ</label>
 					<h:inputText value="#{fornecedorController.fornecedorDto.cpfCnpj}"
-						class="form-control" id="txtcnpj" autocomplete="off"
-						required="true" converter="converterCNPJ">
+						class="form-control" id="txtCPFCNPJ" autocomplete="off"
+						required="true" converter="converterCPFCNPJ">
 					</h:inputText>
-					<h:message for="txtcnpj" showDetail="false" showSummary="true"
+					<h:message for="txtCPFCNPJ" showDetail="false" showSummary="true"
 						styleClass="error" />
 				</div>
 			</div>
@@ -122,9 +124,8 @@
 				<div class="col-2 offset-2">
 					<label>Ativo</label>
 					<h:selectBooleanCheckbox
-						value="#{funcionarioController.funcionarioDto.ativo}"
-						class="form-control" required="true" id="ativo" autocomplete="off"
-						redisplay="true"></h:selectBooleanCheckbox>
+						value="#{fornecedorController.fornecedorDto.ativo}"
+						class="form-control" required="true" id="ativo" autocomplete="off"></h:selectBooleanCheckbox>
 					<h:message for="ativo" showDetail="false" showSummary="true"
 						styleClass="error" />
 				</div>

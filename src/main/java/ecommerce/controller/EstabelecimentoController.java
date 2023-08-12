@@ -76,7 +76,6 @@ public class EstabelecimentoController implements Serializable {
 	}
 
 	public String cancelar() {
-		conversa.finalizar();
 		return uteis.getCaminhoInicial();
 	}
 

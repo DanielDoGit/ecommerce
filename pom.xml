@@ -22,17 +22,17 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>6.2.6.Final</version>
 		</dependency>
-		<dependency>
-			<groupId>org.primefaces</groupId>
-			<artifactId>primefaces</artifactId>
-			<version>11.0.0</version>
-			<classifier>jakarta</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.npm</groupId>
-			<artifactId>primeflex</artifactId>
-			<version>2.0.0</version>
-		</dependency>
+		<!--		<dependency>-->
+		<!--			<groupId>org.primefaces</groupId>-->
+		<!--			<artifactId>primefaces</artifactId>-->
+		<!--			<version>11.0.0</version>-->
+		<!--			<classifier>jakarta</classifier>-->
+		<!--		</dependency>-->
+		<!--		<dependency>-->
+		<!--			<groupId>org.webjars.npm</groupId>-->
+		<!--			<artifactId>primeflex</artifactId>-->
+		<!--			<version>2.0.0</version>-->
+		<!--		</dependency>-->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>

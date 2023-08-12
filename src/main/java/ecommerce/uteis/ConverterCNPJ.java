@@ -37,7 +37,7 @@ public class ConverterCNPJ implements Converter<String>, Serializable {
 	public String getAsString(FacesContext arg0, UIComponent arg1, String arg2) throws ConverterException {
 		String result = "";
 		if (arg2 != null) {
-			result = formatadores.formatarCpf(arg2.toString());
+			result = formatadores.formatarCnpj(arg2.toString());
 		}
 		return result;
 	}
