@@ -1,5 +1,7 @@
 package ecommerce.uteis;
 
+import java.text.NumberFormat;
+
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.FacesConverter;
@@ -14,7 +16,6 @@ public class CustomBigDecimalConverter extends NumberConverter {
 		setType("currency");
 		value = removerFormatacao(value);
 		return super.getAsString(context, component, value);
-
 	}
 
 	@Override
