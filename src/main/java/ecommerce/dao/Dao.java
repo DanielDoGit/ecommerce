@@ -9,6 +9,8 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
 
 @Dependent
@@ -74,6 +76,16 @@ public class Dao<T> implements Serializable{
 		cq.from(klass);
 		Query q = em.createQuery(cq).setMaxResults(quantidade_registros);
 		return q.getResultList();
+	}
+	
+	public <K> List<T> buscarSimilaridadeInnerJoin(Class<K> joinClass, String parameterField, String argJoing){
+		CriteriaBuilder criBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<T> criteriaQuery = criBuilder.createQuery(klass);
+		Root<T> principal = criteriaQuery.from(klass);
+		
+		Join<T, K> joinRealized = principal.join("cidade", JoinType.INNER);
+		criteriaQuery.select(principal).where(criBuilder.like(criBuilder.lower(joinRealized.get(parameterField)), "%"+argJoing.toLowerCase()+"%"));
+		return em.createQuery(criteriaQuery).getResultList();
 	}
 
 	public EntityManager getEm() {

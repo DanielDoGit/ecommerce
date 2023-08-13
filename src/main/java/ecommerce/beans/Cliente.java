@@ -3,6 +3,7 @@ package ecommerce.beans;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -142,6 +143,25 @@ public class Cliente implements Serializable {
 	public void setDataCadastro(LocalDate dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(codigo, nome);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cliente other = (Cliente) obj;
+		return Objects.equals(codigo, other.codigo) && Objects.equals(nome, other.nome);
+	}
+	
+	
 
 
 }

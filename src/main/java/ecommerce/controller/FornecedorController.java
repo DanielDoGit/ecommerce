@@ -117,10 +117,10 @@ public class FornecedorController implements Serializable {
 					listaFornecedoresCadastrados.add(new FornecedorDto(f));
 				}
 			} else if (opcoesBusca.get(1).equals(opcaoBuscaSelecionada)) {
-				listaFornecedoresCadastrados = fornecedorDao.buscarSimilaridade("nome", argumentoBusca).stream()
+				listaFornecedoresCadastrados = fornecedorDao.buscarSimilaridadeInnerJoin(Cidade.class, "nome", argumentoBusca).stream()
 						.map(FornecedorDto::new).collect(Collectors.toList());
 			} else {
-				listaFornecedoresCadastrados = fornecedorDao.buscarCidade(argumentoBusca).stream()
+				listaFornecedoresCadastrados = fornecedorDao.buscarSimilaridade("nome", argumentoBusca).stream()
 						.map(FornecedorDto::new).collect(Collectors.toList());
 			}
 			atualizarMensagem();
