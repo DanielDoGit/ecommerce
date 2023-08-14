@@ -7,10 +7,15 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 <h:head>
 	<title>Ecommerce</title>
+	<script>
+		function ativarTabPrincipal(){
+	   		$('#myTab a[href="#principal"]').tab('show');
+		}
+	</script>
 	<ui:include src="/ecommerce/paginas/uteis/scripts.xhtml" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </h:head>
-<h:body class="bg-info">
+<h:body class="bg-info" onload="setFocus('form:nome'); ativarTabPrincipal()">
 	<h:form id="form" class="needs-validation" pt:novalidate="novalidate">
 		<div class="container bg-light rounded-bottom divcentral">
 			<ui:include src="/ecommerce/paginas/uteis/barramenu.xhtml" />
@@ -147,7 +152,7 @@
 							<div class="row mb-3 mt-4">
 								<h:selectManyCheckbox 
 									value="#{funcionarioController.funcionarioDto.listaPermissoes}"
-									layout="pageDirection" border="0" id="teste" converter="converterPermissoesToString"
+									layout="pageDirection" border="0" id="teste"
 									class="table-borderless table-hover">
 
 									<f:selectItems
