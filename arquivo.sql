@@ -127,8 +127,8 @@ CREATE TABLE public.cliente (
     bairro character varying(255),
     contato text,
     cpf character varying(25),
-    limitecredito numeric(10,2) DEFAULT 0.00,
-    ativo character(1) DEFAULT 'T'::bpchar,
+    credito numeric(10,2) DEFAULT 0.00,
+    ativo character(5) DEFAULT 'T'::bpchar,
     datacadastro date,
     cidade integer
 );
@@ -277,7 +277,7 @@ CREATE TABLE public.fornecedor (
     bairro character varying(255),
     endereco character varying(255),
     contato text,
-    ativo character(1) DEFAULT 'T'::bpchar,
+    ativo character(5) DEFAULT 'T'::bpchar,
     cidade integer,
     fiscajuridica integer
 );
@@ -595,7 +595,8 @@ COPY public.cidade (codigo, nome, uf) FROM stdin;
 -- Data for Name: cliente; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.cliente (codigo, nome, endereco, bairro, contato, cpf, limitecredito, ativo, datacadastro, cidade) FROM stdin;
+COPY public.cliente (codigo, nome, endereco, bairro, contato, cpf, credito, ativo, datacadastro, cidade) FROM stdin;
+1	Daniel Ausech Esperandio	Rua teste	teste	teste	89024820065	2000.00	true 	2023-08-12	2
 \.
 
 
@@ -637,6 +638,7 @@ COPY public.formapagamento (codigo, aparecercaixa, descricao, compensado) FROM s
 --
 
 COPY public.fornecedor (codigo, nome, cpfcnpj, bairro, endereco, contato, ativo, cidade, fiscajuridica) FROM stdin;
+3	Energisa	94018697074	Centro	Rua Altamiro Prado 23	Fernando 3341-5628	true 	2	0
 \.
 
 
@@ -655,16 +657,22 @@ COPY public.funcionario (codigo, nome, cpf, bairro, endereco, login, senha, ativ
 --
 
 COPY public.funcionariopermissao (codigo, funcionario, permissao) FROM stdin;
-82	1	1
-83	1	11
-84	1	17
-85	1	13
-86	1	16
-87	1	15
-88	1	10
-89	1	12
-90	1	14
-91	1	18
+157	1	1
+158	1	10
+159	1	11
+160	1	12
+161	1	13
+162	1	14
+163	1	15
+164	1	16
+165	1	17
+166	1	18
+167	1	19
+168	1	20
+169	1	21
+170	1	22
+171	1	23
+172	1	24
 73	3	11
 74	3	13
 75	3	1
@@ -716,6 +724,12 @@ COPY public.permissao (codigo, descricao) FROM stdin;
 16	Cadastrar funcionario
 17	Excluir funcionario
 18	Consultar fornecedor
+19	Cadastrar fornecedor
+20	Alterar fornecedor
+21	Excluir fornecedor
+22	Consultar cliente
+23	Cadastrar cliente
+24	Alterar cliente
 \.
 
 
@@ -768,7 +782,7 @@ SELECT pg_catalog.setval('public.cidade_codigo_seq', 7, true);
 -- Name: cliente_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.cliente_codigo_seq', 1, false);
+SELECT pg_catalog.setval('public.cliente_codigo_seq', 1, true);
 
 
 --
@@ -803,7 +817,7 @@ SELECT pg_catalog.setval('public.formapagmento_codigo_seq', 1, false);
 -- Name: fornecedor_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.fornecedor_codigo_seq', 1, false);
+SELECT pg_catalog.setval('public.fornecedor_codigo_seq', 3, true);
 
 
 --
@@ -817,7 +831,7 @@ SELECT pg_catalog.setval('public.funcionario_codigo_seq', 3, true);
 -- Name: funcionariopermissao_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.funcionariopermissao_codigo_seq', 91, true);
+SELECT pg_catalog.setval('public.funcionariopermissao_codigo_seq', 172, true);
 
 
 --
@@ -845,7 +859,7 @@ SELECT pg_catalog.setval('public.parcela_codigo_seq', 1, false);
 -- Name: permissao_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.permissao_codigo_seq', 18, true);
+SELECT pg_catalog.setval('public.permissao_codigo_seq', 24, true);
 
 
 --

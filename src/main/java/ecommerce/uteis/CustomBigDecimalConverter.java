@@ -1,7 +1,5 @@
 package ecommerce.uteis;
 
-import java.text.NumberFormat;
-
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.FacesConverter;
@@ -10,7 +8,6 @@ import jakarta.faces.convert.NumberConverter;
 @FacesConverter(value = "bigDecimalToCurrency")
 public class CustomBigDecimalConverter extends NumberConverter {
 
-	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		setCurrencySymbol("R$");
 		setType("currency");
