@@ -1,10 +1,10 @@
 package ecommerce.controller;
 
 import java.io.File;
-
 import java.io.FileInputStream;
 import java.nio.charset.Charset;
 
+import ecommerce.uteis.Uteis;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -19,6 +19,9 @@ public class ErroGenericoController {
 
 	@Inject
 	private ServletContext servletContext;
+	
+	@Inject
+	private Uteis uteis;
 
 	@PostConstruct
 	public void inicializar() {
