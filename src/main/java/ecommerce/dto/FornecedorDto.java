@@ -5,7 +5,7 @@ import java.util.Objects;
 
 import ecommerce.beans.Fornecedor;
 import ecommerce.dao.CidadeDao;
-import ecommerce.uteis.TipoPessoa;
+import ecommerce.beans.TipoPessoa;
 
 public class FornecedorDto implements Serializable {
 

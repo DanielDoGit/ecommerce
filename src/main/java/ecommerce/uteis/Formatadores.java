@@ -40,5 +40,23 @@ public class Formatadores implements Serializable {
 			return "";
 		}
 	}
+	
+	public String removerEspacoDuplicado(String expressao) {
+		int qtdEspaco = 0;
+		StringBuilder st = new StringBuilder();
+		for (char c : expressao.toCharArray()) {
+			int i = (int)c;
+			if (i != 32) {
+				st.append(c);
+				qtdEspaco = 0; 
+			}else if (i == 32){
+				qtdEspaco++;
+				if (qtdEspaco == 1) {
+					st.append(c);
+				}
+			}
+		}
+		return st.toString().trim();
+	}
 
 }

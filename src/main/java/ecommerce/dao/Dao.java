@@ -87,6 +87,16 @@ public class Dao<T> implements Serializable{
 		criteriaQuery.select(principal).where(criBuilder.like(criBuilder.lower(joinRealized.get(parameterField)), "%"+argJoing.toLowerCase()+"%"));
 		return em.createQuery(criteriaQuery).getResultList();
 	}
+	
+	public <K> T buscarExatidaoInnerJoin(Class<K> joinClass, String parameterField, String argJoing){
+		CriteriaBuilder criBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<T> criteriaQuery = criBuilder.createQuery(klass);
+		Root<T> principal = criteriaQuery.from(klass);
+		
+		Join<T, K> joinRealized = principal.join("cidade", JoinType.INNER);
+		criteriaQuery.select(principal).where(criBuilder.like(criBuilder.lower(joinRealized.get(parameterField)), "%"+argJoing.toLowerCase()+"%"));
+		return em.createQuery(criteriaQuery).getSingleResult();
+	}
 
 	public EntityManager getEm() {
 		return em;

@@ -13,5 +13,5 @@ public class ClienteDao extends Dao<Cliente> {
 	public ClienteDao() {
 		super(Cliente.class);
 	}
-
+	
 }

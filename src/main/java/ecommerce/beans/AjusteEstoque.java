@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,10 +33,11 @@ public class AjusteEstoque implements Serializable{
 	
 	private BigDecimal quantidade;
 	
-	private String tipo;
-	
+	@Enumerated(value =  EnumType.ORDINAL)
+	private TipoMovimentacao tipo;
+
 	public AjusteEstoque(Integer codigo, LocalDate dataAjuste, String motivo, Produto produto, BigDecimal quantidade,
-			String tipo) {
+			TipoMovimentacao tipo) {
 		super();
 		this.codigo = codigo;
 		this.dataAjuste = dataAjuste;
@@ -43,9 +46,26 @@ public class AjusteEstoque implements Serializable{
 		this.quantidade = quantidade;
 		this.tipo = tipo;
 	}
-
+	
 	public AjusteEstoque() {
 		super();
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(codigo);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AjusteEstoque other = (AjusteEstoque) obj;
+		return Objects.equals(codigo, other.codigo);
 	}
 
 	public Integer getCodigo() {
@@ -88,29 +108,16 @@ public class AjusteEstoque implements Serializable{
 		this.quantidade = quantidade;
 	}
 
-	public String getTipo() {
+	public TipoMovimentacao getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(TipoMovimentacao tipo) {
 		this.tipo = tipo;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(codigo);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AjusteEstoque other = (AjusteEstoque) obj;
-		return Objects.equals(codigo, other.codigo);
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	} 
 	
 

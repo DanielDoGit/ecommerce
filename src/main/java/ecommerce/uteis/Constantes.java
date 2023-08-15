@@ -6,18 +6,11 @@ import java.util.List;
 
 import ecommerce.beans.AjusteEstoque;
 import ecommerce.beans.ItemVenda;
-import jakarta.enterprise.context.RequestScoped;
 
-@RequestScoped
 public class Constantes implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final String ENTRADA = "Entrada";
-	public static final String SAIDA = "Saida";
-	public static final String CREDITO = "Credito";
-	public static final String DEBITO = "Debito";
-
 	public final static List<String> origemEvento = Arrays.asList("Ajuste de estoque", "Venda", "Ordem de servico");
 
 	public static String getDescricaoAjusteEstoqueExcluido(AjusteEstoque e) {

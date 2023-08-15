@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Ecommerce</title>
+	<ui:include src="/ecommerce/paginas/uteis/scripts.xhtml" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+<h:body class="bg-info" onload="setFocus('form:argumentoBusca');">
+	<h:form id="form">
+		<div class="container bg-light rounded-bottom divcentral">
+			<ui:include src="/ecommerce/paginas/uteis/barramenu.xhtml" />
+			<h1 align="center">Consulta de Produto</h1>
+			<br />
+			<div class="row mb-3">
+				<div class="col-3">
+					<h:outputLabel>Campo</h:outputLabel>
+					<h:selectOneMenu class="form-control" value="#{produtoController.opcaoBuscaSelecionada}">
+						<f:selectItems value="#{produtoController.opcoesBusca}"></f:selectItems>
+					</h:selectOneMenu>
+				</div>
+				<div class="col-9">
+					<h:outputLabel>Pesquisar por</h:outputLabel>
+					<div class="input-group mb-3">
+						<h:inputText value="#{produtoController.argumentoBusca}" id="argumentoBusca" class="form-control" autocomplete="off"></h:inputText>
+						<div class="input-group-append">
+							<h:commandLink actionListener="#{produtoController.atualizarPesquisa}" class="btn btn-primary">
+								<span class="fas fa-search"></span>
+							</h:commandLink>
+							&nbsp;
+							<h:commandLink action="#{produtoController.prepararCadastro}" class="btn btn-primary">
+								<span class="fas fa-plus"></span>
+							</h:commandLink>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<h:dataTable id="table" border="0" value="#{produtoController.listaProdutosPesquisados}" var="s" class="table table-hover" columnClasses="center, left, left, colunaEditar, colunaExcluir">
+						<h:column id="column1">
+							<f:facet name="header">
+								<h:outputText value="ID"></h:outputText>
+							</f:facet>
+							<h:outputText value="#{s.codigo}"></h:outputText>
+						</h:column>
+						<h:column id="column2">
+							<f:facet name="header">
+								<h:outputText value="Descrição"></h:outputText>
+							</f:facet>
+							<h:outputText value="#{s.descricao}"></h:outputText>
+						</h:column>
+						<h:column id="column3">
+							<f:facet name="header">
+								<h:outputText value="Fornecedor"></h:outputText>
+							</f:facet>
+							<h:outputText value="#{s.nomeFornecedor}"></h:outputText>
+						</h:column>
+						<h:column id="column4">
+							<f:facet name="header">
+								<h:outputText value="Alterar"></h:outputText>
+							</f:facet>
+							<h:commandLink action="#{produtoController.prepararAlteracao(s.codigo)}" class="btn btn-success">
+								<span class="fas fa-pen"></span>
+							</h:commandLink>
+						</h:column>
+						<h:column id="column5">
+							<f:facet name="header">
+								<h:outputText value="Excluir"></h:outputText>
+							</f:facet>
+							<button type="button" class="btn btn-danger" value="" onclick="return excluir('produto#{s.codigo}')">
+								<span class="fas fa-trash-alt"></span>
+							</button>
+							<h:commandLink action="#{produtoController.excluir(s.codigo)}" class="produto#{s.codigo}"></h:commandLink>
+						</h:column>
+					</h:dataTable>
+				</div>
+			</div>
+			<div class="row mb-4">
+				<div class="col-12" align="center">
+					<h:outputLabel style="color: gray; font-size: 9pt" value="#{produtoController.mensagem}"></h:outputLabel>
+				</div>
+			</div>
+		</div>
+		<br />
+		<br />
+	</h:form>
+</h:body>
+</html>

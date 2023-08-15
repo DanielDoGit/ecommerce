@@ -2,7 +2,6 @@ package ecommerce.beans;
 
 import java.io.Serializable;
 
-import ecommerce.uteis.TipoPessoa;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

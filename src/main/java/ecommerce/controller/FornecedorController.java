@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import ecommerce.beans.Cidade;
 import ecommerce.beans.Fornecedor;
+import ecommerce.beans.TipoPessoa;
 import ecommerce.dao.CidadeDao;
 import ecommerce.dao.FornecedorDao;
 import ecommerce.dto.CidadeDto;
@@ -14,7 +15,6 @@ import ecommerce.dto.FornecedorDto;
 import ecommerce.uteis.GerenciadorConversa;
 import ecommerce.uteis.GerenciadorToken;
 import ecommerce.uteis.PermissaoExeption;
-import ecommerce.uteis.TipoPessoa;
 import ecommerce.uteis.TokenException;
 import ecommerce.uteis.Uteis;
 import jakarta.enterprise.context.ConversationScoped;

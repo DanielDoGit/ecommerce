@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 
+import ecommerce.beans.TipoPessoa;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.html.HtmlSelectOneMenu;

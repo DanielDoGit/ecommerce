@@ -12,26 +12,49 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Produto implements Serializable{
+public class Produto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer codigo;
-	
+
 	private String descricao;
-	
+
 	private BigDecimal margem;
-	
+
 	private BigDecimal precoCusto;
-	
+
 	private BigDecimal precoVenda;
+
+	private boolean ativo;
+
+	@ManyToOne
+	@JoinColumn(name = "fornecedor")
+	private Fornecedor fornecedor;
 	
 	@ManyToOne
-	@JoinColumn(name = "forncedor")
-	private Fornecedor fornecedor;
+	@JoinColumn(name = "grupo")
+	private Grupo grupo;
 
+	public Produto(Integer codigo, String descricao, BigDecimal margem, BigDecimal precoCusto, BigDecimal precoVenda,
+			boolean ativo, Fornecedor fornecedor, Grupo grupo) {
+		super();
+		this.codigo = codigo;
+		this.descricao = descricao;
+		this.margem = margem;
+		this.precoCusto = precoCusto;
+		this.precoVenda = precoVenda;
+		this.ativo = ativo;
+		this.fornecedor = fornecedor;
+		this.grupo = grupo;
+	}
+
+	public Produto() {
+		super();
+	}
+	
 	public Integer getCodigo() {
 		return codigo;
 	}
@@ -96,6 +119,21 @@ public class Produto implements Serializable{
 		Produto other = (Produto) obj;
 		return Objects.equals(codigo, other.codigo) && Objects.equals(descricao, other.descricao);
 	}
-	
-	
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+
+	public Grupo getGrupo() {
+		return grupo;
+	}
+
+	public void setGrupo(Grupo grupo) {
+		this.grupo = grupo;
+	}
+
 }

@@ -5,20 +5,18 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.FacesConverter;
 import jakarta.faces.convert.NumberConverter;
 
-@FacesConverter(value = "bigDecimalToCurrency")
-public class CustomBigDecimalConverter extends NumberConverter {
+@FacesConverter(value = "bigDecimalToNumber")
+public class BigDecimalToNumber extends NumberConverter {
 
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
-		setCurrencySymbol("R$");
-		setType("currency");
+		setType("number");
 		value = removerFormatacao(value);
 		return super.getAsString(context, component, value);
 	}
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object value) {
-		setCurrencySymbol("R$");
-		setType("currency");
+		setType("number");
 		return super.getAsString(context, component, value);
 	}
 

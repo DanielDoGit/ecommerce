@@ -1,4 +1,4 @@
-package ecommerce.uteis;
+package ecommerce.beans;
 
 public enum TipoPessoa {
 	
