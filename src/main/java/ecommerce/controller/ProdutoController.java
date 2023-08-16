@@ -246,7 +246,7 @@ public class ProdutoController implements Serializable {
 			}
 		}
 		if (resultado == false) {
-			uteis.adicionarMensagemAdvertencia("Cliente com nome já cadastrado!");
+			uteis.adicionarMensagemAdvertencia("Produto com descricão já cadastrado!");
 		}
 		return resultado;
 	}
