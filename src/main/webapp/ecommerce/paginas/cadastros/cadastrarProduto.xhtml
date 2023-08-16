@@ -39,6 +39,7 @@
 					<h:inputText value="#{produtoController.produtoDto.margem}"
 						class="form-control" id="txtMargem" autocomplete="off"
 						required="true" converter="bigDecimalToNumber">
+						<f:ajax event="blur" execute="txtMargem" render="@this" immediate="true"></f:ajax>
 					</h:inputText>
 					<h:message for="txtMargem" showDetail="false" showSummary="true"
 						styleClass="error" />
@@ -49,7 +50,9 @@
 					<label>Preço custo</label>
 					<h:inputText value="#{produtoController.produtoDto.precoCusto}"
 						class="form-control" id="txtPrecoCusto" autocomplete="off"
-						required="true" converter="bigDecimalToNumber"></h:inputText>
+						required="true" converter="bigDecimalToCurrency">
+						<f:ajax event="blur" execute="txtPrecoCusto" render="txtPrecoCusto" immediate="true"></f:ajax>
+						</h:inputText>
 					<h:message for="txtPrecoCusto" showDetail="false" showSummary="true"
 						styleClass="error" />
 				</div>
@@ -59,7 +62,9 @@
 					<label>Preço Venda</label>
 					<h:inputText value="#{produtoController.produtoDto.precoVenda}"
 						class="form-control" id="txtPrecoVenda" autocomplete="off"
-						required="true" converter="bigDecimalToNumber"></h:inputText>
+						required="true" converter="bigDecimalToCurrency">
+					<f:ajax event="blur" execute="txtPrecoVenda" render="@this" immediate="true"></f:ajax>
+					</h:inputText>
 					<h:message for="txtPrecoVenda" showDetail="false" showSummary="true"
 						styleClass="error" />
 				</div>
@@ -100,7 +105,32 @@
 							styleClass="error" />
 					</div>
 				</div>
-
+			</div>
+			
+			
+			<div class="row mb-3 ml-5 pl-4">
+				<label class="col-12 offset-2">Grupo</label>
+				<div class="form-inline offset-2">
+					<div class="form-group ml-3">
+						<h:inputText value="#{produtoController.produtoDto.idGrupo}"
+							class="form-control col-2" id="txtIdGrupo" autocomplete="off"
+							required="true">
+							<f:ajax listener="#{produtoController.carregarGrupo}"
+								execute="txtIdGrupo" render="txtIdGrupo txtNomeGrupo"></f:ajax>
+						</h:inputText>
+						<label>&#160;</label>
+						<h:inputText value="#{produtoController.produtoDto.nomeGrupo}"
+							class="form-control col-8" id="txtNomeGrupo" autocomplete="off"
+							required="true" disabled="true"></h:inputText>
+						<label>&#160;</label>
+						<button type="button" class="btn btn-primary" data-toggle="modal"
+							data-target="#pesquisarModalGrupo" id="botaoProcurar">
+							<span class="fas fa-search"></span>
+						</button>
+						<h:message for="txtIdGrupo" showDetail="false" showSummary="true"
+							styleClass="error" />
+					</div>
+				</div>
 			</div>
 
 			
@@ -141,14 +171,14 @@
 								<h:commandLink class="btn btn-primary" type="button"
 									action="#{produtoController.pesquisarFornecedor}">
 									<span class="fas fa-search"></span>
-									<f:ajax execute="nomeFornecedorPesquisa" render="tabela"></f:ajax>
+									<f:ajax execute="nomeFornecedorPesquisa" render="tabelaFornecedor"></f:ajax>
 								</h:commandLink>
 							</div>
 							<br /> <br />
 							<h:dataTable border="0"
 								value="#{produtoController.listaFornecedoresPesquisados}" var="t"
 								class="table table-hover"
-								columnClasses="center, left, colunaAceitar" id="tabela">
+								columnClasses="center, left, colunaAceitar" id="tabelaFornecedor">
 								<h:column id="column1">
 									<f:facet name="header">
 										<h:outputText value="ID"></h:outputText>
@@ -176,6 +206,61 @@
 										class="btn btn-success" pt:data-dismiss="modal">
 										<span class="fas fa-check"></span>
 										<f:ajax render="@form:txtIdFornecedor @form:txtNomeFornecedor"></f:ajax>
+									</h:commandLink>
+								</h:column>
+							</h:dataTable>
+							<br />
+							<div align="right">
+								<button type="button" class="btn btn-danger"
+									data-dismiss="modal" style="width: 120px">Sair</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal" id="pesquisarModalGrupo">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-body">
+							<h4>Pesquisa de Grupo</h4>
+							<div class="input-group-append">
+								<h:inputText value="#{produtoController.argumentoBusca}"
+									class="form-control" id="nomeGrupoPesquisa" autocomplete="off"
+									style="width: 100%">
+								</h:inputText>
+								<h:commandLink class="btn btn-primary" type="button"
+									action="#{produtoController.pesquisarGrupo}">
+									<span class="fas fa-search"></span>
+									<f:ajax execute="nomeGrupoPesquisa" render="tabelaGrupo"></f:ajax>
+								</h:commandLink>
+							</div>
+							<br /> <br />
+							<h:dataTable border="0"
+								value="#{produtoController.listaGruposPesquisados}" var="t"
+								class="table table-hover"
+								columnClasses="center, left, colunaAceitar" id="tabelaGrupo">
+								<h:column id="column1">
+									<f:facet name="header">
+										<h:outputText value="ID"></h:outputText>
+									</f:facet>
+									<h:outputText value="#{t.id}"></h:outputText>
+								</h:column>
+								<h:column id="column2">
+									<f:facet name="header">
+										<h:outputText value="Nome"></h:outputText>
+									</f:facet>
+									<h:outputText value="#{t.nome}"></h:outputText>
+								</h:column>
+								<h:column id="column4">
+									<f:facet name="header">
+										<h:outputText value="Selecionar"></h:outputText>
+									</f:facet>
+									<h:commandLink
+										action="#{produtoController.selecionarGrupo(t)}"
+										class="btn btn-success" pt:data-dismiss="modal">
+										<span class="fas fa-check"></span>
+										<f:ajax render="@form:txtIdGrupo @form:txtNomeGrupo"></f:ajax>
 									</h:commandLink>
 								</h:column>
 							</h:dataTable>

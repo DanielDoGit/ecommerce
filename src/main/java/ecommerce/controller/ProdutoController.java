@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import ecommerce.beans.Cidade;
 import ecommerce.beans.Fornecedor;
+import ecommerce.beans.Grupo;
 import ecommerce.beans.Produto;
 import ecommerce.dao.CidadeDao;
 import ecommerce.dao.EstoqueTransienteDao;
@@ -15,6 +16,7 @@ import ecommerce.dao.GrupoDao;
 import ecommerce.dao.ProdutoDao;
 import ecommerce.dto.CadastroProdutoDto;
 import ecommerce.dto.FornecedorDto;
+import ecommerce.dto.GrupoDto;
 import ecommerce.uteis.GerenciadorConversa;
 import ecommerce.uteis.GerenciadorToken;
 import ecommerce.uteis.InjectBean;
@@ -61,6 +63,7 @@ public class ProdutoController implements Serializable {
 	private CadastroProdutoDto produtoDto;
 	private List<CadastroProdutoDto> listaProdutosPesquisados;
 	private List<FornecedorDto> listaFornecedoresPesquisados;
+	private List<GrupoDto> listaGruposPesquisados;
 	private String mensagem;
 	private boolean inclusao;
 	private String argumentoBusca;
@@ -178,6 +181,36 @@ public class ProdutoController implements Serializable {
 		}
 	}
 	
+	
+	public void pesquisarGrupo() {
+		List<Grupo> grupos = grupoDao.buscarSimilaridade("descricao", argumentoBusca);
+		listaGruposPesquisados = grupos.stream().map(GrupoDto::new).collect(Collectors.toList());
+	}
+
+	public void selecionarGrupo(GrupoDto t) throws Exception {
+		mostrarGrupo(t.toGrupo());
+	}
+
+	public void mostrarGrupo(Grupo c) {
+		if (c != null) {
+			produtoDto.setIdGrupo(c.getCodigo().toString());
+			produtoDto.setNomeGrupo(c.getDescricao());
+		} else {
+			produtoDto.setIdGrupo(null);
+			produtoDto.setNomeGrupo(null);
+		}
+	}
+
+	public void carregarGrupo(AjaxBehaviorEvent e) {
+		try {
+			Grupo c = grupoDao.getById(Integer.valueOf(produtoDto.getIdGrupo()));
+			mostrarGrupo(c);
+		} catch (NumberFormatException e1) {
+			uteis.adicionarMensagemAdvertencia("Argumento de pesquisa inválido!");
+			mostrarGrupo(null);
+		}
+	}
+	
 	public String confirmar() {
 		try {
 			token.validarToken();
@@ -201,15 +234,19 @@ public class ProdutoController implements Serializable {
 	
 	private boolean validarDados() {
 		boolean resultado = false;
-		Produto produto = produtoDao.buscarExatidao("descricao", produtoDto.getDescricao());
-		if (produto == null) {
+		List<Produto> produto = produtoDao.buscarSimilaridade("descricao", produtoDto.getDescricao());
+		if (produto.isEmpty()) {
 			resultado = true;
+		} else if (produto.size() > 1) {
+			resultado = false;
 		} else {
-			if (produtoDto.getCodigo().equals(produto.getCodigo())) {
+			Produto f = produto.get(0);
+			if (produtoDto.getCodigo().equals(f.getCodigo())) {
 				resultado = true;
-			}else {
-				uteis.adicionarMensagemAdvertencia("Cliente com nome já cadastrado!");
 			}
+		}
+		if (resultado == false) {
+			uteis.adicionarMensagemAdvertencia("Cliente com nome já cadastrado!");
 		}
 		return resultado;
 	}
@@ -217,7 +254,7 @@ public class ProdutoController implements Serializable {
 	public String cancelar() {
 		return paginaConsulta;
 	}
-	
+
 
 	public ProdutoDao getProdutoDao() {
 		return produtoDao;
@@ -345,6 +382,22 @@ public class ProdutoController implements Serializable {
 
 	public String getPaginaCadastro() {
 		return paginaCadastro;
+	}
+
+	public GrupoDao getGrupoDao() {
+		return grupoDao;
+	}
+
+	public void setGrupoDao(GrupoDao grupoDao) {
+		this.grupoDao = grupoDao;
+	}
+
+	public List<GrupoDto> getListaGruposPesquisados() {
+		return listaGruposPesquisados;
+	}
+
+	public void setListaGruposPesquisados(List<GrupoDto> listaGruposPesquisados) {
+		this.listaGruposPesquisados = listaGruposPesquisados;
 	}
 
 }

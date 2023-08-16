@@ -40,29 +40,38 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 	}
 	
 	public BigDecimal getQuantidadeVenda(LocalDate dataApuracao, Produto produto) {
-		String sql = "select sum(iv.quantidade) from itemvenda as iv, venda as v where v.datavenda <= ? and iv.produto = ?";
+		String sql = "select sum(iv.quantidade) from itemvenda as iv, venda as v where v.datavenda <= :dataBase and iv.produto = :produto";
 		Query q = em.createNativeQuery(sql);
-		q.setParameter(1, dataApuracao);
-		q.setParameter(2, produto);
+		q.setParameter("dataBase", dataApuracao);
+		q.setParameter("produto", produto.getCodigo());
 		BigDecimal b = (BigDecimal) q.getSingleResult();
+		if (b == null) {
+			b = BigDecimal.ZERO;
+		}
 		return b;
 	}
 	
 	public BigDecimal getQuantidadeAjusteEstoqueSaida(LocalDate dataApuracao, Produto produto) {
-		String sql = "select sum(iv.quantidade) from ajusteestoque as aj where aj.dataajuste <= ? and aj.produto = ? and tipo = 3";
+		String sql = "select sum(aj.quantidade) from ajusteestoque as aj where aj.dataajuste <= :dataBase and aj.produto = :produto and tipo = 3";
 		Query q = em.createNativeQuery(sql);
-		q.setParameter(1, dataApuracao);
-		q.setParameter(2, produto);
+		q.setParameter("dataBase", dataApuracao);
+		q.setParameter("produto", produto.getCodigo());
 		BigDecimal b = (BigDecimal) q.getSingleResult();
+		if (b == null) {
+			b = BigDecimal.ZERO;
+		}
 		return b;
 	}
 	
 	public BigDecimal getQuantidadeAjusteEstoqueEntrada(LocalDate dataApuracao, Produto produto) {
-		String sql = "select sum(iv.quantidade) from ajusteestoque as aj where aj.dataajuste <= ? and aj.produto = ? and tipo = 2";
+		String sql = "select sum(aj.quantidade) from ajusteestoque as aj where aj.dataajuste <= :dataBase and aj.produto = :produto and tipo = 2";
 		Query q = em.createNativeQuery(sql);
-		q.setParameter(1, dataApuracao);
-		q.setParameter(2, produto);
+		q.setParameter("dataBase", dataApuracao);
+		q.setParameter("produto", produto.getCodigo());
 		BigDecimal b = (BigDecimal) q.getSingleResult();
+		if (b == null) {
+			b = BigDecimal.ZERO;
+		}
 		return b;
 	}
 	
