@@ -1,20 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-	<title>Mib</title>
-	<ui:include src="/paginas/uteis/scripts.xhtml" />
+	<title>Ecommerce</title>
+	<ui:include src="/ecommerce/paginas/uteis/scripts.xhtml" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </h:head>
 <h:body class="bg-info">
 	<h:form>
 		<div class="container bg-light rounded-bottom divcentral">
-			<ui:include src="/paginas/uteis/barramenu.xhtml" />
+			<ui:include src="/ecommerce/paginas/uteis/barramenu.xhtml" />
+
 			<div class="row mb-3 mt-5" align="center">
 				<div class="col-12">
-					<h:commandLink action="#{solicitacaoController.prepararConsulta}" value="Solicitações" immediate="true" styleClass="btn btn-info" style="width: 180px"></h:commandLink>	
+					<div class="btn btn-group dropright" >
+						<button type="button" class="btn btn-info dropdown-toggle" style="width: 180px"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ajuste
+							de Estoque</button>
+						<div class="dropdown-menu">
+							<h:commandButton
+								action="#{ajusteEstoqueController.prepararAjusteEstoque}"
+								value="Cadastrar ajuste de estoque" immediate="true"
+								styleClass="dropdown-item"></h:commandButton>
+							<h:commandButton
+								action="#{ajusteEstoqueController.prepararExclusao}"
+								value="Excluir ajuste de estoque" immediate="true"
+								styleClass="dropdown-item"></h:commandButton>
+						</div>
+					</div>
 				</div>
 			</div>
+			<div class="row" align="center">
+				<div class="col-12">
+					<div class="btn btn-group dropright" >
+						<button type="button" class="btn btn-info dropdown-toggle" style="width: 180px"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Venda</button>
+						<div class="dropdown-menu">
+							<h:commandButton
+								action="#{ajusteEstoqueController.prepararAjusteEstoque}"
+								value="Cadastrar venda" immediate="true"
+								styleClass="dropdown-item"></h:commandButton>
+							<h:commandButton
+								action="#{ajusteEstoqueController.prepararExclusao}"
+								value="Excluir venda" immediate="true"
+								styleClass="dropdown-item"></h:commandButton>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
 		</div>
 	</h:form>
 </h:body>

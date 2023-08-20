@@ -30,15 +30,15 @@
 					<div class="form-group ml-3">
 						<h:inputText
 							value="#{ajusteEstoqueController.ajusteEstoqueDto.idProDuto}"
-							class="form-control col-2" id="txtIdCidade" autocomplete="off"
+							class="form-control col-2" id="txtIdProduto" autocomplete="off"
 							required="true">
 							<f:ajax listener="#{ajusteEstoqueController.carregarProduto}"
-								execute="txtIdCidade" render="txtIdCidade txtNomeCidade"></f:ajax>
+								execute="txtIdProduto" render="txtIdProduto txtNomeProduto"></f:ajax>
 						</h:inputText>
 						<label>&#160;</label>
 						<h:inputText
 							value="#{ajusteEstoqueController.ajusteEstoqueDto.nomeProduto}"
-							class="form-control col-8" id="txtNomeCidade" autocomplete="off"
+							class="form-control col-8" id="txtNomeProduto" autocomplete="off"
 							required="true" disabled="true"></h:inputText>
 						<label>&#160;</label>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
@@ -54,7 +54,7 @@
 			<div class="row mb-3 ml-5 pl-4">
 				<div class="col-7 offset-2">
 					<label>Motivo</label>
-					<h:inputText value="#{ajusteEstoqueController.ajusteEstoqueDto.nome}"
+					<h:inputText value="#{ajusteEstoqueController.ajusteEstoqueDto.motivo}"
 						class="form-control" align="center" id="txtusuario"
 						autocomplete="off" required="true"></h:inputText>
 					<h:message for="txtusuario" showDetail="false" showSummary="true"
@@ -65,33 +65,33 @@
 			<div class="row mb-3 ml-5 pl-4">
 				<div class="col-3 offset-2">
 					<label>Data</label>
-					<h:inputText value="#{ajusteEstoqueController.ajusteEstoqueDto.cpfCnpj}"
-						class="form-control" id="txtCPFCNPJ" autocomplete="off"
-						required="true" converter="converterCPFCNPJ">
+					<h:inputText value="#{ajusteEstoqueController.ajusteEstoqueDto.dataAjuste}"
+						class="form-control" id="txtData" autocomplete="off"
+						required="true" converter="converterDataOutput">
 					</h:inputText>
-					<h:message for="txtCPFCNPJ" showDetail="false" showSummary="true"
+					<h:message for="txtData" showDetail="false" showSummary="true"
 						styleClass="error" />
 				</div>
 			</div>
 			
 			<div class="row mb-3 ml-5 pl-4">
-				<div class="col-7 offset-2">
+				<div class="col-3 offset-2">
 					<label>Quantidade</label>
-					<h:inputText value="#{ajusteEstoqueController.ajusteEstoqueDto.contato}"
-						class="form-control" id="txtcontato" autocomplete="off"
+					<h:inputText value="#{ajusteEstoqueController.ajusteEstoqueDto.quantidade}"
+						class="form-control" id="txtQuantidade" autocomplete="off"
 						immediate="true"></h:inputText>
-					<h:message for="txtcontato" showDetail="false" showSummary="true"
+					<h:message for="txtQuantidade" showDetail="false" showSummary="true"
 						styleClass="error" />
 				</div>
 			</div>
 
 			<div class="row mb-3 ml-5 pl-4">
-				<div class="col-7 offset-2">
+				<div class="col-3 offset-2">
 					<label>Tipo</label>
 					<h:selectOneMenu class="form-control"
-						value="#{ajusteEstoqueController.ajusteEstoqueDto.pessoaFisicaJuridica}"
-						converter="tipoPessoaEnumConverter" id="tipoPessoa">
-						<f:selectItems value="#{ajusteEstoqueController.getValuesTipoPessoa()}" var="s" itemLabel="#{s}" />
+						value="#{ajusteEstoqueController.ajusteEstoqueDto.tipoMovimentacao}"
+						converter="tipoMovimentacaoEnumConverter" id="tipoMovimentacao">
+						<f:selectItems value="#{ajusteEstoqueController.getTipos()}" var="s" itemLabel="#{s}" />
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -143,19 +143,19 @@
 								</h:column>
 								<h:column id="column3">
 									<f:facet name="header">
-										<h:outputText value="UF"></h:outputText>
+										<h:outputText value="Ativo"></h:outputText>
 									</f:facet>
-									<h:outputText value="#{t.uf}"></h:outputText>
+									<h:outputText value="#{t.ativo}" converter="booleanConverter"></h:outputText>
 								</h:column>
 								<h:column id="column4">
 									<f:facet name="header">
 										<h:outputText value="Selecionar"></h:outputText>
 									</f:facet>
 									<h:commandLink
-										action="#{ajusteEstoqueController.selecionarCidade(t)}"
+										action="#{ajusteEstoqueController.selecionarProduto(t)}"
 										class="btn btn-success" pt:data-dismiss="modal">
 										<span class="fas fa-check"></span>
-										<f:ajax render="@form:txtIdCidade @form:txtNomeCidade"></f:ajax>
+										<f:ajax render="@form:txtIdProduto @form:txtNomeProduto"></f:ajax>
 									</h:commandLink>
 								</h:column>
 							</h:dataTable>

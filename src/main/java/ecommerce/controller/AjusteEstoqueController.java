@@ -2,6 +2,7 @@ package ecommerce.controller;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,12 +10,15 @@ import ecommerce.beans.AjusteEstoque;
 import ecommerce.beans.Produto;
 import ecommerce.beans.TipoMovimentacao;
 import ecommerce.dao.AjusteEstoqueDao;
+import ecommerce.dao.FornecedorDao;
+import ecommerce.dao.GrupoDao;
 import ecommerce.dao.ProdutoDao;
 import ecommerce.dto.AjusteEstoqueDto;
 import ecommerce.dto.CadastroProdutoDto;
 import ecommerce.uteis.AppException;
 import ecommerce.uteis.GerenciadorConversa;
 import ecommerce.uteis.GerenciadorToken;
+import ecommerce.uteis.InjectBean;
 import ecommerce.uteis.PermissaoExeption;
 import ecommerce.uteis.TokenException;
 import ecommerce.uteis.Uteis;
@@ -61,6 +65,8 @@ public class AjusteEstoqueController implements Serializable{
 			loginController.possuiPermissao("Cadastrar ajuste estoque");
 			token.gerarToken();
 			ajusteEstoqueDto = new AjusteEstoqueDto();
+			ajusteEstoqueDto.setDataAjuste(LocalDate.now());
+			argumentoBusca = "";
 			return "/ecommerce/paginas/processos/ajusteEstoque.xhtml";
 		} catch (Exception e) {
 			uteis.adicionarMensagemErro(e);
@@ -69,8 +75,18 @@ public class AjusteEstoqueController implements Serializable{
 	}
 	
 	public void pesquisarProduto() {
-		List<Produto> listaProduto = produtoDao.buscarSimilaridade("descricao", codigoAjuste);
+		List<Produto> listaProduto = produtoDao.buscarSimilaridade("descricao", argumentoBusca);
 		listaProdutoDto = listaProduto.stream().map(CadastroProdutoDto::new).collect(Collectors.toList());
+	}
+	
+	public void selecionarProduto(CadastroProdutoDto p) throws Exception {
+		try {
+			FornecedorDao forDao = (FornecedorDao) InjectBean.newInstanceCDI(FornecedorDao.class);
+			GrupoDao grupoDao = (GrupoDao) InjectBean.newInstanceCDI(GrupoDao.class);
+			mostrarProduto(p.toProduto(forDao, grupoDao));
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 	
 	public void carregarProduto(AjaxBehaviorEvent e) {
@@ -111,6 +127,7 @@ public class AjusteEstoqueController implements Serializable{
 
 	}
 	
+	
 	public String prepararExclusao() {
 		try {
 			conversa.iniciar();
@@ -149,17 +166,105 @@ public class AjusteEstoqueController implements Serializable{
 	}
 	
 	public boolean validarDados() {
-		boolean a = ajusteEstoqueDto.getQuantidade().compareTo(BigDecimal.ZERO) != 1;
-		if (a) {
+		boolean a = ajusteEstoqueDto.getQuantidade().compareTo(BigDecimal.ZERO) == 1;
+		if (!a) {
 			uteis.adicionarMensagemAdvertencia("A quantidade deve ser maior do que zero!");
 		}
 		return a;
+	}
+	
+	public String cancelar() {
+		return "/ecommerce/paginas/uteis/inicial.xhtml";
 	}
 	
 	
 	public TipoMovimentacao[] getTipos() {
 		TipoMovimentacao[] tipos = {TipoMovimentacao.ENTRADA, TipoMovimentacao.SAIDA};
 		return tipos;
+	}
+
+	public AjusteEstoqueDao getAjusteEstoqueDao() {
+		return ajusteEstoqueDao;
+	}
+
+	public void setAjusteEstoqueDao(AjusteEstoqueDao ajusteEstoqueDao) {
+		this.ajusteEstoqueDao = ajusteEstoqueDao;
+	}
+
+	public LoginController getLoginController() {
+		return loginController;
+	}
+
+	public void setLoginController(LoginController loginController) {
+		this.loginController = loginController;
+	}
+
+	public GerenciadorToken getToken() {
+		return token;
+	}
+
+	public void setToken(GerenciadorToken token) {
+		this.token = token;
+	}
+
+	public Uteis getUteis() {
+		return uteis;
+	}
+
+	public void setUteis(Uteis uteis) {
+		this.uteis = uteis;
+	}
+
+	public GerenciadorConversa getConversa() {
+		return conversa;
+	}
+
+	public void setConversa(GerenciadorConversa conversa) {
+		this.conversa = conversa;
+	}
+
+	public ProdutoDao getProdutoDao() {
+		return produtoDao;
+	}
+
+	public void setProdutoDao(ProdutoDao produtoDao) {
+		this.produtoDao = produtoDao;
+	}
+
+	public AjusteEstoqueDto getAjusteEstoqueDto() {
+		return ajusteEstoqueDto;
+	}
+
+	public void setAjusteEstoqueDto(AjusteEstoqueDto ajusteEstoqueDto) {
+		this.ajusteEstoqueDto = ajusteEstoqueDto;
+	}
+
+	public List<CadastroProdutoDto> getListaProdutoDto() {
+		return listaProdutoDto;
+	}
+
+	public void setListaProdutoDto(List<CadastroProdutoDto> listaProdutoDto) {
+		this.listaProdutoDto = listaProdutoDto;
+	}
+
+	public String getCodigoAjuste() {
+		return codigoAjuste;
+	}
+
+	public void setCodigoAjuste(String codigoAjuste) {
+		this.codigoAjuste = codigoAjuste;
+	}
+
+	public String getArgumentoBusca() {
+		return argumentoBusca;
+	}
+
+	public void setArgumentoBusca(String argumentoBusca) {
+		this.argumentoBusca = argumentoBusca;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 	
