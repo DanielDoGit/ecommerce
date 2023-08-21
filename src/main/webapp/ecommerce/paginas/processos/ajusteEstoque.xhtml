@@ -45,7 +45,7 @@
 							data-target="#pesquisarModalProduto" id="botaoProcurar">
 							<span class="fas fa-search"></span>
 						</button>
-						<h:message for="txtIdCidade" showDetail="false" showSummary="true"
+						<h:message for="txtIdProduto" showDetail="false" showSummary="true"
 							styleClass="error" />
 					</div>
 				</div>
@@ -56,7 +56,7 @@
 					<label>Motivo</label>
 					<h:inputText value="#{ajusteEstoqueController.ajusteEstoqueDto.motivo}"
 						class="form-control" align="center" id="txtusuario"
-						autocomplete="off" required="true"></h:inputText>
+						autocomplete="off" immediate="true"></h:inputText>
 					<h:message for="txtusuario" showDetail="false" showSummary="true"
 						styleClass="error" />
 				</div>
@@ -79,7 +79,7 @@
 					<label>Quantidade</label>
 					<h:inputText value="#{ajusteEstoqueController.ajusteEstoqueDto.quantidade}"
 						class="form-control" id="txtQuantidade" autocomplete="off"
-						immediate="true"></h:inputText>
+						required="true" converter="bigDecimalToNumber"></h:inputText>
 					<h:message for="txtQuantidade" showDetail="false" showSummary="true"
 						styleClass="error" />
 				</div>
