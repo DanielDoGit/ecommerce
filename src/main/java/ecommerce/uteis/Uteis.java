@@ -2,6 +2,8 @@ package ecommerce.uteis;
 
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
@@ -47,11 +49,11 @@ public class Uteis implements Serializable {
 	public void adicionarMensagemRelatorioInexistente() {
 		adicionarMensagemAdvertencia("Relatório inexistente!");
 	}
-	
+
 	public void adicionarMensagemSucessoRegistro() {
 		adicionarMensagemInformativa("Registro salvo com sucesso!");
 	}
-	
+
 	public void adicionarMensagemCnpjInconsistente() {
 		adicionarMensagemAdvertencia("Valor do campo cnpj inconsistente. Verifique o campo e tente novamente!");
 	}
@@ -74,7 +76,7 @@ public class Uteis implements Serializable {
 		FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_WARN, mensagem, "");
 		facesContext.addMessage(null, facesMessage);
 	}
-	
+
 	public void adicionarMensagemRegistroConstraintViolation() {
 		adicionarMensagemAdvertencia("O registro que você está excluindo, está sendo usado por outros registros!");
 	}
@@ -89,6 +91,31 @@ public class Uteis implements Serializable {
 			}
 		}
 		return newText;
+	}
+
+	public <T, K> List<K> transformListToDto(List<T> lista, Class<K> klass) throws Exception {
+		List<K> listaTransformada = new ArrayList<K>();
+		for (T o : lista) {
+			listaTransformada.add(klass.getDeclaredConstructor(o.getClass()).newInstance(o));
+		}
+		return listaTransformada;
+	}
+	
+	public boolean isNumber(String arg) {
+		try {
+			Integer.parseInt(arg);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	
+	public boolean isPositiveNumber(String arg) {
+		try {
+			return Integer.parseInt(arg) > 0;
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
 
 	public DateTimeFormatter getPadraoFormatacaoData() {

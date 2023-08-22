@@ -111,9 +111,9 @@ public class FormaPagamentoController implements Serializable {
 			if (f.getCodigo().equals(1)) {
 				throw new AppException("O registro Dinheiro não pode ser excluido!");
 			}
+			listaFormaDtos.remove(new FormaPagamentoDto(f));
 			formaPagamentoDao.excluir(f);
 			uteis.adicionarMensagemSucessoExclusao();
-			atualizarPesquisa();
 			return paginaConsulta;
 		} catch (PermissaoExeption | TokenException | AppException e) {
 			uteis.adicionarMensagemErro(e);
@@ -151,7 +151,6 @@ public class FormaPagamentoController implements Serializable {
 			}else {
 				formaPagamentoDao.editar(f);
 			}
-			listaFormaDtos.remove(new FormaPagamentoDto(f));
 			uteis.adicionarMensagemSucessoRegistro();
 			return paginaConsulta;
 		} catch (TokenException e) {

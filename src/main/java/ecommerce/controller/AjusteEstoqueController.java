@@ -118,8 +118,7 @@ public class AjusteEstoqueController implements Serializable{
 			AjusteEstoque a = ajusteEstoqueDto.toEstoque(produtoDao);
 			ajusteEstoqueDao.cadastrar(a);
 			uteis.adicionarMensagemSucessoRegistro();
-			conversa.finalizar();
-			return "/ecommerce/paginas/uteis/inicial.xhtml";
+			return uteis.getCaminhoInicial();
 		} catch (TokenException e) {
 			uteis.adicionarMensagemErro(e);
 			return null;
@@ -150,8 +149,7 @@ public class AjusteEstoqueController implements Serializable{
 			}
 			ajusteEstoqueDao.excluir(e);
 			uteis.adicionarMensagemSucessoExclusao();
-			conversa.finalizar();
-			return "/ecommerce/paginas/uteis/inicial.xhtml";
+			return uteis.getCaminhoInicial();
 		} catch (TokenException e) {
 			uteis.adicionarMensagemErro(e);
 			return null;
