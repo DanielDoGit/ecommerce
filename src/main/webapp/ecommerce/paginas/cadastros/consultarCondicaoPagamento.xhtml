@@ -37,7 +37,7 @@
 			</div>
 			<div class="row">
 				<div class="col-12">
-					<h:dataTable id="table" border="0" value="#{condicaoPagamentoController.listaFormaDtos}" var="s" class="table table-hover" columnClasses="center, left, colunaEditar, colunaExcluir">
+					<h:dataTable id="table" border="0" value="#{condicaoPagamentoController.listaCondicaoPagamentoPesquisado}" var="s" class="table table-hover" columnClasses="center, left, colunaEditar, colunaExcluir">
 						<h:column id="column1">
 							<f:facet name="header">
 								<h:outputText value="ID"></h:outputText>
@@ -62,10 +62,10 @@
 							<f:facet name="header">
 								<h:outputText value="Excluir"></h:outputText>
 							</f:facet>
-							<button type="button" class="btn btn-danger" value="" onclick="return excluir('formaPagamento#{s.codigo}')">
+							<button type="button" class="btn btn-danger" value="" onclick="return excluir('condicaoPagamento#{s.codigo}')">
 								<span class="fas fa-trash-alt"></span>
 							</button>
-							<h:commandLink action="#{condicaoPagamentoController.excluir(s.codigo)}" class="formaPagamento#{s.codigo}"></h:commandLink>
+							<h:commandLink action="#{condicaoPagamentoController.excluir(s.codigo)}" class="condicao#{s.codigo}"></h:commandLink>
 						</h:column>
 					</h:dataTable>
 				</div>

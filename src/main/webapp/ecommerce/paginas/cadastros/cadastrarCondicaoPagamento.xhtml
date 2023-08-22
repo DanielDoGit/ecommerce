@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Ecommerce</title>
+	<ui:include src="/ecommerce/paginas/uteis/scripts.xhtml" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+<h:body class="bg-info">
+	<h:form>
+		<div class="container bg-light rounded-bottom divcentral">
+			<ui:include src="/ecommerce/paginas/uteis/barramenu.xhtml" />
+			<br></br>
+
+			<div class="row ml-5 pl-4">
+				<div class="col-8 offset-2">
+					<label>Informe a quantidade de dias por parcela: (cada
+						número digitado será uma parcela)</label>
+				</div>
+			</div>
+			<div class="row mb-3 ml-5 pl-4">
+				<div class="col-3 offset-2 input-group">
+					<div class="input-group-append">
+						<h:inputText value="#{condicaoPagamentoController.quantidadeDias}"
+							class="form-control" align="center" id="txtQuantidadeDias"
+							autocomplete="off" immediate="true"></h:inputText>
+
+						<h:commandLink class="btn btn-primary ml-2 rounded"
+							action="#{condicaoPagamentoController.validarInputDia}">
+							<span class="fas fa-plus"></span>
+							<f:ajax execute="txtQuantidadeDias" render="@all"></f:ajax>
+						</h:commandLink>
+						<h:message for="txtQuantidadeDias" showDetail="false"
+							showSummary="true" styleClass="error" />
+					</div>
+				</div>
+			</div>
+			<div class="row mb-3 ml-5 pl-4">
+				<div class="col-7 offset-2">
+					<label>Descrição</label>
+					<h:inputText
+						value="#{condicaoPagamentoController.condicaoPagamentoDto.descricao}"
+						class="form-control" id="txtDescricao" autocomplete="off"
+						required="true">
+					</h:inputText>
+					<h:message for="txtDescricao" showDetail="false" showSummary="true"
+						styleClass="error" />
+				</div>
+			</div>
+
+			<div class="row mb-3 ml-5 pl-4">
+				<div class="col-3 offset-2">
+					<label>Quantidade parcelas</label>
+					<h:inputText
+						value="#{condicaoPagamentoController.condicaoPagamentoDto.numeroParcelas}"
+						class="form-control" align="center" id="txtQTDParcelas"
+						disabled="true" autocomplete="off" required="true"></h:inputText>
+					<h:message for="txtQTDParcelas" showDetail="false"
+						showSummary="true" styleClass="error" />
+				</div>
+			</div>
+			<div class="row mb-2 ml-5 pl-3">
+				<div class="col-6 offset-3" align="right">
+					<h:commandButton action="#{condicaoPagamentoController.cancelar}"
+						value="Cancelar" immediate="true" class="btn btn-primary"
+						style="width: 120px; margin: 5px"></h:commandButton>
+					<h:commandButton action="#{condicaoPagamentoController.confirmar}"
+						value="Gravar" class="btn btn-primary"
+						style="width: 120px; margin: 5px"
+						onclick="return validarSubmit();"></h:commandButton>
+				</div>
+			</div>
+
+			<br></br>
+		</div>
+	</h:form>
+</h:body>
+</html>

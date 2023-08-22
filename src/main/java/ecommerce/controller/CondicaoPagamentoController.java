@@ -7,6 +7,7 @@ import java.util.List;
 import ecommerce.beans.CondicaoPagamento;
 import ecommerce.dao.CondicaoPagamentoDao;
 import ecommerce.dto.CondicaoPagamentoDto;
+import ecommerce.uteis.AppException;
 import ecommerce.uteis.GerenciadorConversa;
 import ecommerce.uteis.GerenciadorToken;
 import ecommerce.uteis.PermissaoExeption;
@@ -16,11 +17,12 @@ import jakarta.enterprise.context.ConversationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ValidationException;
 
 @Transactional
 @ConversationScoped
 @Named
-public class CondicaoPagamentoController implements Serializable{
+public class CondicaoPagamentoController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -45,47 +47,54 @@ public class CondicaoPagamentoController implements Serializable{
 
 	private String mensagem;
 	private String argumentoBusca;
-	private final List<String> opcaoBusca = Arrays.asList("Descrição","Código");
+	private final List<String> opcaoBusca = Arrays.asList("Descrição", "Código");
 	private String opcaoBuscaSelecionada;
-	
+
 	private final String paginaConsulta = "/ecommerce/paginas/cadastros/consultarCondicaoPagamento.xhtml";
 	private final String paginaCadastro = "/ecommerce/paginas/cadastros/cadastrarCondicaoPagamento.xhtml";
 
 	private boolean inclusao;
 
-	public String prepararConsulta() throws Exception{
+	public String prepararConsulta() throws Exception {
 		try {
 			conversa.iniciar();
 			token.gerarToken();
 			login.possuiPermissao("Consultar condicao de pagamento");
-			listaCondicaoPagamentoPesquisado = uteis.transformListToDto(condicaoPagamentoDao.buscarUltimosCadastrados(), CondicaoPagamentoDto.class);
-			mensagem = listaCondicaoPagamentoPesquisado.isEmpty() ? "Não há condições de pagamento cadastradas no sistema..." : "Ultimas condições de pagamento registradas...";
+			listaCondicaoPagamentoPesquisado = uteis.transformListToDto(condicaoPagamentoDao.buscarUltimosCadastrados(),
+					CondicaoPagamentoDto.class);
+			mensagem = listaCondicaoPagamentoPesquisado.isEmpty()
+					? "Não há condições de pagamento cadastradas no sistema..."
+					: "Ultimas condições de pagamento registradas...";
 			return paginaConsulta;
 		} catch (PermissaoExeption e) {
 			uteis.adicionarMensagemErro(e);
 			return null;
 		}
 	}
-	
+
 	public void atualizarPesquisa() throws Exception {
 		try {
-			if (opcaoBusca.get(0).equals(opcaoBuscaSelecionada)) {
+			if (opcaoBusca.get(1).equals(opcaoBuscaSelecionada)) {
 				listaCondicaoPagamentoPesquisado.clear();
 				CondicaoPagamento f = condicaoPagamentoDao.getById(Integer.valueOf(argumentoBusca));
 				if (f != null) {
 					listaCondicaoPagamentoPesquisado.add(new CondicaoPagamentoDto(f));
 				}
 			} else {
-				listaCondicaoPagamentoPesquisado = uteis.transformListToDto(condicaoPagamentoDao.buscarSimilaridade("descricao", argumentoBusca), CondicaoPagamentoDto.class);
+				listaCondicaoPagamentoPesquisado = uteis.transformListToDto(
+						condicaoPagamentoDao.buscarSimilaridade("descricao", argumentoBusca),
+						CondicaoPagamentoDto.class);
 			}
-			mensagem = listaCondicaoPagamentoPesquisado.isEmpty() ? "Não há formas de pagamento cadastradas com esse argumento." : "Quantidade de formas de pagamento cadastradas: "+listaCondicaoPagamentoPesquisado.size();
+			mensagem = listaCondicaoPagamentoPesquisado.isEmpty()
+					? "Não há formas de pagamento cadastradas com esse argumento."
+					: "Quantidade de formas de pagamento cadastradas: " + listaCondicaoPagamentoPesquisado.size();
 		} catch (NumberFormatException e) {
 			uteis.adicionarMensagemAdvertencia("O argumento de pesquisa é inválido!");
 		} catch (Exception e) {
 			throw e;
 		}
 	}
-	
+
 	public String prepararCadastro() {
 		try {
 			token.gerarToken();
@@ -99,20 +108,42 @@ public class CondicaoPagamentoController implements Serializable{
 			return null;
 		}
 	}
-	
+
 	public String prepararAlteracao(Integer id) {
 		try {
 			token.gerarToken();
 			login.possuiPermissao("Alterar condicao de pagamento");
-			condicaoPagamentoDto = new CondicaoPagamentoDto(condicaoPagamentoDao.getById(id));
+			CondicaoPagamento cp = condicaoPagamentoDao.getById(id);
+			if (cp.getCodigo() == 1) {
+				throw new AppException("Não é possível alterar a condição de pagamento Á vista!");
+			}
+			condicaoPagamentoDto = new CondicaoPagamentoDto(cp);
 			inclusao = false;
 			return paginaCadastro;
-		} catch (PermissaoExeption e) {
+		} catch (PermissaoExeption | AppException e) {
 			uteis.adicionarMensagemErro(e);
 			return null;
 		}
 	}
-	
+
+	public String excluir(Integer id) {
+		try {
+			token.validarToken();
+			login.possuiPermissao("Excluir condicao de pagamento");
+			CondicaoPagamento cp = condicaoPagamentoDao.getById(id);
+			if (cp.getCodigo() == 1) {
+				throw new AppException("Não é possível excluir a condição de pagamento Á vista!");
+			}
+			listaCondicaoPagamentoPesquisado.remove(new CondicaoPagamentoDto(cp));
+			condicaoPagamentoDao.excluir(cp);
+			uteis.adicionarMensagemSucessoExclusao();
+			return paginaConsulta;
+		} catch (PermissaoExeption | TokenException | AppException e) {
+			uteis.adicionarMensagemErro(e);
+			return null;
+		}
+	}
+
 	public String confirmar() {
 		try {
 			token.validarToken();
@@ -122,7 +153,7 @@ public class CondicaoPagamentoController implements Serializable{
 			CondicaoPagamento f = condicaoPagamentoDto.toCondicaoPagamento();
 			if (inclusao) {
 				condicaoPagamentoDao.cadastrar(f);
-			}else {
+			} else {
 				condicaoPagamentoDao.editar(f);
 			}
 			uteis.adicionarMensagemSucessoRegistro();
@@ -131,17 +162,17 @@ public class CondicaoPagamentoController implements Serializable{
 			uteis.adicionarMensagemErro(e);
 			return null;
 		}
-		
+
 	}
-	
+
 	private boolean validarDados() {
 		boolean resultado = false;
-		List<CondicaoPagamento> lista = condicaoPagamentoDao.buscarSimilaridade("descricao", condicaoPagamentoDto.getDescricao());
+		List<CondicaoPagamento> lista = condicaoPagamentoDao.buscarSimilaridade("descricao",condicaoPagamentoDto.getDescricao());
 		if (lista.isEmpty()) {
 			resultado = true;
-		}else if (lista.size() > 1) {
+		} else if (lista.size() > 1) {
 			resultado = false;
-		}else {
+		} else {
 			CondicaoPagamento f = lista.get(0);
 			if (f.getCodigo().equals(condicaoPagamentoDto.getCodigo())) {
 				resultado = true;
@@ -152,26 +183,28 @@ public class CondicaoPagamentoController implements Serializable{
 		}
 		return resultado;
 	}
-	
+
 	public String cancelar() {
 		return paginaConsulta;
 	}
-	
+
 	public void validarInputDia() {
 		if (quantidadeDias != null && uteis.isPositiveNumber(quantidadeDias)) {
-			if (condicaoPagamentoDto.getDescricao().isBlank()) {
+			if (condicaoPagamentoDto.getDescricao() == null) {
 				condicaoPagamentoDto.setDescricao(quantidadeDias);
-			}else {
+			} else {
 				StringBuilder st = new StringBuilder();
 				st.append(condicaoPagamentoDto.getDescricao());
 				st.append(" - ");
 				st.append(quantidadeDias);
 				condicaoPagamentoDto.setDescricao(st.toString());
+				quantidadeDias = "";
+				condicaoPagamentoDto.setNumeroParcelas(condicaoPagamentoDto.getNumeroParcelas()+1);
 			}
+		}else {
+			throw new ValidationException("Argumento de entrada inválido!");
 		}
 	}
-	
-	
 
 	public CondicaoPagamentoDao getCondicaoPagamentoDao() {
 		return condicaoPagamentoDao;
@@ -229,6 +262,14 @@ public class CondicaoPagamentoController implements Serializable{
 		this.condicaoPagamentoDto = condicaoPagamentoDto;
 	}
 
+	public String getQuantidadeDias() {
+		return quantidadeDias;
+	}
+
+	public void setQuantidadeDias(String quantidadeDias) {
+		this.quantidadeDias = quantidadeDias;
+	}
+
 	public String getMensagem() {
 		return mensagem;
 	}
@@ -253,6 +294,14 @@ public class CondicaoPagamentoController implements Serializable{
 		this.opcaoBuscaSelecionada = opcaoBuscaSelecionada;
 	}
 
+	public boolean isInclusao() {
+		return inclusao;
+	}
+
+	public void setInclusao(boolean inclusao) {
+		this.inclusao = inclusao;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -268,9 +317,5 @@ public class CondicaoPagamentoController implements Serializable{
 	public String getPaginaCadastro() {
 		return paginaCadastro;
 	}
-	
-	
-	
-	
 
 }
