@@ -40,15 +40,25 @@
 				</div>
 			</div>
 			<div class="row mb-3 ml-5 pl-4">
-				<div class="col-7 offset-2">
+				<div class="col-6 offset-2">
 					<label>Descrição</label>
-					<h:inputText
-						value="#{condicaoPagamentoController.condicaoPagamentoDto.descricao}"
-						class="form-control" id="txtDescricao" autocomplete="off"
-						required="true">
-					</h:inputText>
-					<h:message for="txtDescricao" showDetail="false" showSummary="true"
-						styleClass="error" />
+					<div class="input-group">
+						<div class="input-group-append">
+							<h:inputText
+								value="#{condicaoPagamentoController.condicaoPagamentoDto.descricao}"
+								class="form-control" id="txtDescricao" autocomplete="off"
+								readonly="true">
+							</h:inputText>
+							<h:commandLink class="btn btn-primary ml-2 rounded"
+								action="#{condicaoPagamentoController.limparUltimaParcela}">
+								<span class="fas fa-minus"></span>
+								<f:ajax execute="txtDescricaos"
+									render="@form:txtDescricao @form:txtQTDParcelas"></f:ajax>
+							</h:commandLink>
+							<h:message for="txtDescricao" showDetail="false"
+								showSummary="true" styleClass="error" />
+						</div>
+					</div>
 				</div>
 			</div>
 

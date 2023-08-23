@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class CondicaoPagamento implements Serializable{
@@ -17,6 +18,7 @@ public class CondicaoPagamento implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer codigo;
 	
+	@NotBlank(message = "O numero de parcelas está vazio!")
 	private String descricao;
 	
 	private Integer numeroParcelas;

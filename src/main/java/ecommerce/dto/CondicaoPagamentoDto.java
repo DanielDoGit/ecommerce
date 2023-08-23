@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import ecommerce.beans.CondicaoPagamento;
+import jakarta.validation.constraints.NotBlank;
 
 public class CondicaoPagamentoDto implements Serializable{
 
@@ -11,6 +12,7 @@ public class CondicaoPagamentoDto implements Serializable{
 	
 	private Integer codigo;
 	
+	@NotBlank(message = "O numero de parcelas está vazio!")
 	private String descricao;
 	
 	private Integer numeroParcelas;
