@@ -60,8 +60,10 @@ public class CondicaoPagamentoController implements Serializable {
 			token.gerarToken();
 			login.possuiPermissao("Consultar condicao de pagamento");
 			List<CondicaoPagamento> lista = condicaoPagamentoDao.buscarUltimosCadastrados();
-			listaCondicaoPagamentoPesquisado = uteis.transformListToDto(lista,CondicaoPagamentoDto.class);
-			mensagem = listaCondicaoPagamentoPesquisado.isEmpty() ? "Não há condições de pagamento cadastradas no sistema...":"Ultimas condições de pagamento registradas...";
+			listaCondicaoPagamentoPesquisado = uteis.transformListToDto(lista, CondicaoPagamentoDto.class);
+			mensagem = listaCondicaoPagamentoPesquisado.isEmpty()
+					? "Não há condições de pagamento cadastradas no sistema..."
+					: "Ultimas condições de pagamento registradas...";
 			return paginaConsulta;
 		} catch (PermissaoExeption e) {
 			uteis.adicionarMensagemErro(e);
@@ -79,9 +81,11 @@ public class CondicaoPagamentoController implements Serializable {
 				}
 			} else {
 				List<CondicaoPagamento> lista = condicaoPagamentoDao.buscarSimilaridade("descricao", argumentoBusca);
-				listaCondicaoPagamentoPesquisado = uteis.transformListToDto(lista,CondicaoPagamentoDto.class);
+				listaCondicaoPagamentoPesquisado = uteis.transformListToDto(lista, CondicaoPagamentoDto.class);
 			}
-			mensagem = listaCondicaoPagamentoPesquisado.isEmpty() ? "Não há formas de pagamento cadastradas com esse argumento.":"Quantidade de formas de pagamento cadastradas: " + listaCondicaoPagamentoPesquisado.size();
+			mensagem = listaCondicaoPagamentoPesquisado.isEmpty()
+					? "Não há formas de pagamento cadastradas com esse argumento."
+					: "Quantidade de formas de pagamento cadastradas: " + listaCondicaoPagamentoPesquisado.size();
 		} catch (NumberFormatException e) {
 			uteis.adicionarMensagemAdvertencia("O argumento de pesquisa é inválido!");
 		} catch (Exception e) {
@@ -203,15 +207,27 @@ public class CondicaoPagamentoController implements Serializable {
 		}
 		quantidadeDias = "";
 	}
-	
+
 	public void limparUltimaParcela() {
 		String descricao = condicaoPagamentoDto.getDescricao();
 		if (descricao != null) {
 			String[] split = descricao.split(" \\- ");
 			StringBuilder st = new StringBuilder();
-			for (int i = 0; i < split.length; i++) {
-				System.out.println(i);
+			for (int i = 0; i < split.length-1; i++) {
+				st.append(split[i]);
+				if (i < split.length-2) {
+					st.append(" - ");
+				}
 			}
+			String resultante = st.toString();
+			if (!resultante.isBlank()) {
+				condicaoPagamentoDto.setDescricao(resultante);
+				condicaoPagamentoDto.setNumeroParcelas(condicaoPagamentoDto.getNumeroParcelas() - 1);
+			}else {
+				condicaoPagamentoDto.setDescricao(null);
+				condicaoPagamentoDto.setNumeroParcelas(0);
+			}
+			
 		}
 	}
 
