@@ -1,6 +1,7 @@
 package ecommerce.dao;
 
 import ecommerce.beans.Venda;
+
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
 

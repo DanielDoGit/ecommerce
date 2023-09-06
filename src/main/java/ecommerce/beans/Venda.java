@@ -19,6 +19,7 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Venda implements Serializable {
 
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -43,6 +44,25 @@ public class Venda implements Serializable {
 	@OneToMany(mappedBy = "venda", fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<Recebimento> recebimentos = new ArrayList<>();
 	
+	
+	public Venda(Integer codigo, Cliente cliente, Funcionario funcionario, LocalDate dataVenda, BigDecimal totalVenda,
+			List<ItemVenda> itensVenda, List<Recebimento> recebimentos) {
+		super();
+		this.codigo = codigo;
+		this.cliente = cliente;
+		this.funcionario = funcionario;
+		this.dataVenda = dataVenda;
+		this.totalVenda = totalVenda;
+		this.itensVenda = itensVenda;
+		this.recebimentos = recebimentos;
+	}
+	
+	public Venda() {
+		super();
+	}
+
+
+
 
 	public Integer getCodigo() {
 		return codigo;

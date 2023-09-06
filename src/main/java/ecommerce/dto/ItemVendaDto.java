@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import ecommerce.beans.ItemVenda;
 import ecommerce.beans.Produto;
+import ecommerce.beans.Venda;
+import ecommerce.dao.ProdutoDao;
 
 public class ItemVendaDto implements Serializable {
 
@@ -21,14 +24,18 @@ public class ItemVendaDto implements Serializable {
 	private BigDecimal valorUnitario;
 
 	private BigDecimal totalUnitario;
-
-	private VendaDto vendaDto;
 	
-	private ItemVendaDto (Produto produto, VendaDto vendaDto) {
+
+	private ItemVendaDto (Produto produto) {
 		this.idProduto = produto.getCodigo();
 		this.nomeProduto = produto.getDescricao();
-		this.vendaDto = vendaDto;
-		
+		this.quantidade = BigDecimal.ZERO;
+		this.valorUnitario = produto.getPrecoVenda();
+		this.totalUnitario = BigDecimal.ZERO;
+	}
+	
+	public ItemVenda toItemVenda(ProdutoDao produtoDao, Venda venda) {
+		return new ItemVenda(codigo, produtoDao.getById(idProduto), quantidade, valorUnitario, totalUnitario, venda);
 	}
 
 	public Integer getCodigo() {
@@ -99,16 +106,5 @@ public class ItemVendaDto implements Serializable {
 		ItemVendaDto other = (ItemVendaDto) obj;
 		return Objects.equals(codigo, other.codigo);
 	}
-
-	public VendaDto getVendaDto() {
-		return vendaDto;
-	}
-
-	public void setVendaDto(VendaDto vendaDto) {
-		this.vendaDto = vendaDto;
-	}
-	
-	
-	
 
 }
