@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Ecommerce</title>
+	<ui:include src="/ecommerce/paginas/uteis/scripts.xhtml" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+<h:body class="bg-info">
+	<h:form>
+		<div class="container bg-light rounded-bottom divcentral">
+			<ui:include src="/ecommerce/paginas/uteis/barramenu.xhtml" />
+			<br></br>
+			<div class="row d-none">
+				<div class="col" align="center">
+					<h:messages showDetail="false" id="msg" showSummary="true"
+						globalOnly="true" infoClass="text-info mensagemInfo"
+						warnClass="text-warning mensagemWarning"
+						errorClass="text-dark mensagemError" layout="list" />
+				</div>
+			</div>
+
+			<div class="row mb-3 ml-5 pl-4">
+				<label class="col-12 offset-2">Cliente</label>
+				<div class="form-inline offset-2">
+					<div class="form-group ml-3">
+						<h:inputText value="#{vendaController.vendaDto.idCliente}"
+							class="form-control col-2" id="txtIdCliente" autocomplete="off"
+							required="true">
+							<f:ajax listener="#{vendaController.carregarCliente}"
+								execute="txtIdCliente" render="txtIdCliente txtNomeCliente"></f:ajax>
+						</h:inputText>
+						<label>&#160;</label>
+						<h:inputText value="#{vendaController.vendaDto.nomeCliente}"
+							class="form-control col-8" id="txtNomeCliente" autocomplete="off"
+							disabled="true"></h:inputText>
+						<label>&#160;</label>
+						<button type="button" class="btn btn-primary" data-toggle="modal"
+							data-target="#pesquisarModalCliente" id="botaoProcurarCliente">
+							<span class="fas fa-search"></span>
+						</button>
+						<h:message for="txtIdCliente" showDetail="false"
+							showSummary="true" styleClass="error" />
+					</div>
+				</div>
+
+			</div>
+
+			<div class="row mb-3 ml-5 pl-4">
+				<label class="col-12 offset-2">Funcionário</label>
+				<div class="form-inline offset-2">
+					<div class="form-group ml-3">
+						<h:inputText value="#{vendaController.vendaDto.idFuncionario}"
+							class="form-control col-2" id="txtIdFuncionario"
+							autocomplete="off" required="true">
+							<f:ajax listener="#{vendaController.carregarFuncionario}"
+								execute="txtIdFuncionario"
+								render="txtIdFuncionario txtNomeFuncionario"></f:ajax>
+						</h:inputText>
+						<label>&#160;</label>
+						<h:inputText value="#{vendaController.vendaDto.nomeFuncionario}"
+							class="form-control col-8" id="txtNomeFuncionario"
+							autocomplete="off" disabled="true"></h:inputText>
+						<label>&#160;</label>
+						<button type="button" class="btn btn-primary" data-toggle="modal"
+							data-target="#pesquisarModalFuncionario" id="botaoProcurarFuncionario">
+							<span class="fas fa-search"></span>
+						</button>
+						<h:message for="txtIdFuncionario" showDetail="false"
+							showSummary="true" styleClass="error" />
+					</div>
+				</div>
+
+			</div>
+
+
+
+			<div class="row mb-3 ml-5 pl-4">
+				<div class="col-3 offset-2">
+					<label>Data</label>
+					<h:inputText pt:type="date" value="#{vendaController.vendaDto.dataVenda}"
+						class="form-control" id="txtData" autocomplete="off"
+						required="true" converter="converterDataInput">
+					</h:inputText>
+					<h:message for="txtData" showDetail="false" showSummary="true"
+						styleClass="error" />
+				</div>
+			</div>
+
+			<div class="row mb-2 ml-5 pl-3">
+				<div class="col-6 offset-2" align="right">
+					<h:commandButton action="#{vendaController.cancelarOperacao}"
+						value="Cancelar" immediate="true" class="btn btn-primary"
+						style="width: 120px; margin: 5px"></h:commandButton>
+					<h:commandButton
+						action="#{ajusteEstoqueController.chamarItensVenda}"
+						value="Próximo" class="btn btn-primary"
+						style="width: 120px; margin: 5px"
+						onclick="return validarSubmit();"></h:commandButton>
+				</div>
+			</div>
+
+			<div class="modal" id="pesquisarModalCliente">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-body">
+							<h4>Pesquisa de Cliente</h4>
+							<div class="input-group-append">
+								<h:inputText value="#{vendaController.argumentoBusca}"
+									class="form-control" id="nomeClientePesquisa" autocomplete="off"
+									style="width: 100%">
+								</h:inputText>
+								<h:commandLink class="btn btn-primary" type="button"
+									action="#{ajusteEstoqueController.pesquisarCliente}">
+									<span class="fas fa-search"></span>
+									<f:ajax execute="nomeClientePesquisa" render="tabelaCliente"></f:ajax>
+								</h:commandLink>
+							</div>
+							<br /> <br />
+							<h:dataTable border="0"
+								value="#{vendaController.listaClienteDto}" var="t"
+								class="table table-hover"
+								columnClasses="center, left, colunaAceitar" id="tabelaCliente">
+								<h:column id="column1">
+									<f:facet name="header">
+										<h:outputText value="ID"></h:outputText>
+									</f:facet>
+									<h:outputText value="#{t.codigo}"></h:outputText>
+								</h:column>
+								<h:column id="column2">
+									<f:facet name="header">
+										<h:outputText value="Nome"></h:outputText>
+									</f:facet>
+									<h:outputText value="#{t.nome}"></h:outputText>
+								</h:column>
+								<h:column id="column3">
+									<f:facet name="header">
+										<h:outputText value="Selecionar"></h:outputText>
+									</f:facet>
+									<h:commandLink
+										action="#{vendaController.selecionarCliente(t)}"
+										class="btn btn-success" pt:data-dismiss="modal">
+										<span class="fas fa-check"></span>
+										<f:ajax render="@form:txtIdCliente @form:txtNomeCliente"></f:ajax>
+									</h:commandLink>
+								</h:column>
+							</h:dataTable>
+							<br />
+							<div align="right">
+								<button type="button" class="btn btn-danger"
+									data-dismiss="modal" style="width: 120px">Sair</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal" id="pesquisarModalFuncionario">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-body">
+							<h4>Pesquisa de Funcionário</h4>
+							<div class="input-group-append">
+								<h:inputText  value="#{vendaController.argumentoBusca}"
+									class="form-control" id="nomeFuncionarioPesquisa" autocomplete="off"
+									style="width: 100%">
+								</h:inputText>
+								<h:commandLink class="btn btn-primary" type="button"
+									action="#{vendaController.pesquisarFuncionario}">
+									<span class="fas fa-search"></span>
+									<f:ajax execute="nomeFuncionarioPesquisa" render="tabelaFuncionario"></f:ajax>
+								</h:commandLink>
+							</div>
+							<br /> <br />
+							<h:dataTable border="0"
+								value="#{vendaController.listaFuncionarioDto}" var="t"
+								class="table table-hover"
+								columnClasses="center, left, colunaAceitar" id="tabelaFuncionario">
+								<h:column id="column1">
+									<f:facet name="header">
+										<h:outputText value="ID"></h:outputText>
+									</f:facet>
+									<h:outputText value="#{t.codigo}"></h:outputText>
+								</h:column>
+								<h:column id="column2">
+									<f:facet name="header">
+										<h:outputText value="Nome"></h:outputText>
+									</f:facet>
+									<h:outputText value="#{t.nome}"></h:outputText>
+								</h:column>
+								<h:column id="column3">
+									<f:facet name="header">
+										<h:outputText value="Selecionar"></h:outputText>
+									</f:facet>
+									<h:commandLink
+										action="#{vendaController.selecionarFuncionario(t)}"
+										class="btn btn-success" pt:data-dismiss="modal">
+										<span class="fas fa-check"></span>
+										<f:ajax render="@form:txtIdFuncionario @form:txtNomeFuncionario"></f:ajax>
+									</h:commandLink>
+								</h:column>
+							</h:dataTable>
+							<br />
+							<div align="right">
+								<button type="button" class="btn btn-danger"
+									data-dismiss="modal" style="width: 120px">Sair</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<br></br>
+		</div>
+	</h:form>
+</h:body>
+</html>

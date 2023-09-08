@@ -81,8 +81,8 @@ public class AjusteEstoqueController implements Serializable{
 	
 	public void selecionarProduto(CadastroProdutoDto p) throws Exception {
 		try {
-			FornecedorDao forDao = (FornecedorDao) InjectBean.newInstanceCDI(FornecedorDao.class);
-			GrupoDao grupoDao = (GrupoDao) InjectBean.newInstanceCDI(GrupoDao.class);
+			FornecedorDao forDao = InjectBean.newInstanceCDI(FornecedorDao.class);
+			GrupoDao grupoDao = InjectBean.newInstanceCDI(GrupoDao.class);
 			mostrarProduto(p.toProduto(forDao, grupoDao));
 		} catch (Exception e) {
 			throw e;

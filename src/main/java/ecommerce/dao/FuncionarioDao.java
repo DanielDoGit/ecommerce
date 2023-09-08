@@ -7,6 +7,10 @@ import ecommerce.beans.Funcionario;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
 import jakarta.persistence.Query;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 @Named
 @RequestScoped
@@ -20,13 +24,23 @@ public class FuncionarioDao extends Dao<Funcionario>{
 	
 	@SuppressWarnings("unchecked")
 	public Optional<Funcionario> realizarlogin(String login, String senha) {
-		String sql = "select * from funcionario where login = ? and senha = ? and ativo = ?";
+		String sql = "select * from funcionario where login = :varLogin and senha = :varSenha and ativo = :varAtivo";
 		Query q = em.createNativeQuery(sql, Funcionario.class);
-		q.setParameter(1, login);
-		q.setParameter(2, senha);
-		q.setParameter(3, "true");
+		q.setParameter("varLogin", login);
+		q.setParameter("varSenha", senha);
+		q.setParameter("varAtivo", "T");
 		List<Funcionario> listaFuncionario = q.getResultList();
 		return Optional.ofNullable(listaFuncionario.size() == 1 ? listaFuncionario.get(0) : null);
+	}
+	
+	public List<Funcionario> buscarFuncionarioAtivo(String nomeFuncionario){
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Funcionario> cq = cb.createQuery(Funcionario.class);
+		Root<Funcionario> root =  cq.from(Funcionario.class);
+		Predicate pNome = cb.like(cb.lower(root.get("nome")), "%"+nomeFuncionario.toLowerCase()+"%");
+		Predicate pAtivo = cb.equal(root.get("ativo"), "T");
+		cq.select(root).where(cb.and(pNome, pAtivo));
+		return em.createQuery(cq).getResultList();
 	}
 
 

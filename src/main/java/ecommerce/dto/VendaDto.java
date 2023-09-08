@@ -17,11 +17,11 @@ public class VendaDto {
 
 	private Integer codigo;
 
-	private Integer idCliente;
+	private String idCliente;
 
 	private String nomeCliente;
 
-	private Integer idFuncionario;
+	private String idFuncionario;
 
 	private String nomeFuncionario;
 
@@ -31,12 +31,13 @@ public class VendaDto {
 	
 	public VendaDto() {
 		this.dataVenda = LocalDate.now();
+		this.totalVenda = BigDecimal.ZERO;
 	}
 
 	public Venda toVenda(ClienteDao cliDao, FuncionarioDao funcDao, List<ItemVenda> itensVenda,
 			List<Recebimento> listaRecebimentos) {
-		Cliente c = cliDao.getById(idCliente);
-		Funcionario f = funcDao.getById(idFuncionario);
+		Cliente c = cliDao.getById(Integer.valueOf(idCliente));
+		Funcionario f = funcDao.getById(Integer.valueOf(idFuncionario));
 		Venda venda = new Venda();
 		venda.setCodigo(codigo);
 		venda.setCliente(c);
@@ -56,11 +57,11 @@ public class VendaDto {
 		this.codigo = codigo;
 	}
 
-	public Integer getIdCliente() {
+	public String getIdCliente() {
 		return idCliente;
 	}
 
-	public void setIdCliente(Integer idCliente) {
+	public void setIdCliente(String idCliente) {
 		this.idCliente = idCliente;
 	}
 
@@ -72,11 +73,11 @@ public class VendaDto {
 		this.nomeCliente = nomeCliente;
 	}
 
-	public Integer getIdFuncionario() {
+	public String getIdFuncionario() {
 		return idFuncionario;
 	}
 
-	public void setIdFuncionario(Integer idFuncionario) {
+	public void setIdFuncionario(String idFuncionario) {
 		this.idFuncionario = idFuncionario;
 	}
 

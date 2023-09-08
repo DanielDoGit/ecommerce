@@ -36,7 +36,7 @@ public class ConverterCPFCNPJ implements Converter<String>, Serializable {
 		UIComponent componenteEncontrado = arg1.findComponent("tipoPessoa");
 		TipoPessoa valorObtido = (TipoPessoa) ((HtmlSelectOneMenu) componenteEncontrado).getValue();
 		try {
-			uteis = (Uteis) InjectBean.newInstanceCDI(Uteis.class);
+			uteis = InjectBean.newInstanceCDI(Uteis.class);
 		} catch (Exception e) {
 			throw new ConverterException(e.getMessage());
 		}

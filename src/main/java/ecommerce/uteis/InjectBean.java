@@ -5,12 +5,10 @@ import jakarta.enterprise.inject.spi.CDI;
 
 public class InjectBean {
 
-	public static Object newInstanceCDI (Class<?> klass) throws Exception {
+	@SuppressWarnings("unchecked")
+	public static <T> T newInstanceCDI (Class<T> klass) {
 		Instance<?> instancia = CDI.current().select(klass);
-		if (instancia.isAmbiguous() || instancia.isUnsatisfied()) {
-			throw new Exception("Tipo de objeto ambiguo ou não classificado para injeção.");
-		}
-		return instancia.get();
+		return (T) instancia.get();
 	}
 	
 }

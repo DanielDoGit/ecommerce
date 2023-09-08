@@ -157,7 +157,7 @@ public class ProdutoController implements Serializable {
 	}
 
 	public void selecionarFornecedor(FornecedorDto t) throws Exception {
-		CidadeDao c = (CidadeDao) InjectBean.newInstanceCDI(CidadeDao.class);
+		CidadeDao c = InjectBean.newInstanceCDI(CidadeDao.class);
 		mostrarFornecedor(t.toFornecedor(c));
 	}
 
