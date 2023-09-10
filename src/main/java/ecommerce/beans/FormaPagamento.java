@@ -3,12 +3,15 @@ package ecommerce.beans;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.hibernate.type.TrueFalseConverter;
+
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-@Entity 
+@Entity
 public class FormaPagamento implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -16,13 +19,15 @@ public class FormaPagamento implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer codigo;
-	
+
 	private String descricao;
-	
+
+	@Convert(converter = TrueFalseConverter.class)
 	private boolean aparecerCaixa;
-	
+
+	@Convert(converter = TrueFalseConverter.class)
 	private boolean compensado;
-	
+
 	public FormaPagamento(Integer codigo, String descricao, boolean aparecerCaixa, boolean compensado) {
 		super();
 		this.codigo = codigo;
@@ -30,33 +35,39 @@ public class FormaPagamento implements Serializable {
 		this.aparecerCaixa = aparecerCaixa;
 		this.compensado = compensado;
 	}
-	
+
 	public FormaPagamento() {
 		super();
 	}
 
-
 	public Integer getCodigo() {
 		return codigo;
 	}
+
 	public void setCodigo(Integer codigo) {
 		this.codigo = codigo;
 	}
+
 	public String getDescricao() {
 		return descricao;
 	}
+
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+
 	public boolean isAparecerCaixa() {
 		return aparecerCaixa;
 	}
+
 	public void setAparecerCaixa(boolean aparecerCaixa) {
 		this.aparecerCaixa = aparecerCaixa;
 	}
+
 	public boolean isCompensado() {
 		return compensado;
 	}
+
 	public void setCompensado(boolean compensado) {
 		this.compensado = compensado;
 	}
@@ -77,7 +88,5 @@ public class FormaPagamento implements Serializable {
 		FormaPagamento other = (FormaPagamento) obj;
 		return Objects.equals(codigo, other.codigo);
 	}
-	
-	
-	
+
 }

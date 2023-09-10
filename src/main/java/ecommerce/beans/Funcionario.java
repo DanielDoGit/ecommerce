@@ -42,7 +42,7 @@ public class Funcionario implements Serializable {
 	private String login;
 	
 	private String senha;
-	
+
 	@Convert(converter = TrueFalseConverter.class)
 	private boolean ativo;
 	

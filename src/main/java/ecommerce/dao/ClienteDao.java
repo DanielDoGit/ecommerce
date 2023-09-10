@@ -25,7 +25,7 @@ public class ClienteDao extends Dao<Cliente> {
 		CriteriaQuery<Cliente> cq = cb.createQuery(Cliente.class);
 		Root<Cliente> root =  cq.from(Cliente.class);
 		Predicate pNome = cb.like(cb.lower(root.get("nome")), "%"+nomeCliente.toLowerCase()+"%");
-		Predicate pAtivo = cb.equal(root.get("ativo"), "true");
+		Predicate pAtivo = cb.equal(root.get("ativo"), true);
 		cq.select(root).where(cb.and(pNome, pAtivo));
 		return em.createQuery(cq).getResultList();
 	}

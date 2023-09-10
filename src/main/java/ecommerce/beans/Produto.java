@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-import org.hibernate.type.TrueFalseConverter;
-
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,7 +28,6 @@ public class Produto implements Serializable {
 
 	private BigDecimal precoVenda;
 
-	@Convert(converter = TrueFalseConverter.class)
 	private boolean ativo;
 
 	@ManyToOne

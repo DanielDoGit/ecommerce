@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 import ecommerce.beans.ItemVenda;
-import ecommerce.beans.Produto;
 import ecommerce.beans.Venda;
 import ecommerce.dao.ProdutoDao;
 
@@ -24,13 +23,12 @@ public class ItemVendaDto implements Serializable {
 	private BigDecimal valorUnitario;
 
 	private BigDecimal totalUnitario;
-	
 
-	private ItemVendaDto (Produto produto) {
+	public ItemVendaDto (ProdutoDto produto) {
 		this.idProduto = produto.getCodigo();
 		this.nomeProduto = produto.getDescricao();
 		this.quantidade = BigDecimal.ZERO;
-		this.valorUnitario = produto.getPrecoVenda();
+		this.valorUnitario = produto.getValorProduto();
 		this.totalUnitario = BigDecimal.ZERO;
 	}
 	

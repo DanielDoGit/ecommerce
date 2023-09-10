@@ -15,14 +15,6 @@
 		<div class="container bg-light rounded-bottom divcentral">
 			<ui:include src="/ecommerce/paginas/uteis/barramenu.xhtml" />
 			<br></br>
-			<div class="row d-none">
-				<div class="col" align="center">
-					<h:messages showDetail="false" id="msg" showSummary="true"
-						globalOnly="true" infoClass="text-info mensagemInfo"
-						warnClass="text-warning mensagemWarning"
-						errorClass="text-dark mensagemError" layout="list" />
-				</div>
-			</div>
 
 			<div class="row mb-3 ml-5 pl-4">
 				<label class="col-12 offset-2">Cliente</label>
@@ -32,12 +24,12 @@
 							class="form-control col-2" id="txtIdCliente" autocomplete="off"
 							required="true">
 							<f:ajax listener="#{vendaController.carregarCliente}"
-								execute="txtIdCliente" render="txtIdCliente txtNomeCliente"></f:ajax>
+								execute="txtIdCliente" render="txtIdCliente txtNomeCliente" ></f:ajax>
 						</h:inputText>
 						<label>&#160;</label>
 						<h:inputText value="#{vendaController.vendaDto.nomeCliente}"
 							class="form-control col-8" id="txtNomeCliente" autocomplete="off"
-							disabled="true"></h:inputText>
+							disable="true"></h:inputText>
 						<label>&#160;</label>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
 							data-target="#pesquisarModalCliente" id="botaoProcurarCliente">
@@ -77,8 +69,6 @@
 
 			</div>
 
-
-
 			<div class="row mb-3 ml-5 pl-4">
 				<div class="col-3 offset-2">
 					<label>Data</label>
@@ -97,7 +87,7 @@
 						value="Cancelar" immediate="true" class="btn btn-primary"
 						style="width: 120px; margin: 5px"></h:commandButton>
 					<h:commandButton
-						action="#{ajusteEstoqueController.chamarItensVenda}"
+						action="#{vendaController.chamarItensVenda}"
 						value="Próximo" class="btn btn-primary"
 						style="width: 120px; margin: 5px"
 						onclick="return validarSubmit();"></h:commandButton>
@@ -115,7 +105,7 @@
 									style="width: 100%">
 								</h:inputText>
 								<h:commandLink class="btn btn-primary" type="button"
-									action="#{ajusteEstoqueController.pesquisarCliente}">
+									action="#{vendaController.pesquisarCliente}">
 									<span class="fas fa-search"></span>
 									<f:ajax execute="nomeClientePesquisa" render="tabelaCliente"></f:ajax>
 								</h:commandLink>

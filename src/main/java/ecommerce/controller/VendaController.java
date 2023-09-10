@@ -1,6 +1,7 @@
 package ecommerce.controller;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ import ecommerce.uteis.GerenciadorConversa;
 import ecommerce.uteis.GerenciadorToken;
 import ecommerce.uteis.InjectBean;
 import ecommerce.uteis.PermissaoExeption;
+import ecommerce.uteis.TokenException;
 import ecommerce.uteis.Uteis;
 import jakarta.enterprise.context.ConversationScoped;
 import jakarta.faces.event.AjaxBehaviorEvent;
@@ -51,11 +53,11 @@ public class VendaController implements Serializable {
 	private LoginController loginController;
 
 	private VendaDto vendaDto;
-	
+
 	private String argumentoBusca;
-	
+
 	private List<ClienteDto> listaClienteDto = new ArrayList<ClienteDto>();
-	
+
 	private List<FuncionarioDto> listaFuncionarioDto = new ArrayList<FuncionarioDto>();
 
 	public String abrirVenda() {
@@ -85,9 +87,11 @@ public class VendaController implements Serializable {
 		if (c != null) {
 			vendaDto.setIdCliente(String.valueOf(c.getCodigo()));
 			vendaDto.setNomeCliente(c.getNome());
+			vendaDto.setLimiteCredito(c.getCredito());
 		} else {
 			vendaDto.setIdCliente(null);
 			vendaDto.setNomeCliente(null);
+			vendaDto.setLimiteCredito(BigDecimal.ZERO);
 		}
 	}
 
@@ -111,33 +115,43 @@ public class VendaController implements Serializable {
 	}
 
 	public String chamarItensVenda() {
-		return "/ecommerce/paginas/processos/itensVenda.xhtml";
+		try {
+			token.validarToken();
+			if (vendaDto.getNomeFuncionario() == null || vendaDto.getNomeCliente() == null) {
+				uteis.adicionarMensagemAdvertencia("Verifique os campos obrigatórios e tente novamente!");
+				return null;
+			}
+			return "/ecommerce/paginas/processos/itensVenda.xhtml";
+		} catch (TokenException e) {
+			uteis.adicionarMensagemErro(e);
+			return null;
+		}
 	}
 
 	public String cancelarOperacao() {
 		conversa.finalizar();
 		return uteis.getCaminhoInicial();
 	}
-	
+
 	public void pesquisarCliente() {
 		List<Cliente> listaCliente = clienteDao.buscarClienteAtivo(argumentoBusca);
 		listaClienteDto = listaCliente.stream().map(ClienteDto::new).collect(Collectors.toList());
 	}
-	
+
 	public void pesquisarFuncionario() {
 		List<Funcionario> listaFuncionario = funcionarioDao.buscarFuncionarioAtivo(argumentoBusca);
 		listaFuncionarioDto = listaFuncionario.stream().map(FuncionarioDto::new).collect(Collectors.toList());
 	}
-	
+
 	public void selecionarCliente(ClienteDto cliDto) {
 		CidadeDao cid = InjectBean.newInstanceCDI(CidadeDao.class);
 		mostrarCliente(cliDto.toCliente(cid));
 	}
-	
+
 	public void selecionarFuncionario(FuncionarioDto funcDto) {
 		CidadeDao cid = InjectBean.newInstanceCDI(CidadeDao.class);
 		PermissaoDao pDao = InjectBean.newInstanceCDI(PermissaoDao.class);
-		mostrarFuncionario(funcDto.toFuncionario(pDao,cid));
+		mostrarFuncionario(funcDto.toFuncionario(pDao, cid));
 	}
 
 	public ClienteDao getClienteDao() {
@@ -223,6 +237,5 @@ public class VendaController implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
 
 }

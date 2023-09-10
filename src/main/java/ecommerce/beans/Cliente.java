@@ -5,6 +5,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import org.hibernate.type.TrueFalseConverter;
+
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,6 +43,7 @@ public class Cliente implements Serializable {
 	
 	private BigDecimal credito;
 	
+	@Convert(converter = TrueFalseConverter.class)
 	private boolean ativo;
 	
 	private LocalDate dataCadastro;

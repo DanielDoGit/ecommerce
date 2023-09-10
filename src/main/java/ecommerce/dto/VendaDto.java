@@ -20,6 +20,8 @@ public class VendaDto {
 	private String idCliente;
 
 	private String nomeCliente;
+	
+	private BigDecimal limiteCredito;
 
 	private String idFuncionario;
 
@@ -32,6 +34,7 @@ public class VendaDto {
 	public VendaDto() {
 		this.dataVenda = LocalDate.now();
 		this.totalVenda = BigDecimal.ZERO;
+		this.limiteCredito = BigDecimal.ZERO;
 	}
 
 	public Venda toVenda(ClienteDao cliDao, FuncionarioDao funcDao, List<ItemVenda> itensVenda,
@@ -120,6 +123,14 @@ public class VendaDto {
 			return false;
 		VendaDto other = (VendaDto) obj;
 		return Objects.equals(codigo, other.codigo);
+	}
+
+	public BigDecimal getLimiteCredito() {
+		return limiteCredito;
+	}
+
+	public void setLimiteCredito(BigDecimal limiteCredito) {
+		this.limiteCredito = limiteCredito;
 	}
 
 }
