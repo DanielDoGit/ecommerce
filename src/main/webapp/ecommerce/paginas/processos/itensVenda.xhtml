@@ -9,16 +9,6 @@
 	<title>Ecommerce</title>
 	<ui:include src="/ecommerce/paginas/uteis/scripts.xhtml" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<script>
-		function enter(nextfield) {
-			if (window.event && window.event.keyCode == 13) {
-				nextfield.focus();
-				return false;
-			} else {
-				return true;
-			}
-		}
-	</script>
 </h:head>
 <h:body class="bg-info">
 	<h:form>
@@ -35,7 +25,7 @@
 			</div>
 
 			<div class="row mb-3 ml-5 pl-4">
-				<div class="col-5 offset-1">
+				<div class="col-7">
 					<label>Cliente</label>
 					<h:inputText
 						value="#{itemVendaController.vendaController.vendaDto.nomeCliente}"
@@ -54,7 +44,7 @@
 			</div>
 
 			<div class="row mb-3 ml-5 pl-4">
-				<div class="col-5 offset-1">
+				<div class="col-7">
 					<label>Funcionário</label>
 					<h:inputText
 						value="#{itemVendaController.vendaController.vendaDto.nomeFuncionario}"
@@ -72,23 +62,42 @@
 			</div>
 
 			<div class="row mb-3 ml-5 pl-4">
-				<div class="form-group">
-					<div class="col-5 offset-1">
-						<label>Produto</label>
+				<div class="col-5">
+					<label>Produto</label>
+					<div class="input-group-append">
 						<h:inputText
 							value="#{itemVendaController.itemVendaDto.nomeProduto}"
 							class="form-control" id="txtProduto" autocomplete="off"
-							readonly="readonly"></h:inputText>
+							immediate="true"></h:inputText>
 						<label>&#160;</label>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
 							data-target="#pesquisarModalProduto" id="botaoProcurarProduto">
 							<span class="fas fa-search"></span>
 						</button>
+						<h:message for="txtProduto" id="msgProduto"/>
 					</div>
-					<label>&#160;</label>
-					
-					
 				</div>
+				<div class="col-2">
+					<label>Quantidade</label>
+					<h:inputText value="#{itemVendaController.itemVendaDto.quantidade}"
+						class="form-control" id="txtQuantidade" autocomplete="off"
+						immediate="true"></h:inputText>
+				</div>
+				<div class="col-4">
+					<label>Preço unitario</label>
+					<div class="input-group-append">
+						<h:inputText
+							value="#{itemVendaController.itemVendaDto.valorUnitario}"
+							class="form-control" id="txtPrecounitario" autocomplete="off"
+							immediate="true"></h:inputText>
+						&nbsp;
+						<h:commandLink class="btn btn-primary">
+							<span class="fas fa-plus"></span>
+							<f:ajax listener="#{itemVendaController.adicionarItemVenda}" render="table @form:msgProduto"></f:ajax>
+						</h:commandLink>
+					</div>
+				</div>
+
 			</div>
 
 			<div class="row">
@@ -96,7 +105,7 @@
 					<h:dataTable id="table" border="0"
 						value="#{itemVendaController.listItemsVenda}" var="s"
 						class="table table-hover"
-						columnClasses="center, left, colunaEditar, colunaExcluir">
+						columnClasses="center, left, colunaExcluir">
 						<h:column id="column1">
 							<f:facet name="header">
 								<h:outputText value="Produto"></h:outputText>
@@ -154,7 +163,7 @@
 						onclick="return validarSubmit();"></h:commandButton>
 				</div>
 			</div>
-			
+
 			<div class="modal" id="pesquisarModalProduto">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -173,7 +182,7 @@
 							</div>
 							<br /> <br />
 							<h:dataTable border="0"
-								value="#{ajusteEstoqueController.listaProdutoDto}" var="t"
+								value="#{itemVendaController.listaProdutoDto}" var="t"
 								class="table table-hover"
 								columnClasses="center, left, colunaAceitar" id="tabela">
 								<h:column id="column1">
@@ -188,21 +197,22 @@
 									</f:facet>
 									<h:outputText value="#{t.descricao}"></h:outputText>
 								</h:column>
-								<h:column id="column2">
+								<h:column id="column3">
 									<f:facet name="header">
 										<h:outputText value="Preço venda"></h:outputText>
 									</f:facet>
-									<h:outputText value="#{t.valorProduto}" converter="bigDecimalToCurrency"></h:outputText>
+									<h:outputText value="#{t.valorProduto}"
+										converter="bigDecimalToCurrency"></h:outputText>
 								</h:column>
 								<h:column id="column4">
 									<f:facet name="header">
 										<h:outputText value="Selecionar"></h:outputText>
 									</f:facet>
 									<h:commandLink
-										action="#{ajusteEstoqueController.selecionarProduto(t)}"
+										action="#{itemVendaController.selecionarProduto(t)}"
 										class="btn btn-success" pt:data-dismiss="modal">
 										<span class="fas fa-check"></span>
-										<f:ajax render="@form:txtIdProduto @form:txtNomeProduto"></f:ajax>
+										<f:ajax render="@form:txtProduto @form:txtQuantidade @form:txtPrecounitario"></f:ajax>
 									</h:commandLink>
 								</h:column>
 							</h:dataTable>

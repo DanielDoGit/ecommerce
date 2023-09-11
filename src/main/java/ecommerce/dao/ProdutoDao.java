@@ -14,4 +14,6 @@ public class ProdutoDao extends Dao<Produto> {
 		super(Produto.class);
 	}
 	
+	
+	
 }

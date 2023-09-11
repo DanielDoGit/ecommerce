@@ -14,6 +14,7 @@ import ecommerce.uteis.GerenciadorConversa;
 import ecommerce.uteis.GerenciadorToken;
 import ecommerce.uteis.Uteis;
 import jakarta.enterprise.context.ConversationScoped;
+import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
@@ -50,14 +51,21 @@ public class ItemVendaController implements Serializable{
 		return null;
 	}
 	
-	public void adicionarItemVenda(ItemVendaDto itemVendaDto) {
-		listItemsVenda.add(itemVendaDto);
+	public void adicionarItemVenda(AjaxBehaviorEvent e) {
+		if (itemVendaDto == null) {
+			uteis.adicionarMensagemAdvertencia("Por favor informe um item");
+			return;
+		}
+		BigDecimal resultado = itemVendaDto.getQuantidade().multiply(itemVendaDto.getValorUnitario()).setScale(2);
+		itemVendaDto.setTotalUnitario(resultado);
 		incrementarTotal(itemVendaDto);
+		listItemsVenda.add(itemVendaDto);
+		itemVendaDto = null;
+		System.out.println(listItemsVenda);
 	}
 	
 	public void selecionarProduto(ProdutoDto produto) {
 		itemVendaDto = new ItemVendaDto(produto);
-		adicionarItemVenda(itemVendaDto);
 	}
 	
 	public void incrementarTotal(ItemVendaDto itemVendaDto) {
