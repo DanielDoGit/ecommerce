@@ -2,11 +2,13 @@ package ecommerce.controller;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import ecommerce.beans.Produto;
+import ecommerce.dao.EstoqueTransienteDao;
 import ecommerce.dao.ProdutoDao;
 import ecommerce.dto.ItemVendaDto;
 import ecommerce.dto.ProdutoDto;
@@ -33,6 +35,9 @@ public class ItemVendaController implements Serializable{
 	private VendaController vendaController;
 	
 	@Inject
+	private EstoqueTransienteDao estoqueTransienteDao;
+	
+	@Inject
 	private GerenciadorConversa conversa;
 	
 	@Inject
@@ -42,7 +47,7 @@ public class ItemVendaController implements Serializable{
 	private Uteis uteis;
 	
 	private List<ItemVendaDto> listItemsVenda = new ArrayList<ItemVendaDto>();
-	private ItemVendaDto itemVendaDto;
+	private ItemVendaDto itemVendaDto = new ItemVendaDto();
 	private List<ProdutoDto> listaProdutoDto = new ArrayList<ProdutoDto>();
  	
 	private String argumentoBusca;
@@ -52,16 +57,20 @@ public class ItemVendaController implements Serializable{
 	}
 	
 	public void adicionarItemVenda(AjaxBehaviorEvent e) {
-		if (itemVendaDto == null) {
+		if (itemVendaDto.getIdProduto() == null) {
 			uteis.adicionarMensagemAdvertencia("Por favor informe um item");
 			return;
 		}
+		if (validarEstoque(itemVendaDto)) {
+			uteis.adicionarMensagemAdvertencia("Estoque insuficiente: "+itemVendaDto.getNomeProduto());
+			return;
+		}
+		criarEstoqueTransiente(itemVendaDto);
 		BigDecimal resultado = itemVendaDto.getQuantidade().multiply(itemVendaDto.getValorUnitario()).setScale(2);
 		itemVendaDto.setTotalUnitario(resultado);
 		incrementarTotal(itemVendaDto);
 		listItemsVenda.add(itemVendaDto);
-		itemVendaDto = null;
-		System.out.println(listItemsVenda);
+		itemVendaDto = new ItemVendaDto();
 	}
 	
 	public void selecionarProduto(ProdutoDto produto) {
@@ -79,12 +88,34 @@ public class ItemVendaController implements Serializable{
 	}
 	
 	public void excluirItemVenda(ItemVendaDto item) {
-		listItemsVenda.remove(item);
 		BigDecimal totalVenda = vendaController.getVendaDto().getTotalVenda();
 		vendaController.getVendaDto().setTotalVenda(totalVenda.subtract(item.getTotalUnitario()));
+		removerEstoqueTransiente(item);
+		listItemsVenda.remove(item);
+	}
+	
+	private boolean validarEstoque(ItemVendaDto item) {
+		BigDecimal resultado = estoqueTransienteDao.getEstoqueDisponivel(LocalDate.now(), produtoDao.getById(item.getIdProduto()));
+		if (item.getQuantidade().compareTo(BigDecimal.ZERO) <= 0) {
+			return true;
+		}
+		return resultado.subtract(item.getQuantidade()).compareTo(BigDecimal.ZERO) == -1;
+	}	
+	
+	private void criarEstoqueTransiente(ItemVendaDto item){
+		Produto p = produtoDao.getById(item.getIdProduto());
+		BigDecimal resultado = estoqueTransienteDao.getEstoqueDisponivel(LocalDate.now(), p);
+		BigDecimal quantidadeDisponivel = resultado.subtract(item.getQuantidade());
+		estoqueTransienteDao.processarAdicaoEstoqueTransiente(p, quantidadeDisponivel);
+	}
+	
+	private void removerEstoqueTransiente(ItemVendaDto item){
+		Produto p = produtoDao.getById(item.getIdProduto());
+		estoqueTransienteDao.processarRemocaoEstoqueTransiente(p, item.getQuantidade());
 	}
 	
 	public String cancelar() {
+		listItemsVenda.forEach(e -> removerEstoqueTransiente(e));
 		conversa.finalizar();
 		return uteis.getCaminhoInicial();
 	}
@@ -163,6 +194,14 @@ public class ItemVendaController implements Serializable{
 
 	public void setListaProdutoDto(List<ProdutoDto> listaProdutoDto) {
 		this.listaProdutoDto = listaProdutoDto;
+	}
+
+	public EstoqueTransienteDao getEstoqueTransienteDao() {
+		return estoqueTransienteDao;
+	}
+
+	public void setEstoqueTransienteDao(EstoqueTransienteDao estoqueTransienteDao) {
+		this.estoqueTransienteDao = estoqueTransienteDao;
 	}
 
 }

@@ -78,24 +78,25 @@ public class Dao<T> implements Serializable{
 		return q.getResultList();
 	}
 	
-	public <K> List<T> buscarSimilaridadeInnerJoin(Class<K> joinClass, String parameterField, String argJoing){
+	public <K> List<T> buscarSimilaridadeInnerJoin(Class<K> joinClass, String parameterJoin, String parameterFieldJoin, String argJoin){
 		CriteriaBuilder criBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<T> criteriaQuery = criBuilder.createQuery(klass);
 		Root<T> principal = criteriaQuery.from(klass);
 		
-		Join<T, K> joinRealized = principal.join("cidade", JoinType.INNER);
-		criteriaQuery.select(principal).where(criBuilder.like(criBuilder.lower(joinRealized.get(parameterField)), "%"+argJoing.toLowerCase()+"%"));
+		Join<T, K> joinRealized = principal.join(parameterJoin, JoinType.INNER);
+		criteriaQuery.select(principal).where(criBuilder.like(criBuilder.lower(joinRealized.get(parameterFieldJoin)), "%"+argJoin.toLowerCase()+"%"));
 		return em.createQuery(criteriaQuery).getResultList();
 	}
 	
-	public <K> T buscarExatidaoInnerJoin(Class<K> joinClass, String parameterField, String argJoing){
+	public <K> T buscarExatidaoInnerJoin(Class<K> joinClass, String parameterJoin, String parameterFieldJoin, String argJoin){
 		CriteriaBuilder criBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<T> criteriaQuery = criBuilder.createQuery(klass);
 		Root<T> principal = criteriaQuery.from(klass);
 		
-		Join<T, K> joinRealized = principal.join("cidade", JoinType.INNER);
-		criteriaQuery.select(principal).where(criBuilder.like(criBuilder.lower(joinRealized.get(parameterField)), "%"+argJoing.toLowerCase()+"%"));
-		return em.createQuery(criteriaQuery).getSingleResult();
+		Join<T, K> joinRealized = principal.join(parameterJoin, JoinType.INNER);
+		criteriaQuery.select(principal).where(criBuilder.equal(joinRealized.get(parameterFieldJoin), argJoin));
+		List<T> lista = em.createQuery(criteriaQuery).getResultList();
+		return lista.size() == 1 ? lista.get(0) : null;
 	}
 
 	public EntityManager getEm() {

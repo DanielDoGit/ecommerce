@@ -103,7 +103,7 @@ public class ClienteController implements Serializable {
 				listaClienteDto = clienteDao.buscarSimilaridade("nome", argumentoBusca).stream()
 						.map(ClienteDto::new).collect(Collectors.toList());
 			} else {
-				listaClienteDto = clienteDao.buscarSimilaridadeInnerJoin(Cidade.class, "nome", argumentoBusca).stream()
+				listaClienteDto = clienteDao.buscarSimilaridadeInnerJoin(Cidade.class, "cidade", "nome", argumentoBusca).stream()
 						.map(ClienteDto::new).collect(Collectors.toList());
 			}
 			atualizarMensagem(); 

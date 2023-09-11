@@ -13,5 +13,8 @@ public class FornecedorDao extends Dao<Fornecedor> {
 	public FornecedorDao() {
 		super(Fornecedor.class);
 	}
+	
+	
+	
 
 }

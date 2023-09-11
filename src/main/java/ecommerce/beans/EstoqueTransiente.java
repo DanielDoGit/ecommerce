@@ -2,6 +2,7 @@ package ecommerce.beans;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalTime;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -12,6 +13,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "estoque_transiente")
@@ -32,18 +35,11 @@ public class EstoqueTransiente implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "produto")
 	private Produto produto;
+	
+	@Temporal(TemporalType.TIME)
+	private LocalTime horaIsercao;
 
 	public EstoqueTransiente() {
-		super();
-	}
-	
-	public EstoqueTransiente(Integer codigo, BigDecimal quantidadeDisponivel, Integer quantidadeAcesso,
-			Produto produto) {
-		super();
-		this.codigo = codigo;
-		this.quantidadeDisponivel = quantidadeDisponivel;
-		this.quantidadeAcesso = quantidadeAcesso;
-		this.produto = produto;
 	}
 
 	@Override
@@ -97,6 +93,14 @@ public class EstoqueTransiente implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public LocalTime getHoraIsercao() {
+		return horaIsercao;
+	}
+
+	public void setHoraIsercao(LocalTime horaIsercao) {
+		this.horaIsercao = horaIsercao;
 	}
 
 	

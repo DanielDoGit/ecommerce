@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ecommerce.beans.Cidade;
 import ecommerce.beans.Fornecedor;
 import ecommerce.beans.Grupo;
 import ecommerce.beans.Produto;
@@ -141,7 +140,7 @@ public class ProdutoController implements Serializable {
 				listaProdutosPesquisados = produtoDao.buscarSimilaridade("descricao", argumentoBusca).stream()
 						.map(CadastroProdutoDto::new).collect(Collectors.toList());
 			} else {
-				listaProdutosPesquisados = produtoDao.buscarSimilaridadeInnerJoin(Cidade.class, "nome", argumentoBusca)
+				listaProdutosPesquisados = produtoDao.buscarSimilaridadeInnerJoin(Fornecedor.class, "cidade","nome", argumentoBusca)
 						.stream().map(CadastroProdutoDto::new).collect(Collectors.toList());
 			}
 			mensagem = listaProdutosPesquisados.isEmpty() ? "Não há produtos cadastrados no sitema com esse argumento."

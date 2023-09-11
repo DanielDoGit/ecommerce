@@ -32,6 +32,14 @@ public class ItemVendaDto implements Serializable {
 		this.totalUnitario = produto.getValorProduto();
 	}
 	
+	public ItemVendaDto() {
+		this.idProduto = null;
+		this.nomeProduto = null;
+		this.quantidade = null;
+		this.valorUnitario = null;
+		this.totalUnitario = null;
+	}
+	
 	public ItemVenda toItemVenda(ProdutoDao produtoDao, Venda venda) {
 		return new ItemVenda(codigo, produtoDao.getById(idProduto), quantidade, valorUnitario, totalUnitario, venda);
 	}

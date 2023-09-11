@@ -15,15 +15,6 @@
 		<div class="container bg-light rounded-bottom divcentral">
 			<ui:include src="/ecommerce/paginas/uteis/barramenu.xhtml" />
 			<br></br>
-			<div class="row d-none">
-				<div class="col" align="center">
-					<h:messages showDetail="false" id="msg" showSummary="true"
-						globalOnly="true" infoClass="text-info mensagemInfo"
-						warnClass="text-warning mensagemWarning"
-						errorClass="text-dark mensagemError" layout="list" />
-				</div>
-			</div>
-
 			<div class="row mb-3 ml-5 pl-4">
 				<div class="col-7">
 					<label>Cliente</label>
@@ -37,7 +28,7 @@
 					<h:inputText
 						value="#{itemVendaController.vendaController.vendaDto.dataVenda}"
 						class="form-control" id="txtDataVenda" autocomplete="off"
-						disable="true" converter="converterDataOutput">
+						disabled="true" converter="converterDataOutput">
 					</h:inputText>
 				</div>
 
@@ -49,14 +40,14 @@
 					<h:inputText
 						value="#{itemVendaController.vendaController.vendaDto.nomeFuncionario}"
 						class="form-control" id="txtNomeFuncionario" autocomplete="off"
-						readonly="readonly"></h:inputText>
+						disabled="true"></h:inputText>
 				</div>
 				<div class="col-4">
 					<label>Limite Crédito</label>
 					<h:inputText
 						value="#{itemVendaController.vendaController.vendaDto.limiteCredito}"
 						class="form-control" id="txtLimiteCredito" autocomplete="off"
-						required="true" converter="bigDecimalToCurrency">
+						disabled="true" converter="bigDecimalToCurrency">
 					</h:inputText>
 				</div>
 			</div>
@@ -68,20 +59,23 @@
 						<h:inputText
 							value="#{itemVendaController.itemVendaDto.nomeProduto}"
 							class="form-control" id="txtProduto" autocomplete="off"
-							immediate="true"></h:inputText>
+							disabled="true"></h:inputText>
 						<label>&#160;</label>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
 							data-target="#pesquisarModalProduto" id="botaoProcurarProduto">
 							<span class="fas fa-search"></span>
 						</button>
-						<h:message for="txtProduto" id="msgProduto"/>
+						<h:message for="txtProduto" id="msgProduto" showSummary="true"
+							globalOnly="true" infoClass="text-info mensagemInfo"
+							warnClass="text-warning mensagemWarning"
+							errorClass="text-dark mensagemError" layout="list" />
 					</div>
 				</div>
 				<div class="col-2">
 					<label>Quantidade</label>
 					<h:inputText value="#{itemVendaController.itemVendaDto.quantidade}"
 						class="form-control" id="txtQuantidade" autocomplete="off"
-						immediate="true"></h:inputText>
+						immediate="true" converter="bigDecimalToNumber"></h:inputText>
 				</div>
 				<div class="col-4">
 					<label>Preço unitario</label>
@@ -89,11 +83,12 @@
 						<h:inputText
 							value="#{itemVendaController.itemVendaDto.valorUnitario}"
 							class="form-control" id="txtPrecounitario" autocomplete="off"
-							immediate="true"></h:inputText>
+							immediate="true" converter="bigDecimalToCurrency"></h:inputText>
 						&nbsp;
 						<h:commandLink class="btn btn-primary">
 							<span class="fas fa-plus"></span>
-							<f:ajax listener="#{itemVendaController.adicionarItemVenda}" render="table @form:msgProduto"></f:ajax>
+							<f:ajax listener="#{itemVendaController.adicionarItemVenda}"
+								execute="@form" render="@form"></f:ajax>
 						</h:commandLink>
 					</div>
 				</div>
@@ -105,7 +100,7 @@
 					<h:dataTable id="table" border="0"
 						value="#{itemVendaController.listItemsVenda}" var="s"
 						class="table table-hover"
-						columnClasses="center, left, colunaExcluir">
+						columnClasses="center, left, left, left, colunaExcluir">
 						<h:column id="column1">
 							<f:facet name="header">
 								<h:outputText value="Produto"></h:outputText>
@@ -122,19 +117,15 @@
 							<f:facet name="header">
 								<h:outputText value="Preço unitário"></h:outputText>
 							</f:facet>
-							<h:commandLink action="#{s.valorUnitario}"
-								class="btn btn-success">
-								<span class="fas fa-pen"></span>
-							</h:commandLink>
+							<h:outputText value="#{s.valorUnitario}"
+								converter="bigDecimalToCurrency"></h:outputText>
 						</h:column>
 						<h:column id="column4">
 							<f:facet name="header">
 								<h:outputText value="Valor total"></h:outputText>
 							</f:facet>
-							<h:commandLink action="#{s.totalUnitario}"
-								class="btn btn-success">
-								<span class="fas fa-pen"></span>
-							</h:commandLink>
+							<h:outputText value="#{s.totalUnitario}"
+								converter="bigDecimalToCurrency"></h:outputText>
 						</h:column>
 						<h:column id="column5">
 							<f:facet name="header">
@@ -149,6 +140,17 @@
 								class="itemVenda#{s.codigo}"></h:commandLink>
 						</h:column>
 					</h:dataTable>
+				</div>
+			</div>
+			<br></br>
+			<div class="row mb-2 ml-5 pl-3">
+				<div class="col-4 offset-3" align="center">
+					<label>Total Venda</label>
+					<h:inputText
+						value="#{itemVendaController.vendaController.vendaDto.totalVenda}"
+						class="form-control bg-warning" id="txtTotalVenda"
+						autocomplete="off" readonly="true"
+						converter="bigDecimalToCurrency"></h:inputText>
 				</div>
 			</div>
 
@@ -212,7 +214,8 @@
 										action="#{itemVendaController.selecionarProduto(t)}"
 										class="btn btn-success" pt:data-dismiss="modal">
 										<span class="fas fa-check"></span>
-										<f:ajax render="@form:txtProduto @form:txtQuantidade @form:txtPrecounitario"></f:ajax>
+										<f:ajax
+											render="@form:txtProduto @form:txtQuantidade @form:txtPrecounitario"></f:ajax>
 									</h:commandLink>
 								</h:column>
 							</h:dataTable>

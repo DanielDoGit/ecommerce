@@ -20,7 +20,6 @@ public class BigDecimalToNumber extends NumberConverter {
 		}
 
 		setType("number");
-		component.getParent().setRendered(true);
 		return getAsString(context, component, value);
 	}
 
