@@ -25,49 +25,49 @@ import jakarta.transaction.Transactional;
 @ConversationScoped
 @Named
 @Transactional
-public class ItemVendaController implements Serializable{
+public class ItemVendaController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
 	private ProdutoDao produtoDao;
-	
+
 	@Inject
 	private VendaController vendaController;
-	
+
 	@Inject
 	private EstoqueTransienteDao estoqueTransienteDao;
-	
+
 	@Inject
 	private GerenciadorConversa conversa;
-	
+
 	@Inject
 	private GerenciadorToken token;
-	
+
 	@Inject
 	private Uteis uteis;
-	
+
 	private List<ItemVendaDto> listItemsVenda = new ArrayList<ItemVendaDto>();
 	private ItemVendaDto itemVendaDto = new ItemVendaDto();
 	private List<ProdutoDto> listaProdutoDto = new ArrayList<ProdutoDto>();
- 	
+
 	private String argumentoBusca;
-	
+
 	public String chamarFormaPagamento() {
-		if (validarCredito()){
+		if (validarCredito()) {
 			uteis.adicionarMensagemAdvertencia("Limite de crédito excedido!");
 			return null;
 		}
 		return null;
 	}
-	
+
 	public void adicionarItemVenda(AjaxBehaviorEvent e) {
 		if (itemVendaDto.getIdProduto() == null) {
 			uteis.adicionarMensagemAdvertencia("Por favor informe um item!");
 			return;
 		}
-		if (validarEstoque(itemVendaDto)) {
-			uteis.adicionarMensagemAdvertencia("Estoque insuficiente: "+itemVendaDto.getNomeProduto());
+		if (!validarEstoque(itemVendaDto)) {
+			uteis.adicionarMensagemAdvertencia("Estoque insuficiente: " + itemVendaDto.getNomeProduto());
 			return;
 		}
 		criarEstoqueTransiente(itemVendaDto);
@@ -77,56 +77,50 @@ public class ItemVendaController implements Serializable{
 		listItemsVenda.add(itemVendaDto);
 		itemVendaDto = new ItemVendaDto();
 	}
-	
+
 	public void selecionarProduto(ProdutoDto produto) {
 		itemVendaDto = new ItemVendaDto(produto);
 	}
-	
+
 	public void incrementarTotal(ItemVendaDto itemVendaDto) {
 		BigDecimal totalVenda = vendaController.getVendaDto().getTotalVenda();
 		vendaController.getVendaDto().setTotalVenda(totalVenda.add(itemVendaDto.getTotalUnitario()));
 	}
-	
+
 	public void pesquisarProduto() {
 		List<Produto> listaProduto = produtoDao.buscarSimilaridade("descricao", argumentoBusca);
 		listaProdutoDto = listaProduto.stream().map(ProdutoDto::new).collect(Collectors.toList());
 	}
-	
+
 	public void excluirItemVenda(ItemVendaDto item) {
 		BigDecimal totalVenda = vendaController.getVendaDto().getTotalVenda();
 		vendaController.getVendaDto().setTotalVenda(totalVenda.subtract(item.getTotalUnitario()));
 		removerEstoqueTransiente(item);
 		listItemsVenda.remove(item);
 	}
-	
+
 	private boolean validarEstoque(ItemVendaDto item) {
-		BigDecimal resultado = estoqueTransienteDao.getEstoqueDisponivel(LocalDate.now(), produtoDao.getById(item.getIdProduto()));
-		if (item.getQuantidade().compareTo(BigDecimal.ZERO) <= 0) {
-			return true;
-		}
-		return resultado.subtract(item.getQuantidade()).compareTo(BigDecimal.ZERO) == -1;
-	}	
-	
-	private void criarEstoqueTransiente(ItemVendaDto item){
 		Produto p = produtoDao.getById(item.getIdProduto());
 		BigDecimal resultado = estoqueTransienteDao.getEstoqueDisponivel(LocalDate.now(), p);
-		BigDecimal quantidadeDisponivel = resultado.subtract(item.getQuantidade());
-		estoqueTransienteDao.processarAdicaoEstoqueTransiente(p, quantidadeDisponivel);
+		return resultado.subtract(item.getQuantidade()).compareTo(BigDecimal.ZERO) >= 0;
 	}
-	
-	private void removerEstoqueTransiente(ItemVendaDto item){
+
+	private void criarEstoqueTransiente(ItemVendaDto item) {
 		Produto p = produtoDao.getById(item.getIdProduto());
-		BigDecimal resultado = estoqueTransienteDao.getEstoqueDisponivel(LocalDate.now(), p);
-		BigDecimal quantidadeDisponivel = resultado.add(item.getQuantidade());
-		estoqueTransienteDao.processarRemocaoEstoqueTransiente(p, quantidadeDisponivel);
+		estoqueTransienteDao.processarAdicaoEstoqueTransiente(p, item.getQuantidade());
 	}
-	
+
+	private void removerEstoqueTransiente(ItemVendaDto item) {
+		Produto p = produtoDao.getById(item.getIdProduto());
+		estoqueTransienteDao.processarRemocaoEstoqueTransiente(p, item.getQuantidade());
+	}
+
 	public String cancelar() {
 		listItemsVenda.forEach(e -> removerEstoqueTransiente(e));
 		conversa.finalizar();
 		return uteis.getCaminhoInicial();
 	}
-	
+
 	public boolean validarCredito() {
 		VendaDto vDto = vendaController.getVendaDto();
 		return vDto.getTotalVenda().compareTo(vDto.getLimiteCredito()) == 1;

@@ -1,0 +1,5 @@
+Refatorar o metodo Buscar por innerJoin
+
+Refatorar computar o estoque -> EstoqueTransienteDao
+	- ao adicionar o produto > incluir quantidade itemVenda no estoque_transiente
+	

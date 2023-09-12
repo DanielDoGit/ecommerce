@@ -15,6 +15,7 @@ import jakarta.inject.Named;
 import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
 @Named
@@ -31,7 +32,9 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<EstoqueTransiente> cq = cb.createQuery(EstoqueTransiente.class);
 		Root<EstoqueTransiente> root =  cq.from(EstoqueTransiente.class);
-		cq.select(root).where(cb.lessThan(root.get("horaIsercao"), LocalTime.now().minusHours(1)));
+		Predicate hora = cb.lessThan(root.get("horaIsercao"), LocalTime.now().minusHours(1));
+		Predicate QtdAcesso = cb.lessThanOrEqualTo(root.get("quantidadeAcesso"), 0);
+		cq.select(root).where(cb.and(hora,QtdAcesso));
 		return em.createQuery(cq).getResultList();
 	}
 
@@ -47,21 +50,25 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 	public void processarRemocaoEstoqueTransiente(Produto produto, BigDecimal quantidade) {
 		validarDados(produto, quantidade);
 		EstoqueTransiente e = this.buscarExatidaoInnerJoin(Produto.class, "produto", "codigo", produto.getCodigo().toString());
+		e.setQuantidadeAcesso(e.getQuantidadeAcesso() - 1);
+		e.setQuantidadeDisponivel(e.getQuantidadeDisponivel().subtract(quantidade));
 		if (e.getQuantidadeAcesso() <= 0 || Duration.between(e.getHoraIsercao(), LocalTime.now()).toHours() > 1) {
 			super.excluir(e);
 		} else {
-			e.setQuantidadeAcesso(e.getQuantidadeAcesso() - 1);
-			e.setQuantidadeDisponivel(quantidade);
 			this.editar(e);
 		}
 	}
 
-	public void processarAdicaoEstoqueTransiente(Produto produto, BigDecimal quantidadeDisponivel) {
-		validarDados(produto, quantidadeDisponivel);
+	public void processarAdicaoEstoqueTransiente(Produto produto, BigDecimal quantidade) {
+		validarDados(produto, quantidade);
 		EstoqueTransiente e = this.buscarExatidaoInnerJoin(Produto.class, "produto", "codigo", produto.getCodigo().toString());
-		e.setQuantidadeAcesso(e.getQuantidadeAcesso() + 1);
-		e.setQuantidadeDisponivel(quantidadeDisponivel);
-		this.editar(e);
+		if (e == null) {
+			criarEstoqueTransiente(produto, quantidade);
+		}else {
+			e.setQuantidadeAcesso(e.getQuantidadeAcesso() + 1);
+			e.setQuantidadeDisponivel(quantidade.add(e.getQuantidadeDisponivel()));
+			this.editar(e);
+		}
 	}
 
 	public BigDecimal getQuantidadeVenda(LocalDate dataApuracao, Produto produto) {
@@ -105,25 +112,23 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 		Query q = em.createNativeQuery(sql);
 		q.setParameter("produto", produto.getCodigo());
 		BigDecimal b = (BigDecimal) q.getSingleResult();
+		if (b == null) {
+			b = BigDecimal.ZERO;
+		}
 		return b;
 	}
 
 	public BigDecimal getEstoqueDisponivel(LocalDate dataApuracao, Produto produto) {
 		validarDados(dataApuracao, produto);
-		BigDecimal estoqueTransicao = getEstoqueTransiente(dataApuracao, produto);
-		if (estoqueTransicao != null) {
-			return estoqueTransicao;
-		}
 		BigDecimal qtdVenda = getQuantidadeVenda(dataApuracao, produto);
 		BigDecimal qtdEstoqueEntrada = getQuantidadeAjusteEstoqueEntrada(dataApuracao, produto);
 		BigDecimal qtdEstoqueSaida = getQuantidadeAjusteEstoqueSaida(dataApuracao, produto);
-		BigDecimal resultado = qtdEstoqueEntrada.subtract(qtdEstoqueSaida).subtract(qtdVenda);
-		criarEstoqueTransiente(produto, resultado);
-		return resultado;
+		BigDecimal qtdEstoqueTransiente = getEstoqueTransiente(dataApuracao,produto);
+		return qtdEstoqueEntrada.subtract(qtdEstoqueSaida).subtract(qtdVenda).subtract(qtdEstoqueTransiente);
 	}
 
 	private void validarDados(Object... valores) {
-		Arrays.asList(valores).forEach( e -> {if (e == null) {throw new FacesException("Não é possível realizar consultas com parametros nulos");}});
+		Arrays.asList(valores).forEach( e -> {if (e == null) throw new FacesException("Não é possível realizar consultas com parametros nulos");});
 	}
 
 }
