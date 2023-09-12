@@ -89,7 +89,7 @@
 						<h:commandLink class="btn btn-primary" id="teste">
 							<span class="fas fa-plus"></span>
 							<f:ajax listener="#{itemVendaController.adicionarItemVenda}"
-								execute="@form" render="@all"></f:ajax>
+								render="@all" onevent="verificarNotificacao"></f:ajax>
 						</h:commandLink>
 					</div>
 				</div>
@@ -177,6 +177,7 @@
 									class="form-control" id="nomeCidadePesquisa" autocomplete="off"
 									style="width: 100%">
 								</h:inputText>
+								&nbsp;
 								<h:commandLink class="btn btn-primary" type="button"
 									action="#{itemVendaController.pesquisarProduto}">
 									<span class="fas fa-search"></span>

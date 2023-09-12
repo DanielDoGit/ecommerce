@@ -52,6 +52,7 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 		} else {
 			e.setQuantidadeAcesso(e.getQuantidadeAcesso() - 1);
 			e.setQuantidadeDisponivel(quantidade);
+			this.editar(e);
 		}
 	}
 

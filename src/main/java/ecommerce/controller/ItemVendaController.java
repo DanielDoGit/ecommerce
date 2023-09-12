@@ -58,13 +58,12 @@ public class ItemVendaController implements Serializable{
 			uteis.adicionarMensagemAdvertencia("Limite de crédito excedido!");
 			return null;
 		}
-		
 		return null;
 	}
 	
 	public void adicionarItemVenda(AjaxBehaviorEvent e) {
 		if (itemVendaDto.getIdProduto() == null) {
-			uteis.adicionarMensagemAdvertencia("Por favor informe um item");
+			uteis.adicionarMensagemAdvertencia("Por favor informe um item!");
 			return;
 		}
 		if (validarEstoque(itemVendaDto)) {
@@ -117,7 +116,9 @@ public class ItemVendaController implements Serializable{
 	
 	private void removerEstoqueTransiente(ItemVendaDto item){
 		Produto p = produtoDao.getById(item.getIdProduto());
-		estoqueTransienteDao.processarRemocaoEstoqueTransiente(p, item.getQuantidade());
+		BigDecimal resultado = estoqueTransienteDao.getEstoqueDisponivel(LocalDate.now(), p);
+		BigDecimal quantidadeDisponivel = resultado.add(item.getQuantidade());
+		estoqueTransienteDao.processarRemocaoEstoqueTransiente(p, quantidadeDisponivel);
 	}
 	
 	public String cancelar() {
