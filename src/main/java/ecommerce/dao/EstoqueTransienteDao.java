@@ -31,7 +31,7 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<EstoqueTransiente> cq = cb.createQuery(EstoqueTransiente.class);
 		Root<EstoqueTransiente> root =  cq.from(EstoqueTransiente.class);
-		cq.select(root).where(cb.lessThan(root.get("horaIsercao"), LocalTime.now()));
+		cq.select(root).where(cb.lessThan(root.get("horaIsercao"), LocalTime.now().minusHours(1)));
 		return em.createQuery(cq).getResultList();
 	}
 

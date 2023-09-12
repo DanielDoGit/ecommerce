@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ecommerce.beans.Cliente;
+import ecommerce.beans.EstoqueTransiente;
 import ecommerce.beans.Funcionario;
 import ecommerce.dao.CidadeDao;
 import ecommerce.dao.ClienteDao;
+import ecommerce.dao.EstoqueTransienteDao;
 import ecommerce.dao.FuncionarioDao;
 import ecommerce.dao.PermissaoDao;
 import ecommerce.dto.ClienteDto;
@@ -67,11 +69,18 @@ public class VendaController implements Serializable {
 			token.gerarToken();
 			argumentoBusca = "";
 			vendaDto = new VendaDto();
+			limparRegistrosAntigos();
 			return "/ecommerce/paginas/processos/aberturaVenda.xhtml";
 		} catch (PermissaoExeption e) {
 			uteis.adicionarMensagemErro(e);
 			return null;
 		}
+	}
+	
+	private void limparRegistrosAntigos() {
+		EstoqueTransienteDao estDao = InjectBean.newInstanceCDI(EstoqueTransienteDao.class);
+		List<EstoqueTransiente> lista =	estDao.buscarRegistrosAcimaDoPrazo();
+		lista.forEach( e -> estDao.excluir(e));
 	}
 
 	public void carregarCliente(AjaxBehaviorEvent s) {

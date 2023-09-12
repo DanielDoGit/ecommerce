@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import ecommerce.beans.EstoqueTransiente;
 import ecommerce.beans.Funcionario;
 import ecommerce.beans.Permissao;
 import ecommerce.dao.EstoqueTransienteDao;
@@ -14,7 +13,6 @@ import ecommerce.dao.FuncionarioDao;
 import ecommerce.dao.PermissaoDao;
 import ecommerce.dto.FuncionarioDto;
 import ecommerce.dto.PermissaoDto;
-import ecommerce.uteis.InjectBean;
 import ecommerce.uteis.PermissaoExeption;
 import ecommerce.uteis.Uteis;
 import jakarta.annotation.PostConstruct;
@@ -38,6 +36,9 @@ public class LoginController implements Serializable {
 
 	@Inject
 	private Uteis uteis;
+	
+	@Inject
+	private EstoqueTransienteDao estDao;
 
 	private FuncionarioDto funcionarioDto;
 	private String login;
@@ -47,7 +48,6 @@ public class LoginController implements Serializable {
 	@PostConstruct
 	public void carregarPermissoes() {
 		listaPermissaoExistente = permissaoDao.listarTodos().stream().map(PermissaoDto::new).collect(Collectors.toList());
-		limparEstoquesTransientesAntigos();
 	}
 
 	public String realizarLogin() {
@@ -85,13 +85,6 @@ public class LoginController implements Serializable {
 			listaPermissaoExistente.add(new PermissaoDto(p));
 			permissaoDao.cadastrar(p);
 		}
-	}
-	
-	@Transactional
-	private void limparEstoquesTransientesAntigos() {
-		EstoqueTransienteDao estDao = InjectBean.newInstanceCDI(EstoqueTransienteDao.class);
-		List<EstoqueTransiente> lista =	estDao.buscarRegistrosAcimaDoPrazo();
-		lista.forEach( e -> estDao.excluir(e));
 	}
 
 	public String getLogin() {

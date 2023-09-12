@@ -12,6 +12,7 @@ import ecommerce.dao.EstoqueTransienteDao;
 import ecommerce.dao.ProdutoDao;
 import ecommerce.dto.ItemVendaDto;
 import ecommerce.dto.ProdutoDto;
+import ecommerce.dto.VendaDto;
 import ecommerce.uteis.GerenciadorConversa;
 import ecommerce.uteis.GerenciadorToken;
 import ecommerce.uteis.Uteis;
@@ -52,7 +53,12 @@ public class ItemVendaController implements Serializable{
  	
 	private String argumentoBusca;
 	
-	public String chamarRecebimento() {
+	public String chamarFormaPagamento() {
+		if (validarCredito()){
+			uteis.adicionarMensagemAdvertencia("Limite de crédito excedido!");
+			return null;
+		}
+		
 		return null;
 	}
 	
@@ -118,6 +124,11 @@ public class ItemVendaController implements Serializable{
 		listItemsVenda.forEach(e -> removerEstoqueTransiente(e));
 		conversa.finalizar();
 		return uteis.getCaminhoInicial();
+	}
+	
+	public boolean validarCredito() {
+		VendaDto vDto = vendaController.getVendaDto();
+		return vDto.getTotalVenda().compareTo(vDto.getLimiteCredito()) == 1;
 	}
 
 	public VendaController getVendaController() {

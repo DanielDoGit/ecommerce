@@ -60,15 +60,16 @@
 							value="#{itemVendaController.itemVendaDto.nomeProduto}"
 							class="form-control" id="txtProduto" autocomplete="off"
 							disabled="true"></h:inputText>
+						<h:message for="@form:txtProduto" id="msgProduto" showSummary="true"
+							infoClass="text-info mensagemInfo"
+							warnClass="text-warning mensagemWarning"
+							errorClass="text-dark mensagemError" layout="list" />
 						<label>&#160;</label>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
 							data-target="#pesquisarModalProduto" id="botaoProcurarProduto">
 							<span class="fas fa-search"></span>
 						</button>
-						<h:message for="txtProduto" id="msgProduto" showSummary="true"
-							globalOnly="true" infoClass="text-info mensagemInfo"
-							warnClass="text-warning mensagemWarning"
-							errorClass="text-dark mensagemError" layout="list" />
+
 					</div>
 				</div>
 				<div class="col-2">
@@ -85,10 +86,10 @@
 							class="form-control" id="txtPrecounitario" autocomplete="off"
 							immediate="true" converter="bigDecimalToCurrency"></h:inputText>
 						&nbsp;
-						<h:commandLink class="btn btn-primary">
+						<h:commandLink class="btn btn-primary" id="teste">
 							<span class="fas fa-plus"></span>
 							<f:ajax listener="#{itemVendaController.adicionarItemVenda}"
-								execute="@form" render="@form"></f:ajax>
+								execute="@form" render="@all"></f:ajax>
 						</h:commandLink>
 					</div>
 				</div>

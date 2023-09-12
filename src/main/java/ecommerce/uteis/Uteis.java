@@ -54,10 +54,6 @@ public class Uteis implements Serializable {
 		adicionarMensagemInformativa("Registro salvo com sucesso!");
 	}
 
-	public void adicionarMensagemCnpjInconsistente() {
-		adicionarMensagemAdvertencia("Valor do campo cnpj inconsistente. Verifique o campo e tente novamente!");
-	}
-
 	public void adicionarMensagemErro(Exception e) {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		String mensagem = e.getMessage();
