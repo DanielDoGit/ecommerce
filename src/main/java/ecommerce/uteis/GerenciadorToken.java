@@ -38,10 +38,10 @@ public class GerenciadorToken implements Serializable {
 
 	public void validarToken() throws TokenException{
 		boolean result = servidorToken.equals(clienteToken) ? true : false;
-		gerarToken();
 		if (!result) {
 			throw new TokenException();
 		}
+		gerarToken();
 	}
 
 }

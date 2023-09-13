@@ -17,14 +17,14 @@
 			<br></br>
 
 			<div class="row mb-3 ml-5 pl-4">
-				<label class="col-12 offset-2">Cliente</label>
-				<div class="form-inline offset-2">
+				<label class="col-12 offset-3">Cliente</label>
+				<div class="form-inline offset-3">
 					<div class="form-group ml-3">
 						<h:inputText value="#{vendaController.vendaDto.idCliente}"
 							class="form-control col-2" id="txtIdCliente" autocomplete="off"
 							required="true">
 							<f:ajax listener="#{vendaController.carregarCliente}"
-								execute="txtIdCliente" render="txtIdCliente txtNomeCliente" ></f:ajax>
+								execute="txtIdCliente" render="txtIdCliente txtNomeCliente"></f:ajax>
 						</h:inputText>
 						<label>&#160;</label>
 						<h:inputText value="#{vendaController.vendaDto.nomeCliente}"
@@ -35,16 +35,16 @@
 							data-target="#pesquisarModalCliente" id="botaoProcurarCliente">
 							<span class="fas fa-search"></span>
 						</button>
+
 						<h:message for="txtIdCliente" showDetail="false"
 							showSummary="true" styleClass="error" />
 					</div>
 				</div>
-
 			</div>
 
 			<div class="row mb-3 ml-5 pl-4">
-				<label class="col-12 offset-2">Funcionário</label>
-				<div class="form-inline offset-2">
+				<label class="col-12 offset-3">Funcionário</label>
+				<div class="form-inline offset-3">
 					<div class="form-group ml-3">
 						<h:inputText value="#{vendaController.vendaDto.idFuncionario}"
 							class="form-control col-2" id="txtIdFuncionario"
@@ -59,7 +59,8 @@
 							autocomplete="off" disabled="true"></h:inputText>
 						<label>&#160;</label>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
-							data-target="#pesquisarModalFuncionario" id="botaoProcurarFuncionario">
+							data-target="#pesquisarModalFuncionario"
+							id="botaoProcurarFuncionario">
 							<span class="fas fa-search"></span>
 						</button>
 						<h:message for="txtIdFuncionario" showDetail="false"
@@ -70,11 +71,12 @@
 			</div>
 
 			<div class="row mb-3 ml-5 pl-4">
-				<div class="col-3 offset-2">
+				<div class="col-3 offset-3">
 					<label>Data</label>
-					<h:inputText pt:type="date" value="#{vendaController.vendaDto.dataVenda}"
-						class="form-control" id="txtData" autocomplete="off"
-						required="true" converter="converterDataInput">
+					<h:inputText pt:type="date"
+						value="#{vendaController.vendaDto.dataVenda}" class="form-control"
+						id="txtData" autocomplete="off" required="true"
+						converter="converterDataInput">
 					</h:inputText>
 					<h:message for="txtData" showDetail="false" showSummary="true"
 						styleClass="error" />
@@ -82,12 +84,11 @@
 			</div>
 
 			<div class="row mb-2 ml-5 pl-3">
-				<div class="col-6 offset-2" align="right">
+				<div class="col-6 offset-3" align="right">
 					<h:commandButton action="#{vendaController.cancelarOperacao}"
 						value="Cancelar" immediate="true" class="btn btn-primary"
 						style="width: 120px; margin: 5px"></h:commandButton>
-					<h:commandButton
-						action="#{vendaController.chamarItensVenda}"
+					<h:commandButton action="#{vendaController.chamarItensVenda}"
 						value="Próximo" class="btn btn-primary"
 						style="width: 120px; margin: 5px"
 						onclick="return validarSubmit();"></h:commandButton>
@@ -101,8 +102,8 @@
 							<h4>Pesquisa de Cliente</h4>
 							<div class="input-group-append">
 								<h:inputText value="#{vendaController.argumentoBusca}"
-									class="form-control" id="nomeClientePesquisa" autocomplete="off"
-									style="width: 100%">
+									class="form-control" id="nomeClientePesquisa"
+									autocomplete="off" style="width: 100%">
 								</h:inputText>
 								<h:commandLink class="btn btn-primary" type="button"
 									action="#{vendaController.pesquisarCliente}">
@@ -131,8 +132,7 @@
 									<f:facet name="header">
 										<h:outputText value="Selecionar"></h:outputText>
 									</f:facet>
-									<h:commandLink
-										action="#{vendaController.selecionarCliente(t)}"
+									<h:commandLink action="#{vendaController.selecionarCliente(t)}"
 										class="btn btn-success" pt:data-dismiss="modal">
 										<span class="fas fa-check"></span>
 										<f:ajax render="@form:txtIdCliente @form:txtNomeCliente"></f:ajax>
@@ -154,21 +154,23 @@
 						<div class="modal-body">
 							<h4>Pesquisa de Funcionário</h4>
 							<div class="input-group-append">
-								<h:inputText  value="#{vendaController.argumentoBusca}"
-									class="form-control" id="nomeFuncionarioPesquisa" autocomplete="off"
-									style="width: 100%">
+								<h:inputText value="#{vendaController.argumentoBusca}"
+									class="form-control" id="nomeFuncionarioPesquisa"
+									autocomplete="off" style="width: 100%">
 								</h:inputText>
 								<h:commandLink class="btn btn-primary" type="button"
 									action="#{vendaController.pesquisarFuncionario}">
 									<span class="fas fa-search"></span>
-									<f:ajax execute="nomeFuncionarioPesquisa" render="tabelaFuncionario"></f:ajax>
+									<f:ajax execute="nomeFuncionarioPesquisa"
+										render="tabelaFuncionario"></f:ajax>
 								</h:commandLink>
 							</div>
 							<br /> <br />
 							<h:dataTable border="0"
 								value="#{vendaController.listaFuncionarioDto}" var="t"
 								class="table table-hover"
-								columnClasses="center, left, colunaAceitar" id="tabelaFuncionario">
+								columnClasses="center, left, colunaAceitar"
+								id="tabelaFuncionario">
 								<h:column id="column1">
 									<f:facet name="header">
 										<h:outputText value="ID"></h:outputText>
@@ -189,7 +191,8 @@
 										action="#{vendaController.selecionarFuncionario(t)}"
 										class="btn btn-success" pt:data-dismiss="modal">
 										<span class="fas fa-check"></span>
-										<f:ajax render="@form:txtIdFuncionario @form:txtNomeFuncionario"></f:ajax>
+										<f:ajax
+											render="@form:txtIdFuncionario @form:txtNomeFuncionario"></f:ajax>
 									</h:commandLink>
 								</h:column>
 							</h:dataTable>
