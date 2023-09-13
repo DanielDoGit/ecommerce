@@ -12,12 +12,15 @@ function verificarNotificacao() {
 			switch (e.classList[1]) {
 			case 'mensagemInfo':
 				exibirNotificacaoSucesso(e.textContent);
+				e.textContent = '';
 				break;
 			case 'mensagemWarning':
 				exibirNotificacaoAlerta(e.textContent);
+				e.textContent = '';
 				break;
 			case 'mensagemError':
 				exibirNotificacaoErro(e.textContent);
+				e.textContent = '';
 				break;
 			}
 		}

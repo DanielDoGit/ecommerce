@@ -1,5 +1,7 @@
 package ecommerce.dao;
 
+import java.util.List;
+
 import ecommerce.beans.CondicaoPagamento;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
@@ -12,6 +14,11 @@ public class CondicaoPagamentoDao extends Dao<CondicaoPagamento> {
 
 	public CondicaoPagamentoDao() {
 		super(CondicaoPagamento.class);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<CondicaoPagamento> buscarTodos(){
+		return em.createNativeQuery("select * from condicaopagamento order by descricao", CondicaoPagamento.class).getResultList();
 	}
 	
 }

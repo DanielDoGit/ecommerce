@@ -117,5 +117,4 @@ public class Uteis implements Serializable {
 	public DateTimeFormatter getPadraoFormatacaoData() {
 		return padraoFormatacaoData;
 	}
-
 }

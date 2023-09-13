@@ -60,11 +60,8 @@
 							value="#{itemVendaController.itemVendaDto.nomeProduto}"
 							class="form-control" id="txtProduto" autocomplete="off"
 							disabled="true"></h:inputText>
-						<h:message for="@form:txtProduto" id="msgProduto"
-							showSummary="true" infoClass="text-info mensagemInfo"
-							warnClass="text-warning mensagemWarning"
-							errorClass="text-dark mensagemError" layout="list" />
 						<label>&#160;</label>
+
 						<button type="button" class="btn btn-primary" data-toggle="modal"
 							data-target="#pesquisarModalProduto" id="botaoProcurarProduto">
 							<span class="fas fa-search"></span>
@@ -86,10 +83,13 @@
 							class="form-control" id="txtPrecounitario" autocomplete="off"
 							immediate="true" converter="bigDecimalToCurrency"></h:inputText>
 						&nbsp;
-						<h:commandLink class="btn btn-primary" id="teste">
+						<h:commandLink class="btn btn-primary" 
+							id="botaoAdicionarItemVenda">
 							<span class="fas fa-plus"></span>
 							<f:ajax listener="#{itemVendaController.adicionarItemVenda}"
-								execute="@form" render="@all" onevent="verificarNotificacao"></f:ajax>
+								execute="@form:txtProduto @form:txtQuantidade @form:txtPrecounitario @form:mensagens"
+								render="@form:txtProduto @form:txtQuantidade @form:txtPrecounitario @form:table @form:txtTotalVenda @form:mensagens"
+								onevent="verificarNotificacao"></f:ajax>
 						</h:commandLink>
 					</div>
 				</div>
@@ -144,9 +144,9 @@
 				</div>
 			</div>
 			<br></br>
-			<div class="row mb-2" >
+			<div class="row mb-2">
 
-				<div class="col-3" style="margin-left:70%;" align="left">
+				<div class="col-3" style="margin-left: 70%;" align="left">
 					<label>Total Venda</label>
 					<h:inputText
 						value="#{itemVendaController.vendaController.vendaDto.totalVenda}"
@@ -154,36 +154,36 @@
 						autocomplete="off" readonly="true"
 						converter="bigDecimalToCurrency"></h:inputText>
 				</div>
-				
+
 			</div>
 
 			<div class="row mb-2 ml-5 pl-3">
-				<div class="col-6" style="margin-left:45%;" align="right">
+				<div class="col-6" style="margin-left: 45%;" align="right">
 					<h:commandButton action="#{itemVendaController.cancelar}"
 						value="Cancelar" immediate="true" class="btn btn-primary"
 						style="width: 120px; margin: 5px"></h:commandButton>
-					<h:commandButton action="#{itemVendaController.chamarRecebimento}"
+					<h:commandButton pt:type="button" pt:data-toggle="modal"
+						id="chamarModalTabelaDePreco" pt:data-target="#modalTabelaPreco"
 						value="Próximo" class="btn btn-primary"
-						style="width: 120px; margin: 5px"
-						onclick="return validarSubmit();"></h:commandButton>
+						style="width: 120px; margin: 5px"></h:commandButton>
 				</div>
 			</div>
 
-			<div class="modal" id="pesquisarModalProduto  ">
+			<div class="modal" id="pesquisarModalProduto">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-body">
 							<h4>Pesquisa de Produto</h4>
 							<div class="input-group-append">
 								<h:inputText value="#{itemVendaController.argumentoBusca}"
-									class="form-control" id="nomeCidadePesquisa" autocomplete="off"
-									style="width: 100%">
+									class="form-control" id="nomeProdutoPesquisado"
+									autocomplete="off" style="width: 100%">
 								</h:inputText>
 								&nbsp;
 								<h:commandLink class="btn btn-primary" type="button"
 									action="#{itemVendaController.pesquisarProduto}">
 									<span class="fas fa-search"></span>
-									<f:ajax execute="nomeCidadePesquisa" render="tabela"></f:ajax>
+									<f:ajax execute="nomeProdutoPesquisado" render="tabela"></f:ajax>
 								</h:commandLink>
 							</div>
 							<br /> <br />
@@ -228,6 +228,42 @@
 								<button type="button" class="btn btn-danger"
 									data-dismiss="modal" style="width: 120px">Sair</button>
 							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal" id="modalTabelaPreco">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-body">
+							<div class="row mb-3">
+								<div class="col-8 offset-1">
+									<h:outputLabel>Forma de Pagamento</h:outputLabel>
+									<h:selectOneMenu class="form-control"
+										value="#{itemVendaController.formaPagamentoDto}">
+										<f:selectItems
+											value="#{itemVendaController.listaFormaPagamentoDto}" var="t"
+											itemLabel="#{t.descricao}"></f:selectItems>
+									</h:selectOneMenu>
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-8 offset-1">
+									<h:outputLabel>Condição de Pagamento</h:outputLabel>
+									<h:selectOneMenu class="form-control"
+										value="#{itemVendaController.condicaoPagamentoDto}">
+										<f:selectItems
+											value="#{itemVendaController.listaCondicaoPagamentoDto}"
+											var="t" itemLabel="#{t.descricao}"></f:selectItems>
+									</h:selectOneMenu>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary"
+								data-dismiss="modal">Cancelar</button>
+							<button type="button" class="btn btn-primary">Próximo</button>
 						</div>
 					</div>
 				</div>

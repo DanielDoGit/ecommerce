@@ -1,5 +1,6 @@
 package ecommerce.controller;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -8,15 +9,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ecommerce.beans.Produto;
+import ecommerce.dao.CondicaoPagamentoDao;
 import ecommerce.dao.EstoqueTransienteDao;
+import ecommerce.dao.FormaPagamentoDao;
 import ecommerce.dao.ProdutoDao;
+import ecommerce.dto.CondicaoPagamentoDto;
+import ecommerce.dto.FormaPagamentoDto;
 import ecommerce.dto.ItemVendaDto;
 import ecommerce.dto.ProdutoDto;
 import ecommerce.dto.VendaDto;
 import ecommerce.uteis.GerenciadorConversa;
 import ecommerce.uteis.GerenciadorToken;
 import ecommerce.uteis.Uteis;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ConversationScoped;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -47,13 +54,44 @@ public class ItemVendaController implements Serializable {
 	@Inject
 	private Uteis uteis;
 
+	@Inject
+	private FormaPagamentoDao formaPagamentoDao;
+
+	@Inject
+	private CondicaoPagamentoDao condicaoPagamentoDao;
+
 	private List<ItemVendaDto> listItemsVenda = new ArrayList<ItemVendaDto>();
 	private ItemVendaDto itemVendaDto = new ItemVendaDto();
 	private List<ProdutoDto> listaProdutoDto = new ArrayList<ProdutoDto>();
 
+	private List<FormaPagamentoDto> listaFormaPagamentoDto = new ArrayList<FormaPagamentoDto>();
+	private List<CondicaoPagamentoDto> listaCondicaoPagamentoDto = new ArrayList<CondicaoPagamentoDto>();
+	private FormaPagamentoDto formaPagamentoDto;
+	private CondicaoPagamentoDto condicaoPagamentoDto;
+
 	private String argumentoBusca;
 
-	public String chamarFormaPagamento() {
+	@PostConstruct
+	public void carregarDados() {
+		try {
+			listaFormaPagamentoDto = formaPagamentoDao.buscarTodos().stream().map(FormaPagamentoDto::new).collect(Collectors.toList());
+			listaCondicaoPagamentoDto = condicaoPagamentoDao.buscarTodos().stream().map(CondicaoPagamentoDto::new).collect(Collectors.toList());
+			VendaDto vDto = vendaController.getVendaDto();
+			if ((vDto.getNomeFuncionario() == null || vDto.getIdFuncionario() == null) || (vDto.getNomeCliente() == null || vDto.getIdCliente() == null)) {
+				FacesContext fc = FacesContext.getCurrentInstance();
+				fc.getExternalContext().redirect("/ecommerce/paginas/processos/aberturaVenda.xhtml");
+				fc.responseComplete();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public String chamarRecebimento() {
+		if (listItemsVenda.isEmpty()) {
+			uteis.adicionarMensagemAdvertencia("É preciso ter ao menos um item na venda para prosseguir!");
+			return null;
+		}
 		if (validarCredito()) {
 			uteis.adicionarMensagemAdvertencia("Limite de crédito excedido!");
 			return null;
@@ -208,6 +246,54 @@ public class ItemVendaController implements Serializable {
 
 	public void setEstoqueTransienteDao(EstoqueTransienteDao estoqueTransienteDao) {
 		this.estoqueTransienteDao = estoqueTransienteDao;
+	}
+
+	public FormaPagamentoDao getFormaPagamentoDao() {
+		return formaPagamentoDao;
+	}
+
+	public void setFormaPagamentoDao(FormaPagamentoDao formaPagamentoDao) {
+		this.formaPagamentoDao = formaPagamentoDao;
+	}
+
+	public CondicaoPagamentoDao getCondicaoPagamentoDao() {
+		return condicaoPagamentoDao;
+	}
+
+	public void setCondicaoPagamentoDao(CondicaoPagamentoDao condicaoPagamentoDao) {
+		this.condicaoPagamentoDao = condicaoPagamentoDao;
+	}
+
+	public List<FormaPagamentoDto> getListaFormaPagamentoDto() {
+		return listaFormaPagamentoDto;
+	}
+
+	public void setListaFormaPagamentoDto(List<FormaPagamentoDto> listaFormaPagamentoDto) {
+		this.listaFormaPagamentoDto = listaFormaPagamentoDto;
+	}
+
+	public List<CondicaoPagamentoDto> getListaCondicaoPagamentoDto() {
+		return listaCondicaoPagamentoDto;
+	}
+
+	public void setListaCondicaoPagamentoDto(List<CondicaoPagamentoDto> listaCondicaoPagamentoDto) {
+		this.listaCondicaoPagamentoDto = listaCondicaoPagamentoDto;
+	}
+
+	public FormaPagamentoDto getFormaPagamentoDto() {
+		return formaPagamentoDto;
+	}
+
+	public void setFormaPagamentoDto(FormaPagamentoDto formaPagamentoDto) {
+		this.formaPagamentoDto = formaPagamentoDto;
+	}
+
+	public CondicaoPagamentoDto getCondicaoPagamentoDto() {
+		return condicaoPagamentoDto;
+	}
+
+	public void setCondicaoPagamentoDto(CondicaoPagamentoDto condicaoPagamentoDto) {
+		this.condicaoPagamentoDto = condicaoPagamentoDto;
 	}
 
 }

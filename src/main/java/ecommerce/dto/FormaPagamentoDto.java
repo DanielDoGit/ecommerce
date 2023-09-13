@@ -1,6 +1,7 @@
 package ecommerce.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import ecommerce.beans.FormaPagamento;
 import ecommerce.uteis.Formatadores;
@@ -66,6 +67,25 @@ public class FormaPagamentoDto implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(codigo, descricao);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FormaPagamentoDto other = (FormaPagamentoDto) obj;
+		return Objects.equals(codigo, other.codigo) && Objects.equals(descricao, other.descricao);
+	}
+
+	
 	
 	
 }

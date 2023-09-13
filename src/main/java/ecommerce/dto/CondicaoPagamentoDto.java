@@ -58,7 +58,7 @@ public class CondicaoPagamentoDto implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(codigo);
+		return Objects.hash(codigo, descricao);
 	}
 
 	@Override
@@ -70,8 +70,9 @@ public class CondicaoPagamentoDto implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		CondicaoPagamentoDto other = (CondicaoPagamentoDto) obj;
-		return Objects.equals(codigo, other.codigo);
+		return Objects.equals(codigo, other.codigo) && Objects.equals(descricao, other.descricao);
 	}
+
 	
 	
 	

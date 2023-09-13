@@ -38,6 +38,12 @@ public class RecebimentoDto implements Serializable{
 		CondicaoPagamento cp = condicaopagamento.toCondicaoPagamento();
 		return new Recebimento(codigo, valor, dataEmissao, dataEmissao, quitado, venda, listaParcela, fp, cp);
 	}
+	
+	public Recebimento toRecebimento(Venda venda) {
+		FormaPagamento fp = formaPagamentoDto.toFormaPagamento();
+		CondicaoPagamento cp = condicaopagamento.toCondicaoPagamento();
+		return new Recebimento(codigo, valor, dataEmissao, dataEmissao, quitado, venda, null, fp, cp);
+	}
 
 	public Integer getCodigo() {
 		return codigo;

@@ -29,7 +29,7 @@
 	</context-param>
 	<context-param>
 		<param-name>caminhoLog</param-name>
-		<param-value>C:\workcopy\ecommerce\log.txt</param-value>
+		<param-value>/home/limasoftware/workcopy/ecommercetrunk/trunk/log.txt</param-value>
 	</context-param>
 
 </web-app>

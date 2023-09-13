@@ -61,7 +61,7 @@ public class VendaController implements Serializable {
 	private List<ClienteDto> listaClienteDto = new ArrayList<ClienteDto>();
 
 	private List<FuncionarioDto> listaFuncionarioDto = new ArrayList<FuncionarioDto>();
-
+	
 	public String abrirVenda() {
 		try {
 			conversa.iniciar();
@@ -126,10 +126,6 @@ public class VendaController implements Serializable {
 	public String chamarItensVenda() {
 		try {
 			token.validarToken();
-			if (vendaDto.getNomeFuncionario() == null || vendaDto.getNomeCliente() == null) {
-				uteis.adicionarMensagemAdvertencia("Verifique os campos obrigatórios e tente novamente!");
-				return null;
-			}
 			return "/ecommerce/paginas/processos/itensVenda.xhtml";
 		} catch (TokenException e) {
 			uteis.adicionarMensagemErro(e);
