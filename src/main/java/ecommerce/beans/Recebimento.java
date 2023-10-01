@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.hibernate.type.TrueFalseConverter;
+
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +34,7 @@ public class Recebimento implements Serializable {
 	
 	private LocalDate dataVencimento;
 	
+	@Convert(converter = TrueFalseConverter.class)
 	private boolean quitado;
 	
 	@ManyToOne
@@ -47,6 +51,10 @@ public class Recebimento implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="condicaopagamento")
 	private CondicaoPagamento condicaopagamento;
+	
+	@ManyToOne
+	@JoinColumn(name="cliente")
+	private Cliente cliente;
 
 	public Recebimento() {
 		super();
@@ -54,7 +62,7 @@ public class Recebimento implements Serializable {
 
 	public Recebimento(Integer codigo, BigDecimal valor, LocalDate dataEmissao, LocalDate dataVencimento,
 			boolean quitado, Venda venda, List<Parcela> listaParcelas, FormaPagamento formaPagamento,
-			CondicaoPagamento condicaopagamento) {
+			CondicaoPagamento condicaopagamento, Cliente cliente) {
 		super();
 		this.codigo = codigo;
 		this.valor = valor;
@@ -65,6 +73,7 @@ public class Recebimento implements Serializable {
 		this.listaParcelas = listaParcelas;
 		this.formaPagamento = formaPagamento;
 		this.condicaopagamento = condicaopagamento;
+		this.cliente = cliente;
 	}
 
 	public Integer getCodigo() {
@@ -122,6 +131,30 @@ public class Recebimento implements Serializable {
 	public void setListaParcelas(List<Parcela> listaParcelas) {
 		this.listaParcelas = listaParcelas;
 	}
+	public FormaPagamento getFormaPagamento() {
+		return formaPagamento;
+	}
+
+	public void setFormaPagamento(FormaPagamento formaPagamento) {
+		this.formaPagamento = formaPagamento;
+	}
+
+	public CondicaoPagamento getCondicaopagamento() {
+		return condicaopagamento;
+	}
+
+	public void setCondicaopagamento(CondicaoPagamento condicaopagamento) {
+		this.condicaopagamento = condicaopagamento;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+	
 	
 	@Override
 	public int hashCode() {
@@ -140,22 +173,4 @@ public class Recebimento implements Serializable {
 		return Objects.equals(codigo, other.codigo);
 	}
 
-	public FormaPagamento getFormaPagamento() {
-		return formaPagamento;
-	}
-
-	public void setFormaPagamento(FormaPagamento formaPagamento) {
-		this.formaPagamento = formaPagamento;
-	}
-
-	public CondicaoPagamento getCondicaopagamento() {
-		return condicaopagamento;
-	}
-
-	public void setCondicaopagamento(CondicaoPagamento condicaopagamento) {
-		this.condicaopagamento = condicaopagamento;
-	}
-	
-	
-	
 }

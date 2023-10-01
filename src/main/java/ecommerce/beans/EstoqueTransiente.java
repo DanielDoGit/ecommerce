@@ -2,10 +2,12 @@ package ecommerce.beans;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
+import ecommerce.uteis.jpa.LocalDateTimeToTimeStamp;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,8 +15,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "estoque_transiente")
@@ -26,8 +26,8 @@ public class EstoqueTransiente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer codigo;
 
-	@Column(name = "quantidade_disponivel")
-	private BigDecimal quantidadeDisponivel;
+	@Column(name = "quantidade_uso")
+	private BigDecimal quantidadeUso;
 
 	@Column(name = "quantidade_acesso")
 	private Integer quantidadeAcesso;
@@ -36,8 +36,8 @@ public class EstoqueTransiente implements Serializable {
 	@JoinColumn(name = "produto")
 	private Produto produto;
 	
-	@Temporal(TemporalType.TIME)
-	private LocalTime horaIsercao;
+	@Convert(converter = LocalDateTimeToTimeStamp.class)
+	private LocalDateTime horaIsercao;
 
 	public EstoqueTransiente() {
 	}
@@ -67,14 +67,6 @@ public class EstoqueTransiente implements Serializable {
 		this.codigo = codigo;
 	}
 
-	public BigDecimal getQuantidadeDisponivel() {
-		return quantidadeDisponivel;
-	}
-
-	public void setQuantidadeDisponivel(BigDecimal quantidadeDisponivel) {
-		this.quantidadeDisponivel = quantidadeDisponivel;
-	}
-
 	public Integer getQuantidadeAcesso() {
 		return quantidadeAcesso;
 	}
@@ -95,14 +87,20 @@ public class EstoqueTransiente implements Serializable {
 		return serialVersionUID;
 	}
 
-	public LocalTime getHoraIsercao() {
+	public BigDecimal getQuantidadeUso() {
+		return quantidadeUso;
+	}
+
+	public void setQuantidadeUso(BigDecimal quantidadeUso) {
+		this.quantidadeUso = quantidadeUso;
+	}
+
+	public LocalDateTime getHoraIsercao() {
 		return horaIsercao;
 	}
 
-	public void setHoraIsercao(LocalTime horaIsercao) {
+	public void setHoraIsercao(LocalDateTime horaIsercao) {
 		this.horaIsercao = horaIsercao;
 	}
-
-	
 
 }

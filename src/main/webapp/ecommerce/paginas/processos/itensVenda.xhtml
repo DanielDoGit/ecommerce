@@ -31,7 +31,6 @@
 						disabled="true" converter="converterDataOutput">
 					</h:inputText>
 				</div>
-
 			</div>
 
 			<div class="row mb-3 ml-5 pl-4">
@@ -61,7 +60,7 @@
 							class="form-control" id="txtProduto" autocomplete="off"
 							disabled="true"></h:inputText>
 						<label>&#160;</label>
-
+						
 						<button type="button" class="btn btn-primary" data-toggle="modal"
 							data-target="#pesquisarModalProduto" id="botaoProcurarProduto">
 							<span class="fas fa-search"></span>
@@ -86,10 +85,10 @@
 						<h:commandLink class="btn btn-primary" 
 							id="botaoAdicionarItemVenda">
 							<span class="fas fa-plus"></span>
-							<f:ajax listener="#{itemVendaController.adicionarItemVenda}"
+							<f:ajax listener="#{itemVendaController.adicionarItemVenda}" onevent="verificarNotificacaoViaAjax"
 								execute="@form:txtProduto @form:txtQuantidade @form:txtPrecounitario @form:mensagens"
-								render="@form:txtProduto @form:txtQuantidade @form:txtPrecounitario @form:table @form:txtTotalVenda @form:mensagens"
-								onevent="verificarNotificacao"></f:ajax>
+								render="@form:txtTotalVenda @form:txtProduto @form:txtQuantidade @form:txtPrecounitario @form:table @form:mensagens" 
+								></f:ajax>
 						</h:commandLink>
 					</div>
 				</div>

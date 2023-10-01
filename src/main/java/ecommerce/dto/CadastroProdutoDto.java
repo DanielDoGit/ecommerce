@@ -2,14 +2,13 @@ package ecommerce.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Objects;
 
 import ecommerce.beans.Produto;
 import ecommerce.dao.EstoqueTransienteDao;
 import ecommerce.dao.FornecedorDao;
 import ecommerce.dao.GrupoDao;
-import ecommerce.uteis.Formatadores;
+import ecommerce.uteis.jsf.Formatadores;
 
 public class CadastroProdutoDto implements Serializable {
 
@@ -46,7 +45,7 @@ public class CadastroProdutoDto implements Serializable {
 		this.setAtivo(produto.isAtivo());
 		this.setIdFornecedor(produto.getFornecedor().getCodigo().toString());
 		this.setNomeFornecedor(produto.getFornecedor().getNome());
-		this.setQtdEstoqueDisponivel(estoqueDao.getEstoqueDisponivel(LocalDate.now(), produto));
+		this.setQtdEstoqueDisponivel(estoqueDao.getEstoqueDisponivel(produto));
 		this.setIdGrupo(produto.getGrupo().getCodigo().toString());
 		this.setNomeGrupo(produto.getGrupo().getDescricao());
 	}

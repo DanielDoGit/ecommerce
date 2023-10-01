@@ -3,7 +3,7 @@ package ecommerce.dao;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<EstoqueTransiente> cq = cb.createQuery(EstoqueTransiente.class);
 		Root<EstoqueTransiente> root =  cq.from(EstoqueTransiente.class);
-		Predicate hora = cb.lessThan(root.get("horaIsercao"), LocalTime.now().minusHours(1));
+		Predicate hora = cb.lessThan(root.get("horaIsercao"), LocalDateTime.now().minusHours(1));
 		Predicate QtdAcesso = cb.lessThanOrEqualTo(root.get("quantidadeAcesso"), 0);
 		cq.select(root).where(cb.and(hora,QtdAcesso));
 		return em.createQuery(cq).getResultList();
@@ -42,8 +42,8 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 		EstoqueTransiente e = new EstoqueTransiente();
 		e.setProduto(produto);
 		e.setQuantidadeAcesso(1);
-		e.setQuantidadeDisponivel(quantidadeDisponivel);
-		e.setHoraIsercao(LocalTime.now());
+		e.setQuantidadeUso(quantidadeDisponivel);
+		e.setHoraIsercao(LocalDateTime.now());
 		this.cadastrar(e);
 	}
 
@@ -51,8 +51,8 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 		validarDados(produto, quantidade);
 		EstoqueTransiente e = this.buscarExatidaoInnerJoin(Produto.class, "produto", "codigo", produto.getCodigo().toString());
 		e.setQuantidadeAcesso(e.getQuantidadeAcesso() - 1);
-		e.setQuantidadeDisponivel(e.getQuantidadeDisponivel().subtract(quantidade));
-		if (e.getQuantidadeAcesso() <= 0 || Duration.between(e.getHoraIsercao(), LocalTime.now()).toHours() > 1) {
+		e.setQuantidadeUso(e.getQuantidadeUso().subtract(quantidade));
+		if (e.getQuantidadeAcesso() <= 0 || Duration.between(e.getHoraIsercao(), LocalDateTime.now()).toHours() > 1) {
 			super.excluir(e);
 		} else {
 			this.editar(e);
@@ -65,9 +65,13 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 		if (e == null) {
 			criarEstoqueTransiente(produto, quantidade);
 		}else {
-			e.setQuantidadeAcesso(e.getQuantidadeAcesso() + 1);
-			e.setQuantidadeDisponivel(quantidade.add(e.getQuantidadeDisponivel()));
-			this.editar(e);
+			if (Duration.between(e.getHoraIsercao(), LocalDateTime.now()).toHours() > 2) {
+				super.excluir(e);
+			}else {
+				e.setQuantidadeAcesso(e.getQuantidadeAcesso() + 1);
+				e.setQuantidadeUso(quantidade.add(e.getQuantidadeUso()));
+				this.editar(e);
+			}
 		}
 	}
 
@@ -108,7 +112,7 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 	}
 
 	public BigDecimal getEstoqueTransiente(LocalDate dataApuracao, Produto produto) {
-		String sql = "select sum(et.quantidade_disponivel) from estoque_transiente as et where et.produto = :produto";
+		String sql = "select sum(et.quantidade_uso) from estoque_transiente as et where et.produto = :produto";
 		Query q = em.createNativeQuery(sql);
 		q.setParameter("produto", produto.getCodigo());
 		BigDecimal b = (BigDecimal) q.getSingleResult();
@@ -117,8 +121,12 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 		}
 		return b;
 	}
+	
+	public BigDecimal getEstoqueDisponivel(Produto p) {
+		return getEstoque(LocalDate.now(), p);
+	}
 
-	public BigDecimal getEstoqueDisponivel(LocalDate dataApuracao, Produto produto) {
+	public BigDecimal getEstoque(LocalDate dataApuracao, Produto produto) {
 		validarDados(dataApuracao, produto);
 		BigDecimal qtdVenda = getQuantidadeVenda(dataApuracao, produto);
 		BigDecimal qtdEstoqueEntrada = getQuantidadeAjusteEstoqueEntrada(dataApuracao, produto);

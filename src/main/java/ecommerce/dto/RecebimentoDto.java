@@ -3,7 +3,7 @@ package ecommerce.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import ecommerce.beans.CondicaoPagamento;
@@ -33,16 +33,38 @@ public class RecebimentoDto implements Serializable{
 	public RecebimentoDto() {
 	}
 	
-	public Recebimento toRecebimento(Venda venda, List<Parcela> listaParcela) {
-		FormaPagamento fp = formaPagamentoDto.toFormaPagamento();
-		CondicaoPagamento cp = condicaopagamento.toCondicaoPagamento();
-		return new Recebimento(codigo, valor, dataEmissao, dataEmissao, quitado, venda, listaParcela, fp, cp);
-	}
-	
 	public Recebimento toRecebimento(Venda venda) {
 		FormaPagamento fp = formaPagamentoDto.toFormaPagamento();
 		CondicaoPagamento cp = condicaopagamento.toCondicaoPagamento();
-		return new Recebimento(codigo, valor, dataEmissao, dataEmissao, quitado, venda, null, fp, cp);
+		Recebimento r = new Recebimento();
+		r.setCodigo(codigo);
+		r.setValor(valor);
+		r.setDataEmissao(dataEmissao);
+		r.setDataVencimento(dataVencimento);
+		r.setQuitado(quitado);
+		r.setVenda(venda);
+		r.setListaParcelas(new ArrayList<Parcela>());
+		r.setCondicaopagamento(cp);
+		r.setFormaPagamento(fp);
+		r.setCliente(venda.getCliente());
+		return r;
+	}
+		
+	public Recebimento toRecebimento(Venda venda, Parcela p) {
+		FormaPagamento fp = formaPagamentoDto.toFormaPagamento();
+		CondicaoPagamento cp = condicaopagamento.toCondicaoPagamento();
+		Recebimento r = new Recebimento();
+		r.setCodigo(codigo);
+		r.setValor(valor);
+		r.setDataEmissao(dataEmissao);
+		r.setDataVencimento(dataVencimento);
+		r.setQuitado(quitado);
+		r.setVenda(venda);
+		r.getListaParcelas().add(p);
+		r.setCondicaopagamento(cp);
+		r.setFormaPagamento(fp);
+		r.setCliente(venda.getCliente());
+		return r;
 	}
 
 	public Integer getCodigo() {

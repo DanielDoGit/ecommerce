@@ -2,8 +2,8 @@ package ecommerce.controller;
 
 import java.io.Serializable;
 
-import ecommerce.uteis.GerenciadorConversa;
-import ecommerce.uteis.Uteis;
+import ecommerce.uteis.jsf.GerenciadorConversa;
+import ecommerce.uteis.jsf.Uteis;
 import jakarta.enterprise.context.ConversationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;

@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.Charset;
 
-import ecommerce.uteis.Uteis;
+import ecommerce.uteis.jsf.Uteis;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;

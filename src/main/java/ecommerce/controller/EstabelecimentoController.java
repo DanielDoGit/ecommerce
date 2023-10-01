@@ -1,7 +1,6 @@
 package ecommerce.controller;
 
 import java.io.Serializable;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,13 +10,13 @@ import ecommerce.dao.CidadeDao;
 import ecommerce.dao.EstabelecimentoDao;
 import ecommerce.dto.CidadeDto;
 import ecommerce.dto.EstabelecimentoDto;
-import ecommerce.uteis.Formatadores;
-import ecommerce.uteis.GerenciadorConversa;
-import ecommerce.uteis.GerenciadorToken;
-import ecommerce.uteis.PermissaoExeption;
-import ecommerce.uteis.TokenException;
-import ecommerce.uteis.Uteis;
-import ecommerce.uteis.ValidadorBean;
+import ecommerce.uteis.jsf.Formatadores;
+import ecommerce.uteis.jsf.GerenciadorConversa;
+import ecommerce.uteis.jsf.GerenciadorToken;
+import ecommerce.uteis.jsf.PermissaoExeption;
+import ecommerce.uteis.jsf.TokenException;
+import ecommerce.uteis.jsf.Uteis;
+import ecommerce.uteis.jsf.ValidadorBean;
 import jakarta.enterprise.context.ConversationScoped;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Inject;

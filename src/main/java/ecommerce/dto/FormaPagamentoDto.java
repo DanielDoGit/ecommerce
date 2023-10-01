@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import ecommerce.beans.FormaPagamento;
-import ecommerce.uteis.Formatadores;
+import ecommerce.uteis.jsf.Formatadores;
 
 public class FormaPagamentoDto implements Serializable {
 

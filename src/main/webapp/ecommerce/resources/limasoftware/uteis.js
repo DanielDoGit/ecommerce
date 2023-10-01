@@ -1,3 +1,4 @@
+var etapaRequisicao = 0;
 $(document).ready( () => {
 	verificarNotificacao();
 });
@@ -12,20 +13,46 @@ function verificarNotificacao() {
 			switch (e.classList[1]) {
 			case 'mensagemInfo':
 				exibirNotificacaoSucesso(e.textContent);
-				e.textContent = '';
 				break;
 			case 'mensagemWarning':
 				exibirNotificacaoAlerta(e.textContent);
-				e.textContent = '';
 				break;
 			case 'mensagemError':
 				exibirNotificacaoErro(e.textContent);
-				e.textContent = '';
 				break;
 			}
 		}
 	});
 }
+
+function verificarNotificacaoViaAjax() {
+	var msg = [];
+	msg = msg.concat(Array.from($('.mensagemInfo')));
+	msg = msg.concat(Array.from($('.mensagemWarning')));
+	msg = msg.concat(Array.from($('.mensagemError')));
+	msg.forEach(e => {
+		if (e != undefined) {
+			switch (e.classList[1]) {
+				case 'mensagemInfo':
+					exibirNotificacaoSucesso(e.textContent);
+					break;
+				case 'mensagemWarning':
+					exibirNotificacaoAlerta(e.textContent);
+					break;
+				case 'mensagemError':
+					exibirNotificacaoErro(e.textContent);
+					break;
+			}
+		}
+	});
+}
+
+$( document ).on( "ajaxComplete", function() {
+	 etapaRequisicao++;
+    if (etapaRequisicao === 3) {
+        verificarNotificacaoViaAjax();
+    }
+} );
 
 function exibirNotificacaoSucesso(str) {
 

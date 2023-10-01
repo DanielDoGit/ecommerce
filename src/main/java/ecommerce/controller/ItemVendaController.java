@@ -1,29 +1,31 @@
 package ecommerce.controller;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ecommerce.beans.Cliente;
+import ecommerce.beans.Parcela;
 import ecommerce.beans.Produto;
+import ecommerce.beans.Recebimento;
+import ecommerce.dao.ClienteDao;
 import ecommerce.dao.CondicaoPagamentoDao;
 import ecommerce.dao.EstoqueTransienteDao;
 import ecommerce.dao.FormaPagamentoDao;
 import ecommerce.dao.ProdutoDao;
+import ecommerce.dao.RecebimentoDao;
 import ecommerce.dto.CondicaoPagamentoDto;
 import ecommerce.dto.FormaPagamentoDto;
 import ecommerce.dto.ItemVendaDto;
 import ecommerce.dto.ProdutoDto;
 import ecommerce.dto.VendaDto;
-import ecommerce.uteis.GerenciadorConversa;
-import ecommerce.uteis.GerenciadorToken;
-import ecommerce.uteis.Uteis;
+import ecommerce.uteis.jsf.GerenciadorConversa;
+import ecommerce.uteis.jsf.GerenciadorToken;
+import ecommerce.uteis.jsf.Uteis;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ConversationScoped;
-import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -59,7 +61,13 @@ public class ItemVendaController implements Serializable {
 
 	@Inject
 	private CondicaoPagamentoDao condicaoPagamentoDao;
-
+	
+	@Inject 
+	private RecebimentoDao recebimentoDao;
+	
+	@Inject
+	private ClienteDao clienteDao;
+	
 	private List<ItemVendaDto> listItemsVenda = new ArrayList<ItemVendaDto>();
 	private ItemVendaDto itemVendaDto = new ItemVendaDto();
 	private List<ProdutoDto> listaProdutoDto = new ArrayList<ProdutoDto>();
@@ -73,18 +81,8 @@ public class ItemVendaController implements Serializable {
 
 	@PostConstruct
 	public void carregarDados() {
-		try {
-			listaFormaPagamentoDto = formaPagamentoDao.buscarTodos().stream().map(FormaPagamentoDto::new).collect(Collectors.toList());
-			listaCondicaoPagamentoDto = condicaoPagamentoDao.buscarTodos().stream().map(CondicaoPagamentoDto::new).collect(Collectors.toList());
-			VendaDto vDto = vendaController.getVendaDto();
-			if ((vDto.getNomeFuncionario() == null || vDto.getIdFuncionario() == null) || (vDto.getNomeCliente() == null || vDto.getIdCliente() == null)) {
-				FacesContext fc = FacesContext.getCurrentInstance();
-				fc.getExternalContext().redirect("/ecommerce/paginas/processos/aberturaVenda.xhtml");
-				fc.responseComplete();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		listaFormaPagamentoDto = formaPagamentoDao.buscarTodos().stream().map(FormaPagamentoDto::new).collect(Collectors.toList());
+		listaCondicaoPagamentoDto = condicaoPagamentoDao.buscarTodos().stream().map(CondicaoPagamentoDto::new).collect(Collectors.toList());
 	}
 
 	public String chamarRecebimento() {
@@ -139,7 +137,7 @@ public class ItemVendaController implements Serializable {
 
 	private boolean validarEstoque(ItemVendaDto item) {
 		Produto p = produtoDao.getById(item.getIdProduto());
-		BigDecimal resultado = estoqueTransienteDao.getEstoqueDisponivel(LocalDate.now(), p);
+		BigDecimal resultado = estoqueTransienteDao.getEstoqueDisponivel(p);
 		return resultado.subtract(item.getQuantidade()).compareTo(BigDecimal.ZERO) >= 0;
 	}
 
@@ -155,13 +153,30 @@ public class ItemVendaController implements Serializable {
 
 	public String cancelar() {
 		listItemsVenda.forEach(e -> removerEstoqueTransiente(e));
+		listItemsVenda.clear();
 		conversa.finalizar();
 		return uteis.getCaminhoInicial();
 	}
 
 	public boolean validarCredito() {
 		VendaDto vDto = vendaController.getVendaDto();
-		return vDto.getTotalVenda().compareTo(vDto.getLimiteCredito()) == 1;
+		Cliente c = clienteDao.getById(Integer.valueOf(vDto.getIdCliente()));
+		BigDecimal totalRecebimentos = getSomaRecebimentos(c);
+		BigDecimal totalConsumido = totalRecebimentos.add( vDto.getTotalVenda());
+		return totalConsumido.compareTo(vDto.getLimiteCredito()) == 1;
+	}
+	
+	private BigDecimal getSomaRecebimentos(Cliente c) {
+		List<Recebimento> listaRecebimento = recebimentoDao.getRecebimentosByCliente(c);
+		BigDecimal somaRecebimentos = BigDecimal.ZERO;
+		BigDecimal somaParcelasPagas = BigDecimal.ZERO;
+		for (Recebimento r : listaRecebimento) {
+			somaRecebimentos = somaRecebimentos.add(r.getValor());
+			for (Parcela parcela : r.getListaParcelas()) {
+				somaParcelasPagas.add(parcela.getValorRecebimento());
+			}
+		}
+		return somaRecebimentos.subtract(somaParcelasPagas);
 	}
 
 	public VendaController getVendaController() {
@@ -294,6 +309,22 @@ public class ItemVendaController implements Serializable {
 
 	public void setCondicaoPagamentoDto(CondicaoPagamentoDto condicaoPagamentoDto) {
 		this.condicaoPagamentoDto = condicaoPagamentoDto;
+	}
+
+	public RecebimentoDao getRecebimentoDao() {
+		return recebimentoDao;
+	}
+
+	public void setRecebimentoDao(RecebimentoDao recebimentoDao) {
+		this.recebimentoDao = recebimentoDao;
+	}
+
+	public ClienteDao getClienteDao() {
+		return clienteDao;
+	}
+
+	public void setClienteDao(ClienteDao clienteDao) {
+		this.clienteDao = clienteDao;
 	}
 
 }
