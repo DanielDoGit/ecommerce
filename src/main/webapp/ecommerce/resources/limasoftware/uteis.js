@@ -1,4 +1,3 @@
-var etapaRequisicao = 0;
 $(document).ready( () => {
 	verificarNotificacao();
 });
@@ -47,12 +46,31 @@ function verificarNotificacaoViaAjax() {
 	});
 }
 
+var etapaRequisicao = 0;
 $( document ).on( "ajaxComplete", function() {
 	 etapaRequisicao++;
     if (etapaRequisicao === 3) {
         verificarNotificacaoViaAjax();
     }
 } );
+
+function validarSubmit() {
+	var forms = document.getElementsByClassName('needs-validation');
+	if (forms != null) {
+		var form = forms[0];
+		if (form.checkValidity() === false) {
+			event.preventDefault();
+			event.stopPropagation();
+			exibirNotificacaoAlerta("Existem campos não preenchidos ou inválidos");
+			form.classList.add('was-validated');
+			return false;
+		} else {
+			return true;
+		}
+	} else {
+		return false;
+	}
+}
 
 function exibirNotificacaoSucesso(str) {
 

@@ -22,7 +22,7 @@
 					<div class="form-group ml-3">
 						<h:inputText value="#{vendaController.vendaDto.idCliente}"
 							class="form-control col-2" id="txtIdCliente" autocomplete="off"
-							required="true">
+							pt:required="required" required="true">
 							<f:ajax listener="#{vendaController.carregarCliente}"
 								execute="txtIdCliente" render="txtIdCliente txtNomeCliente" ></f:ajax>
 						</h:inputText>
@@ -48,7 +48,7 @@
 					<div class="form-group ml-3">
 						<h:inputText value="#{vendaController.vendaDto.idFuncionario}"
 							class="form-control col-2" id="txtIdFuncionario"
-							autocomplete="off" required="true">
+							autocomplete="off" pt:required="required" required="true">
 							<f:ajax listener="#{vendaController.carregarFuncionario}"
 								execute="txtIdFuncionario"
 								render="txtIdFuncionario txtNomeFuncionario"></f:ajax>
@@ -89,7 +89,7 @@
 						value="Cancelar" immediate="true" class="btn btn-primary"
 						style="width: 120px; margin: 5px"></h:commandButton>
 					<h:commandButton action="#{vendaController.chamarItensVenda}"
-						value="Próximo" class="btn btn-primary"
+						value="Próximo" class="btn btn-primary needs-validation"
 						style="width: 120px; margin: 5px"
 						onclick="return validarSubmit();"></h:commandButton>
 				</div>
