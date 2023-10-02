@@ -61,13 +61,13 @@ public class ItemVendaController implements Serializable {
 
 	@Inject
 	private CondicaoPagamentoDao condicaoPagamentoDao;
-	
-	@Inject 
+
+	@Inject
 	private RecebimentoDao recebimentoDao;
-	
+
 	@Inject
 	private ClienteDao clienteDao;
-	
+
 	private List<ItemVendaDto> listItemsVenda = new ArrayList<ItemVendaDto>();
 	private ItemVendaDto itemVendaDto = new ItemVendaDto();
 	private List<ProdutoDto> listaProdutoDto = new ArrayList<ProdutoDto>();
@@ -84,7 +84,7 @@ public class ItemVendaController implements Serializable {
 		listaFormaPagamentoDto = formaPagamentoDao.buscarTodos().stream().map(FormaPagamentoDto::new).collect(Collectors.toList());
 		listaCondicaoPagamentoDto = condicaoPagamentoDao.buscarTodos().stream().map(CondicaoPagamentoDto::new).collect(Collectors.toList());
 	}
-
+	
 	public String chamarRecebimento() {
 		if (listItemsVenda.isEmpty()) {
 			uteis.adicionarMensagemAdvertencia("É preciso ter ao menos um item na venda para prosseguir!");
@@ -162,10 +162,10 @@ public class ItemVendaController implements Serializable {
 		VendaDto vDto = vendaController.getVendaDto();
 		Cliente c = clienteDao.getById(Integer.valueOf(vDto.getIdCliente()));
 		BigDecimal totalRecebimentos = getSomaRecebimentos(c);
-		BigDecimal totalConsumido = totalRecebimentos.add( vDto.getTotalVenda());
+		BigDecimal totalConsumido = totalRecebimentos.add(vDto.getTotalVenda());
 		return totalConsumido.compareTo(vDto.getLimiteCredito()) == 1;
 	}
-	
+
 	private BigDecimal getSomaRecebimentos(Cliente c) {
 		List<Recebimento> listaRecebimento = recebimentoDao.getRecebimentosByCliente(c);
 		BigDecimal somaRecebimentos = BigDecimal.ZERO;

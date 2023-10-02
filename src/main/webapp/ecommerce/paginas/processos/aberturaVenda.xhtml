@@ -24,12 +24,12 @@
 							class="form-control col-2" id="txtIdCliente" autocomplete="off"
 							required="true">
 							<f:ajax listener="#{vendaController.carregarCliente}"
-								execute="txtIdCliente" render="txtIdCliente txtNomeCliente"></f:ajax>
+								execute="txtIdCliente" render="txtIdCliente txtNomeCliente" ></f:ajax>
 						</h:inputText>
 						<label>&#160;</label>
 						<h:inputText value="#{vendaController.vendaDto.nomeCliente}"
 							class="form-control col-8" id="txtNomeCliente" autocomplete="off"
-							disabled="true"></h:inputText>
+							disabled="true" required="true" pt:required="required"></h:inputText>
 						<label>&#160;</label>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
 							data-target="#pesquisarModalCliente" id="botaoProcurarCliente">
@@ -56,7 +56,7 @@
 						<label>&#160;</label>
 						<h:inputText value="#{vendaController.vendaDto.nomeFuncionario}"
 							class="form-control col-8" id="txtNomeFuncionario"
-							autocomplete="off" disabled="true"></h:inputText>
+							autocomplete="off" disabled="true" pt:required="required" required="true"></h:inputText>
 						<label>&#160;</label>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
 							data-target="#pesquisarModalFuncionario"

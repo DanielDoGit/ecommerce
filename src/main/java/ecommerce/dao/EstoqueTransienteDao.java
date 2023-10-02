@@ -5,7 +5,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.List;
 
 import ecommerce.beans.EstoqueTransiente;
 import ecommerce.beans.Produto;
@@ -13,10 +12,6 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.FacesException;
 import jakarta.inject.Named;
 import jakarta.persistence.Query;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 
 @Named
 @RequestScoped
@@ -28,16 +23,6 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 		super(EstoqueTransiente.class);
 	}
 	
-	public List<EstoqueTransiente> buscarRegistrosAcimaDoPrazo() {
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<EstoqueTransiente> cq = cb.createQuery(EstoqueTransiente.class);
-		Root<EstoqueTransiente> root =  cq.from(EstoqueTransiente.class);
-		Predicate hora = cb.lessThan(root.get("horaIsercao"), LocalDateTime.now().minusHours(1));
-		Predicate QtdAcesso = cb.lessThanOrEqualTo(root.get("quantidadeAcesso"), 0);
-		cq.select(root).where(cb.and(hora,QtdAcesso));
-		return em.createQuery(cq).getResultList();
-	}
-
 	private void criarEstoqueTransiente(Produto produto, BigDecimal quantidadeDisponivel) {
 		EstoqueTransiente e = new EstoqueTransiente();
 		e.setProduto(produto);

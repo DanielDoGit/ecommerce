@@ -7,9 +7,11 @@ import ecommerce.uteis.jsf.Uteis;
 import jakarta.enterprise.context.ConversationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.transaction.Transactional;
 
 @Named
 @ConversationScoped
+@Transactional
 public class MenuController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
