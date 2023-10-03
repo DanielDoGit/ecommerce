@@ -18,7 +18,7 @@ public class FormaPagamentoDao extends Dao<FormaPagamento>{
 	
 	@SuppressWarnings("unchecked")
 	public List<FormaPagamento> buscarTodos(){
-		return em.createNativeQuery("select * from formapagamento order by descricao", FormaPagamento.class).getResultList();
+		return em.createNativeQuery("select * from formapagamento order by descricao desc", FormaPagamento.class).getResultList();
 	}
 
 }

@@ -18,7 +18,7 @@ public class CondicaoPagamentoDao extends Dao<CondicaoPagamento> {
 	
 	@SuppressWarnings("unchecked")
 	public List<CondicaoPagamento> buscarTodos(){
-		return em.createNativeQuery("select * from condicaopagamento order by descricao", CondicaoPagamento.class).getResultList();
+		return em.createNativeQuery("select * from condicaopagamento order by descricao desc", CondicaoPagamento.class).getResultList();
 	}
 	
 }

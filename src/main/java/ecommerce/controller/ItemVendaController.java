@@ -2,6 +2,7 @@ package ecommerce.controller;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ import ecommerce.dto.CondicaoPagamentoDto;
 import ecommerce.dto.FormaPagamentoDto;
 import ecommerce.dto.ItemVendaDto;
 import ecommerce.dto.ProdutoDto;
+import ecommerce.dto.RecebimentoDto;
 import ecommerce.dto.VendaDto;
 import ecommerce.uteis.jsf.GerenciadorConversa;
 import ecommerce.uteis.jsf.GerenciadorToken;
@@ -76,6 +78,7 @@ public class ItemVendaController implements Serializable {
 	private List<CondicaoPagamentoDto> listaCondicaoPagamentoDto = new ArrayList<CondicaoPagamentoDto>();
 	private FormaPagamentoDto formaPagamentoDto;
 	private CondicaoPagamentoDto condicaoPagamentoDto;
+	private List<RecebimentoDto> listaRecebimentoDto;
 
 	private String argumentoBusca;
 
@@ -84,17 +87,47 @@ public class ItemVendaController implements Serializable {
 		listaFormaPagamentoDto = formaPagamentoDao.buscarTodos().stream().map(FormaPagamentoDto::new).collect(Collectors.toList());
 		listaCondicaoPagamentoDto = condicaoPagamentoDao.buscarTodos().stream().map(CondicaoPagamentoDto::new).collect(Collectors.toList());
 	}
-	
+
 	public String chamarRecebimento() {
 		if (listItemsVenda.isEmpty()) {
 			uteis.adicionarMensagemAdvertencia("É preciso ter ao menos um item na venda para prosseguir!");
 			return null;
 		}
-		if (validarCredito()) {
+		if (!validarCredito()) {
 			uteis.adicionarMensagemAdvertencia("Limite de crédito excedido!");
 			return null;
 		}
-		return null;
+		criarRecebimento();
+		return "/ecommerce/paginas/processos/fechamentoVenda.xhtml";
+	}
+
+	private void criarRecebimento() {
+		listaRecebimentoDto = new ArrayList<RecebimentoDto>();
+		if (condicaoPagamentoDto.getCodigo() == 1) {
+			RecebimentoDto recebimentoDto = new RecebimentoDto();
+			recebimentoDto.setCondicaopagamento(condicaoPagamentoDto);
+			recebimentoDto.setFormaPagamentoDto(formaPagamentoDto);
+			recebimentoDto.setDataEmissao(LocalDate.now());
+			recebimentoDto.setDataVencimento(LocalDate.now());
+			recebimentoDto.setQuitado(true);
+			recebimentoDto.setValor(vendaController.getVendaDto().getTotalVenda());
+			listaRecebimentoDto.add(recebimentoDto);
+		} else {
+			String[] array = condicaoPagamentoDto.getDescricao().split("\\-\\");
+			for (String parcela : array) {
+				RecebimentoDto recebimentoDto = new RecebimentoDto();
+				recebimentoDto.setCondicaopagamento(condicaoPagamentoDto);
+				recebimentoDto.setFormaPagamentoDto(formaPagamentoDto);
+				recebimentoDto.setDataEmissao(LocalDate.now());
+				if (listaRecebimentoDto.size() > 0) {
+					RecebimentoDto recebimentoDtoAnterior = listaRecebimentoDto.get(listaRecebimentoDto.size()-1);
+					recebimentoDto.setDataVencimento(recebimentoDtoAnterior.getDataVencimento().plusDays(Long.valueOf(parcela)));
+				}else {
+					recebimentoDto.setDataVencimento(LocalDate.now().plusDays(Long.valueOf(parcela)));
+				}
+				listaRecebimentoDto.add(recebimentoDto);
+			}
+		}
 	}
 
 	public void adicionarItemVenda(AjaxBehaviorEvent e) {
@@ -163,7 +196,7 @@ public class ItemVendaController implements Serializable {
 		Cliente c = clienteDao.getById(Integer.valueOf(vDto.getIdCliente()));
 		BigDecimal totalRecebimentos = getSomaRecebimentos(c);
 		BigDecimal totalConsumido = totalRecebimentos.add(vDto.getTotalVenda());
-		return totalConsumido.compareTo(vDto.getLimiteCredito()) == 1;
+		return totalConsumido.compareTo(vDto.getLimiteCredito()) <= 0;
 	}
 
 	private BigDecimal getSomaRecebimentos(Cliente c) {
@@ -325,6 +358,14 @@ public class ItemVendaController implements Serializable {
 
 	public void setClienteDao(ClienteDao clienteDao) {
 		this.clienteDao = clienteDao;
+	}
+
+	public List<RecebimentoDto> getListaRecebimentoDto() {
+		return listaRecebimentoDto;
+	}
+
+	public void setListaRecebimentoDto(List<RecebimentoDto> listaRecebimentoDto) {
+		this.listaRecebimentoDto = listaRecebimentoDto;
 	}
 
 }
