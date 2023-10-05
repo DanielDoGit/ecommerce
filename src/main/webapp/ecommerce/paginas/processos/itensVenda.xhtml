@@ -80,7 +80,9 @@
 						<h:inputText
 							value="#{itemVendaController.itemVendaDto.valorUnitario}"
 							class="form-control" id="txtPrecounitario" autocomplete="off"
-							immediate="true" converter="bigDecimalToCurrency"></h:inputText>
+							immediate="true" converter="bigDecimalToCurrency">
+							<f:ajax execute="@this" render="@this"/>
+						</h:inputText>
 						&nbsp;
 						<h:commandLink class="btn btn-primary"
 							id="botaoAdicionarItemVenda">
@@ -250,7 +252,7 @@
 										value="#{itemVendaController.formaPagamentoDto}" >
 										<f:selectItems
 											value="#{itemVendaController.listaFormaPagamentoDto}" var="t"
-											itemLabel="#{t.descricao}" itemValue="0" ></f:selectItems>
+											itemLabel="#{t.descricao}" itemLabelEscaped="0" ></f:selectItems>
 									</h:selectOneMenu>
 								</div>
 							</div>
@@ -261,7 +263,7 @@
 										value="#{itemVendaController.condicaoPagamentoDto}">
 										<f:selectItems
 											value="#{itemVendaController.listaCondicaoPagamentoDto}"
-											var="t" itemLabel="#{t.descricao}" itemValue="0"></f:selectItems>
+											var="t" itemLabel="#{t.descricao}" itemLabelEscaped="0"></f:selectItems>
 									</h:selectOneMenu>
 								</div>
 							</div>
@@ -269,7 +271,7 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-primary"
 								data-dismiss="modal">Cancelar</button>
-							<<h:commandButton type="button" class="btn btn-primary" action="#{itemVendaController.chamarRecebimento}">Próximo</h:commandButton>
+							<h:commandButton class="btn btn-primary" action="#{itemVendaController.chamarRecebimento}" value="Próximo" immediate="true"></h:commandButton>
 						</div>
 					</div>
 				</div>

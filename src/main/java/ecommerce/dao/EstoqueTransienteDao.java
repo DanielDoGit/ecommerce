@@ -35,6 +35,9 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 	public void processarRemocaoEstoqueTransiente(Produto produto, BigDecimal quantidade) {
 		validarDados(produto, quantidade);
 		EstoqueTransiente e = this.buscarExatidaoInnerJoin(Produto.class, "produto", "codigo", produto.getCodigo().toString());
+		if (e == null) {
+			return;
+		}
 		e.setQuantidadeAcesso(e.getQuantidadeAcesso() - 1);
 		e.setQuantidadeUso(e.getQuantidadeUso().subtract(quantidade));
 		if (e.getQuantidadeAcesso() <= 0 || Duration.between(e.getHoraIsercao(), LocalDateTime.now()).toHours() > 1) {
