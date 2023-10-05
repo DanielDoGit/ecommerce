@@ -64,10 +64,10 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 	}
 
 	public BigDecimal getQuantidadeVenda(LocalDate dataApuracao, Produto produto) {
-		String sql = "select sum(iv.quantidade) from itemvenda as iv, venda as v where v.datavenda <= :dataBase and iv.produto = :produto";
+		String sql = "select sum(iv.quantidade) from itemvenda as iv, venda as v where v.datavenda <= ? and iv.produto = ?";
 		Query q = em.createNativeQuery(sql);
-		q.setParameter("dataBase", dataApuracao);
-		q.setParameter("produto", produto.getCodigo());
+		q.setParameter(1, dataApuracao);
+		q.setParameter(2, produto.getCodigo());
 		BigDecimal b = (BigDecimal) q.getSingleResult();
 		if (b == null) {
 			b = BigDecimal.ZERO;
@@ -76,10 +76,10 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 	}
 
 	public BigDecimal getQuantidadeAjusteEstoqueSaida(LocalDate dataApuracao, Produto produto) {
-		String sql = "select sum(aj.quantidade) from ajusteestoque as aj where aj.dataajuste <= :dataBase and aj.produto = :produto and tipo = 3";
+		String sql = "select sum(aj.quantidade) from ajusteestoque as aj where aj.dataajuste <= ? and aj.produto = ? and tipo = 3";
 		Query q = em.createNativeQuery(sql);
-		q.setParameter("dataBase", dataApuracao);
-		q.setParameter("produto", produto.getCodigo());
+		q.setParameter(1, dataApuracao);
+		q.setParameter(2, produto.getCodigo());
 		BigDecimal b = (BigDecimal) q.getSingleResult();
 		if (b == null) {
 			b = BigDecimal.ZERO;
@@ -88,10 +88,10 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 	}
 
 	public BigDecimal getQuantidadeAjusteEstoqueEntrada(LocalDate dataApuracao, Produto produto) {
-		String sql = "select sum(aj.quantidade) from ajusteestoque as aj where aj.dataajuste <= :dataBase and aj.produto = :produto and tipo = 2";
+		String sql = "select sum(aj.quantidade) from ajusteestoque as aj where aj.dataajuste <= ? and aj.produto = ? and tipo = 2";
 		Query q = em.createNativeQuery(sql);
-		q.setParameter("dataBase", dataApuracao);
-		q.setParameter("produto", produto.getCodigo());
+		q.setParameter(1, dataApuracao);
+		q.setParameter(2, produto.getCodigo());
 		BigDecimal b = (BigDecimal) q.getSingleResult();
 		if (b == null) {
 			b = BigDecimal.ZERO;
@@ -100,9 +100,9 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 	}
 
 	public BigDecimal getEstoqueTransiente(LocalDate dataApuracao, Produto produto) {
-		String sql = "select sum(et.quantidade_uso) from estoque_transiente as et where et.produto = :produto";
+		String sql = "select sum(et.quantidade_uso) from estoque_transiente as et where et.produto = ?";
 		Query q = em.createNativeQuery(sql);
-		q.setParameter("produto", produto.getCodigo());
+		q.setParameter(1, produto.getCodigo());
 		BigDecimal b = (BigDecimal) q.getSingleResult();
 		if (b == null) {
 			b = BigDecimal.ZERO;

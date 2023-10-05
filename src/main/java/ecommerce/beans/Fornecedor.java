@@ -2,8 +2,7 @@ package ecommerce.beans;
 
 import java.io.Serializable;
 
-import org.hibernate.type.TrueFalseConverter;
-
+import ecommerce.uteis.jpa.ConverterBoolean;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -37,7 +36,7 @@ public class Fornecedor implements Serializable {
 	@JoinColumn(name = "cidade")
 	private Cidade cidade;
 
-	@Convert(converter = TrueFalseConverter.class)
+	@Convert(converter = ConverterBoolean.class)
 	private boolean ativo;
 	
 	@Enumerated(value =  EnumType.ORDINAL)

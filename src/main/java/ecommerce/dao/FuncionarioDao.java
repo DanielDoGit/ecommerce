@@ -23,7 +23,6 @@ public class FuncionarioDao extends Dao<Funcionario>{
 	}
 	
 	public Optional<Funcionario> realizarlogin(String login, String senha) {
-		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Funcionario> cq = cb.createQuery(Funcionario.class);
 		Root<Funcionario> root =  cq.from(Funcionario.class);

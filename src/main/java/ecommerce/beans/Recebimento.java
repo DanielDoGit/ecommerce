@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.hibernate.type.TrueFalseConverter;
-
+import ecommerce.uteis.jpa.ConverterBoolean;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,7 +33,7 @@ public class Recebimento implements Serializable {
 	
 	private LocalDate dataVencimento;
 	
-	@Convert(converter = TrueFalseConverter.class)
+	@Convert(converter = ConverterBoolean.class)
 	private boolean quitado;
 	
 	@ManyToOne

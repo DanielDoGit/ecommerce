@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.hibernate.type.TrueFalseConverter;
-
+import ecommerce.uteis.jpa.ConverterBoolean;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -43,7 +42,7 @@ public class Funcionario implements Serializable {
 	
 	private String senha;
 
-	@Convert(converter = TrueFalseConverter.class)
+	@Convert(converter = ConverterBoolean.class)
 	private boolean ativo;
 	
 	@OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
