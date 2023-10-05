@@ -15,86 +15,7 @@
 		<div class="container bg-light rounded-bottom divcentral">
 			<ui:include src="/ecommerce/paginas/uteis/barramenu.xhtml" />
 			<br></br>
-			<div class="row mb-3 ml-5 pl-4">
-				<div class="col-7">
-					<label>Cliente</label>
-					<h:inputText
-						value="#{itemVendaController.vendaController.vendaDto.nomeCliente}"
-						class="form-control" id="txtNomeCliente" autocomplete="off"
-						disabled="true"></h:inputText>
-				</div>
-				<div class="col-4">
-					<label>Data venda</label>
-					<h:inputText
-						value="#{itemVendaController.vendaController.vendaDto.dataVenda}"
-						class="form-control" id="txtDataVenda" autocomplete="off"
-						disabled="true" converter="converterDataOutput">
-					</h:inputText>
-				</div>
-			</div>
-
-			<div class="row mb-3 ml-5 pl-4">
-				<div class="col-7">
-					<label>Funcionário</label>
-					<h:inputText
-						value="#{itemVendaController.vendaController.vendaDto.nomeFuncionario}"
-						class="form-control" id="txtNomeFuncionario" autocomplete="off"
-						disabled="true"></h:inputText>
-				</div>
-				<div class="col-4">
-					<label>Limite Crédito</label>
-					<h:inputText
-						value="#{itemVendaController.vendaController.vendaDto.limiteCredito}"
-						class="form-control" id="txtLimiteCredito" autocomplete="off"
-						disabled="true" converter="bigDecimalToCurrency">
-					</h:inputText>
-				</div>
-			</div>
-
-			<div class="row mb-3 ml-5 pl-4">
-				<div class="col-5">
-					<label>Produto</label>
-					<div class="input-group-append">
-						<h:inputText
-							value="#{itemVendaController.itemVendaDto.nomeProduto}"
-							class="form-control" id="txtProduto" autocomplete="off"
-							disabled="true"></h:inputText>
-						<label>&#160;</label>
-
-						<button type="button" class="btn btn-primary" data-toggle="modal"
-							data-target="#pesquisarModalProduto" id="botaoProcurarProduto">
-							<span class="fas fa-search"></span>
-						</button>
-
-					</div>
-				</div>
-				<div class="col-2">
-					<label>Quantidade</label>
-					<h:inputText value="#{itemVendaController.itemVendaDto.quantidade}"
-						class="form-control" id="txtQuantidade" autocomplete="off"
-						immediate="true" converter="bigDecimalToNumber"></h:inputText>
-				</div>
-				<div class="col-4">
-					<label>Preço unitario</label>
-					<div class="input-group-append">
-						<h:inputText
-							value="#{itemVendaController.itemVendaDto.valorUnitario}"
-							class="form-control" id="txtPrecounitario" autocomplete="off"
-							immediate="true" converter="bigDecimalToCurrency"></h:inputText>
-						&nbsp;
-						<h:commandLink class="btn btn-primary"
-							id="botaoAdicionarItemVenda">
-							<span class="fas fa-plus"></span>
-							<f:ajax listener="#{itemVendaController.adicionarItemVenda}"
-								onevent="verificarNotificacaoViaAjax"
-								execute="@form:txtProduto @form:txtQuantidade @form:txtPrecounitario @form:mensagens"
-								render="@form:txtTotalVenda @form:txtProduto @form:txtQuantidade @form:txtPrecounitario @form:table @form:mensagens"></f:ajax>
-						</h:commandLink>
-					</div>
-				</div>
-
-			</div>
-
+			
 			<div class="row">
 				<div class="col-12">
 					<h:dataTable id="table" border="0"
@@ -103,7 +24,7 @@
 						columnClasses="center, left, left, left, colunaExcluir">
 						<h:column id="column1">
 							<f:facet name="header">
-								<h:outputText value="Produto"></h:outputText>
+								<h:outputText value="Data de Vencimento"></h:outputText>
 							</f:facet>
 							<h:outputText value="#{s.nomeProduto}"></h:outputText>
 						</h:column>
