@@ -51,8 +51,27 @@ $( document ).on( "ajaxComplete", function() {
 	 etapaRequisicao++;
     if (etapaRequisicao === 3) {
         verificarNotificacaoViaAjax();
+		etapaRequisicao = 0;
     }
 } );
+
+
+$(document).on( "ajaxComplete", function() {
+	bloquearBotoesClasseNeedsValidation();
+});
+
+
+function bloquearBotoesClasseNeedsValidation(){
+	etapaRequisicao++;
+	var components = Array.from(document.getElementsByClassName('needs-validation'));
+	if (components != null) {
+		components.forEach(  e => e.disable = true);
+		if (etapaRequisicao === 3) {
+			components.forEach(  e => e.disable = false);
+			etapaRequisicao = 0;
+		}
+	}
+}
 
 function validarSubmit() {
 	var forms = document.getElementsByClassName('needs-validation');

@@ -25,6 +25,7 @@ import ecommerce.dto.RecebimentoDto;
 import ecommerce.dto.VendaDto;
 import ecommerce.uteis.jsf.GerenciadorConversa;
 import ecommerce.uteis.jsf.GerenciadorToken;
+import ecommerce.uteis.jsf.TokenException;
 import ecommerce.uteis.jsf.Uteis;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ConversationScoped;
@@ -89,16 +90,22 @@ public class ItemVendaController implements Serializable {
 	}
 
 	public String chamarRecebimento() {
-		if (listItemsVenda.isEmpty()) {
-			uteis.adicionarMensagemAdvertencia("É preciso ter ao menos um item na venda para prosseguir!");
+		try {
+			token.validarToken();
+			if (listItemsVenda.isEmpty()) {
+				uteis.adicionarMensagemAdvertencia("É preciso ter ao menos um item na venda para prosseguir!");
+				return null;
+			}
+			if (!validarCredito()) {
+				uteis.adicionarMensagemAdvertencia("Limite de crédito excedido!");
+				return null;
+			}
+			criarRecebimento();
+			return "/ecommerce/paginas/processos/fechamentoVenda.xhtml";
+		} catch (TokenException e) {
+			uteis.adicionarMensagemErro(e);
 			return null;
 		}
-		if (!validarCredito()) {
-			uteis.adicionarMensagemAdvertencia("Limite de crédito excedido!");
-			return null;
-		}
-		criarRecebimento();
-		return "/ecommerce/paginas/processos/fechamentoVenda.xhtml";
 	}
 
 	private void criarRecebimento() {

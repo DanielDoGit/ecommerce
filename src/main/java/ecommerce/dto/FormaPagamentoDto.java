@@ -6,7 +6,7 @@ import java.util.Objects;
 import ecommerce.beans.FormaPagamento;
 import ecommerce.uteis.jsf.Formatadores;
 
-public class FormaPagamentoDto implements Serializable, Comparable<FormaPagamentoDto> {
+public class FormaPagamentoDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -70,7 +70,7 @@ public class FormaPagamentoDto implements Serializable, Comparable<FormaPagament
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(codigo, descricao);
+		return Objects.hash(codigo);
 	}
 
 	@Override
@@ -82,15 +82,9 @@ public class FormaPagamentoDto implements Serializable, Comparable<FormaPagament
 		if (getClass() != obj.getClass())
 			return false;
 		FormaPagamentoDto other = (FormaPagamentoDto) obj;
-		return Objects.equals(codigo, other.codigo) && Objects.equals(descricao, other.descricao);
+		return Objects.equals(codigo, other.codigo);
 	}
 
-	@Override
-	public int compareTo(FormaPagamentoDto o) {
-		return descricao.compareTo(o.getDescricao());
-	}
-
-	
 	
 	
 }

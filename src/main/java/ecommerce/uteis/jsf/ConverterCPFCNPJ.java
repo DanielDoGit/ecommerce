@@ -47,7 +47,7 @@ public class ConverterCPFCNPJ implements Converter<String>, Serializable {
 			}else {
 				throw new ConverterException(new FacesMessage("O CPF informado é invalido!"));
 			}
-		}else {
+		} else {
 			if (validador.validarCampo(ConverterCPFCNPJ.class, "cnpj", arg2)) {
 				return arg2;
 			}else {

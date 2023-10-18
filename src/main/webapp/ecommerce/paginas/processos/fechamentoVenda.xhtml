@@ -15,52 +15,53 @@
 		<div class="container bg-light rounded-bottom divcentral">
 			<ui:include src="/ecommerce/paginas/uteis/barramenu.xhtml" />
 			<br></br>
-			
-			<h1>Olá Mundo</h1>
-			
+			<h1 align="center">Fechamento da Venda</h1>
+			<br />
 			<div class="row">
 				<div class="col-12">
 					<h:dataTable id="table" border="0"
-						value="#{itemVendaController.listItemsVenda}" var="s"
+						value="#{fechamentoVendaController.recebimentos}" var="s"
 						class="table table-hover"
-						columnClasses="center, left, left, left, colunaExcluir">
+						columnClasses="left, left, left, left, left, colunaEditar">
 						<h:column id="column1">
 							<f:facet name="header">
-								<h:outputText value="Data de Vencimento"></h:outputText>
+								<h:outputText value="Data de Emissão"></h:outputText>
 							</f:facet>
-							<h:outputText value="#{s.nomeProduto}"></h:outputText>
+							<h:outputText value="#{s.dataEmissao}" converter="converterDataOutput"></h:outputText>
 						</h:column>
 						<h:column id="column2">
 							<f:facet name="header">
-								<h:outputText value="Quantidade"></h:outputText>
+								<h:outputText value="Data de Vencimento"></h:outputText>
 							</f:facet>
-							<h:outputText value="#{s.quantidade}"></h:outputText>
+							<h:outputText value="#{s.dataVencimento}" converter="converterDataOutput"></h:outputText>
 						</h:column>
 						<h:column id="column3">
 							<f:facet name="header">
-								<h:outputText value="Preço unitário"></h:outputText>
+								<h:outputText value="Forma de Pagamento"></h:outputText>
 							</f:facet>
-							<h:outputText value="#{s.valorUnitario}"
-								converter="bigDecimalToCurrency"></h:outputText>
+							<h:outputText value="#{s.formaPagamentoDto.descricao}"></h:outputText>
 						</h:column>
 						<h:column id="column4">
 							<f:facet name="header">
-								<h:outputText value="Valor total"></h:outputText>
+								<h:outputText value="Valor parcela"></h:outputText>
 							</f:facet>
-							<h:outputText value="#{s.totalUnitario}"
+							<h:outputText value="#{s.valor}"
 								converter="bigDecimalToCurrency"></h:outputText>
 						</h:column>
 						<h:column id="column5">
 							<f:facet name="header">
-								<h:outputText value="Excluir"></h:outputText>
+								<h:outputText value="Quitado"></h:outputText>
 							</f:facet>
-							<button type="button" class="btn btn-danger" value=""
-								onclick="return excluir('itemVenda#{s.codigo}')">
-								<span class="fas fa-trash-alt"></span>
-							</button>
-							<h:commandLink
-								action="#{itemVendaController.excluirItemVenda(s)}"
-								class="itemVenda#{s.codigo}"></h:commandLink>
+							<h:outputText value="#{s.quitado}"
+								converter="booleanConverter"></h:outputText>
+						</h:column>
+						<h:column id="column6">
+							<f:facet name="header">
+								<h:outputText value="Alterar"></h:outputText>
+							</f:facet>
+							<h:commandLink action="#{fechamentoVendaController.editarRecebimento(s)}" class="btn btn-success">
+								<span class="fas fa-pen"></span>
+							</h:commandLink>
 						</h:column>
 					</h:dataTable>
 				</div>
@@ -83,6 +84,9 @@
 				<div class="col-6" style="margin-left: 45%;" align="right">
 					<h:commandButton action="#{itemVendaController.cancelar}"
 						value="Cancelar" immediate="true" class="btn btn-primary"
+						style="width: 120px; margin: 5px"></h:commandButton>
+					<h:commandButton action="#{fechamentoVendaController.voltar}"
+						value="Voltar" immediate="true" class="btn btn-primary"
 						style="width: 120px; margin: 5px"></h:commandButton>
 					<h:commandButton pt:type="button" pt:data-toggle="modal"
 						id="chamarModalTabelaDePreco" pt:data-target="#modalTabelaPreco"

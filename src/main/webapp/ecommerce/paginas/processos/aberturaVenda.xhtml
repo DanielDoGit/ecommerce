@@ -15,7 +15,8 @@
 		<div class="container bg-light rounded-bottom divcentral">
 			<ui:include src="/ecommerce/paginas/uteis/barramenu.xhtml" />
 			<br></br>
-
+			<h1 align="center">Abertura de Venda</h1>
+			<br />
 			<div class="row mb-3 ml-5 pl-4">
 				<label class="col-12 offset-3">Cliente</label>
 				<div class="form-inline offset-3">
@@ -24,7 +25,7 @@
 							class="form-control col-2" id="txtIdCliente" autocomplete="off"
 							required="true">
 							<f:ajax listener="#{vendaController.carregarCliente}" 
-								execute="txtIdCliente" render="txtIdCliente txtNomeCliente txtNomeClienteOculto" ></f:ajax>
+								execute="txtIdCliente" render="txtIdCliente txtNomeCliente txtNomeClienteOculto"></f:ajax>
 						</h:inputText>
 						<label>&#160;</label>
 						<h:inputText value="#{vendaController.vendaDto.nomeCliente}"
@@ -55,7 +56,7 @@
 							autocomplete="off" required="true">
 							<f:ajax listener="#{vendaController.carregarFuncionario}"
 								execute="txtIdFuncionario"
-								render="txtIdFuncionario txtNomeFuncionario txtNomeFuncionarioOculto" ></f:ajax>
+								render="txtIdFuncionario txtNomeFuncionario txtNomeFuncionarioOculto"></f:ajax>
 						</h:inputText>
 						<label>&#160;</label>
 						<h:inputText value="#{vendaController.vendaDto.nomeFuncionario}"

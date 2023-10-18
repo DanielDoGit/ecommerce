@@ -6,6 +6,8 @@ import java.util.List;
 import ecommerce.dto.RecebimentoDto;
 import ecommerce.uteis.jsf.GerenciadorConversa;
 import ecommerce.uteis.jsf.GerenciadorToken;
+import ecommerce.uteis.jsf.TokenException;
+import ecommerce.uteis.jsf.Uteis;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ConversationScoped;
 import jakarta.inject.Inject;
@@ -24,6 +26,9 @@ public class FechamentoVendaController implements Serializable {
 	private GerenciadorConversa conversa;
 	
 	@Inject
+	private Uteis uteis;
+	
+	@Inject
 	private VendaController vendaController;
 	
 	@Inject
@@ -37,7 +42,20 @@ public class FechamentoVendaController implements Serializable {
 	}
 	
 	public void editarRecebimento(RecebimentoDto recebimentoDto) {
-		
+		try {
+			token.validarToken();
+		} catch (TokenException e) {
+			uteis.adicionarMensagemErro(e);
+		}		
+	}
+	
+	public String voltar() {
+		return vendaController.chamarItensVenda();
+	}
+	
+	public String cancelar() {
+		conversa.finalizar();
+		return uteis.getCaminhoInicial();
 	}
 
 	public GerenciadorToken getToken() {
