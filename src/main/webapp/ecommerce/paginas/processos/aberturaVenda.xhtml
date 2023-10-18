@@ -22,21 +22,25 @@
 					<div class="form-group ml-3">
 						<h:inputText value="#{vendaController.vendaDto.idCliente}"
 							class="form-control col-2" id="txtIdCliente" autocomplete="off"
-							pt:required="required" required="true">
-							<f:ajax listener="#{vendaController.carregarCliente}"
-								execute="txtIdCliente" render="txtIdCliente txtNomeCliente" ></f:ajax>
+							required="true">
+							<f:ajax listener="#{vendaController.carregarCliente}" 
+								execute="txtIdCliente" render="txtIdCliente txtNomeCliente txtNomeClienteOculto" ></f:ajax>
 						</h:inputText>
 						<label>&#160;</label>
 						<h:inputText value="#{vendaController.vendaDto.nomeCliente}"
 							class="form-control col-8" id="txtNomeCliente" autocomplete="off"
-							disabled="true" required="true" pt:required="required"></h:inputText>
+							disabled="true"></h:inputText>
 						<label>&#160;</label>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
 							data-target="#pesquisarModalCliente" id="botaoProcurarCliente">
 							<span class="fas fa-search"></span>
 						</button>
-
 						<h:message for="txtIdCliente" showDetail="false"
+							showSummary="true" styleClass="error" />
+						<label>&#160;</label>
+						<label>&#160;</label>
+						<h:inputHidden value="#{vendaController.vendaDto.nomeCliente}" class="form-control col-8" required="true" id="txtNomeClienteOculto"></h:inputHidden>
+						<h:message for="txtNomeClienteOculto" showDetail="false"
 							showSummary="true" styleClass="error" />
 					</div>
 				</div>
@@ -48,15 +52,15 @@
 					<div class="form-group ml-3">
 						<h:inputText value="#{vendaController.vendaDto.idFuncionario}"
 							class="form-control col-2" id="txtIdFuncionario"
-							autocomplete="off" pt:required="required" required="true">
+							autocomplete="off" required="true">
 							<f:ajax listener="#{vendaController.carregarFuncionario}"
 								execute="txtIdFuncionario"
-								render="txtIdFuncionario txtNomeFuncionario"></f:ajax>
+								render="txtIdFuncionario txtNomeFuncionario txtNomeFuncionarioOculto" ></f:ajax>
 						</h:inputText>
 						<label>&#160;</label>
 						<h:inputText value="#{vendaController.vendaDto.nomeFuncionario}"
 							class="form-control col-8" id="txtNomeFuncionario"
-							autocomplete="off" disabled="true" pt:required="required" required="true"></h:inputText>
+							autocomplete="off" disabled="true"></h:inputText>
 						<label>&#160;</label>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
 							data-target="#pesquisarModalFuncionario"
@@ -64,6 +68,12 @@
 							<span class="fas fa-search"></span>
 						</button>
 						<h:message for="txtIdFuncionario" showDetail="false"
+							showSummary="true" styleClass="error" />
+						<label>&#160;</label>
+						<label>&#160;</label>
+						<h:inputHidden value="#{vendaController.vendaDto.nomeFuncionario}" class="form-control col-8" required="true" id="txtNomeFuncionarioOculto">
+						</h:inputHidden>
+						<h:message for="txtNomeFuncionarioOculto" showDetail="false"
 							showSummary="true" styleClass="error" />
 					</div>
 				</div>
@@ -91,7 +101,7 @@
 					<h:commandButton action="#{vendaController.chamarItensVenda}"
 						value="Próximo" class="btn btn-primary needs-validation"
 						style="width: 120px; margin: 5px"
-						onclick="return validarSubmit();"></h:commandButton>
+					></h:commandButton>
 				</div>
 			</div>
 

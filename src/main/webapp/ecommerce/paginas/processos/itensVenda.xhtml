@@ -248,22 +248,22 @@
 							<div class="row mb-3">
 								<div class="col-8 offset-1">
 									<h:outputLabel>Forma de Pagamento</h:outputLabel>
-									<h:selectOneMenu class="form-control"
-										value="#{itemVendaController.formaPagamentoDto}" >
+									<h:selectOneMenu class="form-control" converter="formaPagamentoConverter"
+										value="#{itemVendaController.formaPagamentoDto}"  >
 										<f:selectItems
-											value="#{itemVendaController.listaFormaPagamentoDto}" var="t"
-											itemLabel="#{t.descricao}" itemLabelEscaped="0" ></f:selectItems>
+											value="#{itemVendaController.listaFormaPagamentoDto}" var="s"
+											itemLabel="#{s.descricao}" ></f:selectItems>
 									</h:selectOneMenu>
 								</div>
 							</div>
 							<div class="row mb-3">
 								<div class="col-8 offset-1">
 									<h:outputLabel>Condição de Pagamento</h:outputLabel>
-									<h:selectOneMenu class="form-control"
+									<h:selectOneMenu class="form-control" converter="condicaoPagamentoConverter"
 										value="#{itemVendaController.condicaoPagamentoDto}">
 										<f:selectItems
 											value="#{itemVendaController.listaCondicaoPagamentoDto}"
-											var="t" itemLabel="#{t.descricao}" itemLabelEscaped="0"></f:selectItems>
+											var="t" itemLabel="#{t.descricao}" ></f:selectItems>
 									</h:selectOneMenu>
 								</div>
 							</div>
@@ -271,7 +271,7 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-primary"
 								data-dismiss="modal">Cancelar</button>
-							<h:commandButton class="btn btn-primary" action="#{itemVendaController.chamarRecebimento}" value="Próximo" immediate="true"></h:commandButton>
+							<h:commandButton class="btn btn-primary" action="#{itemVendaController.chamarRecebimento}" value="Próximo"></h:commandButton>
 						</div>
 					</div>
 				</div>
