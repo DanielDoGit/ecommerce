@@ -6,6 +6,12 @@
 	<artifactId>ecommerce</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
+	<repositories>
+		<repository>
+			<id>limasoftware</id>
+			<url>https://mymavenrepo.com/repo/6kLIROGqpFy1nznuL3kY/</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>jakarta.platform</groupId>
@@ -17,11 +23,6 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>8.0.1.Final</version>
 		</dependency>
-		<!--		<dependency>-->
-		<!--			<groupId>org.hibernate</groupId>-->
-		<!--			<artifactId>hibernate-core</artifactId>-->
-		<!--			<version>6.2.6.Final</version>-->
-		<!--		</dependency>-->
 		<!-- <dependency> -->
 		<!-- <groupId>org.primefaces</groupId> -->
 		<!-- <artifactId>primefaces</artifactId> -->
@@ -43,6 +44,17 @@
 		<!-- <artifactId>commons-beanutils</artifactId> -->
 		<!-- <version>1.9.4</version> -->
 		<!-- </dependency> -->
+		<dependency>
+			<groupId>limasoftware</groupId>
+			<artifactId>ireport</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 	</dependencies>
 	<properties>
 		<maven.compiler.target>17</maven.compiler.target>
@@ -58,12 +70,12 @@
 					<include>**/*.xml</include>
 				</includes>
 			</resource>
-			<resource>
-				<directory>src/main/java</directory>
-				<includes>
-					<include>**/*.properties</include>
-				</includes>
-			</resource>
+ 			<resource> 
+ 				<directory>src/main/java</directory> 
+ 				<includes> 
+ 					<include>**/*.properties</include> 
+ 				</includes> 
+ 			</resource>
 		</resources>
 		<plugins>
 			<plugin>
@@ -85,27 +97,66 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
-			<!-- O plugin abaixo é utilizado para faler o deploy do WAR no
-			Payara -->
-			<!-- <plugin> -->
-			<!-- <groupId>com.coderplus.maven.plugins</groupId> -->
-			<!-- <artifactId>copy-rename-maven-plugin</artifactId> -->
-			<!-- <version>1.0</version> -->
-			<!-- <executions> -->
-			<!-- <execution> -->
-			<!-- <id>copy-file</id> -->
-			<!-- <phase>generate-sources</phase> -->
-			<!-- <goals> -->
-			<!-- <goal>copy</goal> -->
-			<!-- </goals> -->
-			<!-- <configuration> -->
-			<!-- <sourceFile>target/mib4cb2288dd6e148aa.war</sourceFile> -->
-			<!--
-			<destinationFile>/home/limasoftware/Ferramentas2022/payara6/glassfish/domains/domain1/autodeploy/mib4cb2288dd6e148aa.war</destinationFile> -->
-			<!-- </configuration> -->
-			<!-- </execution> -->
-			<!-- </executions> -->
-			<!-- </plugin> -->
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version><!--$NO-MVN-MAN-VER$ -->
+				<executions>
+					<execution>
+						<id>compile-jasper-reports</id>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<target>
+								<echo message="Compilando relatorios" />
+								<taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask">
+									<classpath refid="maven.compile.classpath" />
+									<classpath refid="maven.plugin.classpath" />
+								</taskdef>
+								<jrc srcdir="${basedir}" includes="**/*.jrxml" keepjava="false" xmlvalidation="true" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+	<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-antrun-plugin
+										</artifactId>
+										<versionRange>
+											[1.8,)
+										</versionRange>
+										<goals>
+											<goal>run</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 </project>
