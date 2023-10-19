@@ -2,6 +2,7 @@ package ecommerce.controller;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +80,7 @@ public class ItemVendaController implements Serializable {
 	private List<CondicaoPagamentoDto> listaCondicaoPagamentoDto = new ArrayList<CondicaoPagamentoDto>();
 	private FormaPagamentoDto formaPagamentoDto;
 	private CondicaoPagamentoDto condicaoPagamentoDto;
-	private List<RecebimentoDto> listaRecebimentoDto;
+	private List<RecebimentoDto> listaRecebimentoDto = new ArrayList<RecebimentoDto>();;
 
 	private String argumentoBusca;
 
@@ -109,7 +110,7 @@ public class ItemVendaController implements Serializable {
 	}
 
 	private void criarRecebimento() {
-		listaRecebimentoDto = new ArrayList<RecebimentoDto>();
+		listaRecebimentoDto.clear();
 		if (condicaoPagamentoDto.getCodigo() == 1) {
 			RecebimentoDto recebimentoDto = new RecebimentoDto();
 			recebimentoDto.setCondicaopagamento(condicaoPagamentoDto);
@@ -117,21 +118,20 @@ public class ItemVendaController implements Serializable {
 			recebimentoDto.setDataEmissao(LocalDate.now());
 			recebimentoDto.setDataVencimento(LocalDate.now());
 			recebimentoDto.setQuitado(true);
-			recebimentoDto.setValor(vendaController.getVendaDto().getTotalVenda());
+			recebimentoDto.setValor(getVendaDto().getTotalVenda());
 			listaRecebimentoDto.add(recebimentoDto);
 		} else {
-			String[] array = condicaoPagamentoDto.getDescricao().split("\\-\\");
+			String[] array = condicaoPagamentoDto.getDescricao().split("\\s-\\s");
+			String numeroParcelas = condicaoPagamentoDto.getNumeroParcelas().toString();
+			BigDecimal valorCadaParcela = getVendaDto().getTotalVenda().divide(new BigDecimal(numeroParcelas), 2, RoundingMode.HALF_UP);
 			for (String parcela : array) {
 				RecebimentoDto recebimentoDto = new RecebimentoDto();
 				recebimentoDto.setCondicaopagamento(condicaoPagamentoDto);
 				recebimentoDto.setFormaPagamentoDto(formaPagamentoDto);
 				recebimentoDto.setDataEmissao(LocalDate.now());
-				if (listaRecebimentoDto.size() > 0) {
-					RecebimentoDto recebimentoDtoAnterior = listaRecebimentoDto.get(listaRecebimentoDto.size()-1);
-					recebimentoDto.setDataVencimento(recebimentoDtoAnterior.getDataVencimento().plusDays(Long.valueOf(parcela)));
-				}else {
-					recebimentoDto.setDataVencimento(LocalDate.now().plusDays(Long.valueOf(parcela)));
-				}
+				recebimentoDto.setDataVencimento(LocalDate.now().plusDays(Long.valueOf(parcela)));
+				recebimentoDto.setValor(valorCadaParcela);
+				recebimentoDto.setQuitado(formaPagamentoDto.isCompensado());
 				listaRecebimentoDto.add(recebimentoDto);
 			}
 		}
@@ -221,6 +221,10 @@ public class ItemVendaController implements Serializable {
 
 	public VendaController getVendaController() {
 		return vendaController;
+	}
+	
+	public VendaDto getVendaDto() {
+		return vendaController.getVendaDto();
 	}
 
 	public void setVendaController(VendaController vendaController) {

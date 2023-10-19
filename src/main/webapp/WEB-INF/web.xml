@@ -28,8 +28,13 @@
 		<param-value>false</param-value>
 	</context-param>
 	<context-param>
-		<param-name>caminhoLog</param-name>
+		<param-name>caminhoLogLinux</param-name>
 		<param-value>/home/limasoftware/log.txt</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>caminhoLogWindows</param-name>
+		<param-value>C:\workcopy\ecommerce\log.txt</param-value>
 	</context-param>
 
 </web-app>

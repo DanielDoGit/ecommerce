@@ -52,7 +52,7 @@ public class JsfExceptionHandler extends ExceptionHandlerWrapper {
 	private void gravarLog(Throwable throwable) {
 		try (FileOutputStream fos = new FileOutputStream(new File(caminhoLog))) {
 			PrintWriter pw = new PrintWriter(fos);
-			pw.print(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)+": ");
+			pw.print(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)+": ");
 			throwable.printStackTrace(pw);
 			pw.flush();
 			fos.close();

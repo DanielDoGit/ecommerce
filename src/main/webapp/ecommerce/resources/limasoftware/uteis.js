@@ -65,9 +65,9 @@ function bloquearBotoesClasseNeedsValidation(){
 	etapaRequisicao++;
 	var components = Array.from(document.getElementsByClassName('needs-validation'));
 	if (components != null) {
-		components.forEach(  e => e.disable = true);
+		components.forEach(  e => e.disabled = true);
 		if (etapaRequisicao === 3) {
-			components.forEach(  e => e.disable = false);
+			components.forEach(  e => e.disabled = false);
 			etapaRequisicao = 0;
 		}
 	}

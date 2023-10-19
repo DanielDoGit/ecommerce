@@ -27,13 +27,15 @@
 							<f:facet name="header">
 								<h:outputText value="Data de Emissão"></h:outputText>
 							</f:facet>
-							<h:outputText value="#{s.dataEmissao}" converter="converterDataOutput"></h:outputText>
+							<h:outputText value="#{s.dataEmissao}"
+								converter="converterDataOutput"></h:outputText>
 						</h:column>
 						<h:column id="column2">
 							<f:facet name="header">
 								<h:outputText value="Data de Vencimento"></h:outputText>
 							</f:facet>
-							<h:outputText value="#{s.dataVencimento}" converter="converterDataOutput"></h:outputText>
+							<h:outputText value="#{s.dataVencimento}"
+								converter="converterDataOutput"></h:outputText>
 						</h:column>
 						<h:column id="column3">
 							<f:facet name="header">
@@ -45,21 +47,21 @@
 							<f:facet name="header">
 								<h:outputText value="Valor parcela"></h:outputText>
 							</f:facet>
-							<h:outputText value="#{s.valor}"
-								converter="bigDecimalToCurrency"></h:outputText>
+							<h:outputText value="#{s.valor}" converter="bigDecimalToCurrency"></h:outputText>
 						</h:column>
 						<h:column id="column5">
 							<f:facet name="header">
 								<h:outputText value="Quitado"></h:outputText>
 							</f:facet>
-							<h:outputText value="#{s.quitado}"
-								converter="booleanConverter"></h:outputText>
+							<h:outputText value="#{s.quitado}" converter="booleanConverter"></h:outputText>
 						</h:column>
 						<h:column id="column6">
 							<f:facet name="header">
 								<h:outputText value="Alterar"></h:outputText>
 							</f:facet>
-							<h:commandLink action="#{fechamentoVendaController.editarRecebimento(s)}" class="btn btn-success">
+							<h:commandLink
+								action="#{fechamentoVendaController.editarRecebimento(s)}"
+								class="btn btn-success">
 								<span class="fas fa-pen"></span>
 							</h:commandLink>
 						</h:column>
@@ -68,16 +70,28 @@
 			</div>
 			<br></br>
 			<div class="row mb-2">
-
-				<div class="col-3" style="margin-left: 70%;" align="left">
-					<label>Total Venda</label>
-					<h:inputText
-						value="#{itemVendaController.vendaController.vendaDto.totalVenda}"
-						class="form-control bg-warning" id="txtTotalVenda"
-						autocomplete="off" readonly="true"
-						converter="bigDecimalToCurrency"></h:inputText>
+				<div class="form-inline">
+					<div class="form-group">
+						<div class="col-6" style="margin-left: 70%;" align="left">
+							<label>Total Venda</label>
+							<h:inputText
+								value="#{itemVendaController.vendaController.vendaDto.totalVenda}"
+								class="form-control bg-warning" id="txtTotalVenda"
+								autocomplete="off" readonly="true"
+								converter="bigDecimalToCurrency"></h:inputText>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-4" style="margin-left: 70%;" align="left">
+							<label>Troco</label>
+							<h:inputText
+								value="#{itemVendaController.vendaController.vendaDto.totalVenda}"
+								class="form-control bg-warning" id="txtTroco"
+								autocomplete="off" readonly="true"
+								converter="bigDecimalToCurrency"></h:inputText>
+						</div>
+					</div>
 				</div>
-
 			</div>
 
 			<div class="row mb-2 ml-5 pl-3">
@@ -174,10 +188,10 @@
 								<div class="col-8 offset-1">
 									<h:outputLabel>Forma de Pagamento</h:outputLabel>
 									<h:selectOneMenu class="form-control"
-										value="#{itemVendaController.formaPagamentoDto}" >
+										value="#{itemVendaController.formaPagamentoDto}">
 										<f:selectItems
 											value="#{itemVendaController.listaFormaPagamentoDto}" var="t"
-											itemLabel="#{t.descricao}" itemValue="0" ></f:selectItems>
+											itemLabel="#{t.descricao}" itemValue="0"></f:selectItems>
 									</h:selectOneMenu>
 								</div>
 							</div>
@@ -196,7 +210,8 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-primary"
 								data-dismiss="modal">Cancelar</button>
-							<h:commandButton type="button" class="btn btn-primary" action="#{itemVendaController.chamarRecebimento}">Próximo</h:commandButton>
+							<h:commandButton type="button" class="btn btn-primary"
+								action="#{itemVendaController.chamarRecebimento}">Próximo</h:commandButton>
 						</div>
 					</div>
 				</div>

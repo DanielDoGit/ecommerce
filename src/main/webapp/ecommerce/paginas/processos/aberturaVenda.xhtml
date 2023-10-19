@@ -25,7 +25,7 @@
 							class="form-control col-2" id="txtIdCliente" autocomplete="off"
 							required="true">
 							<f:ajax listener="#{vendaController.carregarCliente}" 
-								execute="txtIdCliente" render="txtIdCliente txtNomeCliente txtNomeClienteOculto"></f:ajax>
+								execute="txtIdCliente" render="txtIdCliente txtNomeCliente txtNomeClienteOculto" event="blur" onevent="bloquearBotoesClasseNeedsValidation"></f:ajax>
 						</h:inputText>
 						<label>&#160;</label>
 						<h:inputText value="#{vendaController.vendaDto.nomeCliente}"
@@ -56,7 +56,7 @@
 							autocomplete="off" required="true">
 							<f:ajax listener="#{vendaController.carregarFuncionario}"
 								execute="txtIdFuncionario"
-								render="txtIdFuncionario txtNomeFuncionario txtNomeFuncionarioOculto"></f:ajax>
+								render="txtIdFuncionario txtNomeFuncionario txtNomeFuncionarioOculto" event="blur" onevent="bloquearBotoesClasseNeedsValidation"></f:ajax>
 						</h:inputText>
 						<label>&#160;</label>
 						<h:inputText value="#{vendaController.vendaDto.nomeFuncionario}"

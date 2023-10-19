@@ -22,7 +22,13 @@ public class JsfExceptionHandlerFactory extends ExceptionHandlerFactory {
 	}
 
 	public ExceptionHandler getExceptionHandler() {
-		return new JsfExceptionHandler(parent.getExceptionHandler(), servletContext.getInitParameter("caminhoLog"));
+		String caminhoLog;
+		if (System.getProperty("os.name").toUpperCase().equals("LINUX")) {
+			caminhoLog = servletContext.getInitParameter("caminhoLogLinux");
+		}else {
+			caminhoLog = servletContext.getInitParameter("caminhoLogWindows");
+		}
+		return new JsfExceptionHandler(parent.getExceptionHandler(), caminhoLog);
 	}
 
 }
