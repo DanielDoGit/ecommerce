@@ -1,8 +1,10 @@
 package ecommerce.controller;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+
+import com.lowagie.text.Phrase;
 
 import ecommerce.dto.RecebimentoDto;
 import ecommerce.relatorios.Relatorio;
@@ -36,9 +38,6 @@ public class FechamentoVendaController implements Serializable {
 	@Inject
 	private ItemVendaController itemVendaController;
 	
-	@Inject
-	private Relatorio relatorio;
-	
 	private List<RecebimentoDto> recebimentos;
 	
 	@PostConstruct
@@ -47,17 +46,10 @@ public class FechamentoVendaController implements Serializable {
 	}
 	
 	public void editarRecebimento(Integer id) {
-		
-		try {
-			relatorio.nomeRelatorio("ComprovanteVenda.jasper");
-			relatorio.executarRelatorio();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		try {
 			token.validarToken();
 			RecebimentoDto recebOptional = recebimentos.stream().filter( e-> e.getCodigo() == id).findFirst().get();
+			
 		} catch (TokenException e) {
 			uteis.adicionarMensagemErro(e);
 		}		

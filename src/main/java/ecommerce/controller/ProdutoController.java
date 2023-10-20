@@ -76,10 +76,8 @@ public class ProdutoController implements Serializable {
 		try {
 			conversa.iniciar();
 			loginController.possuiPermissao("Consultar produto");
-			listaProdutosPesquisados = produtoDao.buscarUltimosCadastrados().stream().map(CadastroProdutoDto::new)
-					.collect(Collectors.toList());
-			mensagem = listaProdutosPesquisados.isEmpty() ? "Não há produtos cadastrados no sitema."
-					: "Ultimos produtos cadastrados...";
+			listaProdutosPesquisados = produtoDao.buscarUltimosCadastrados().stream().map(CadastroProdutoDto::new).collect(Collectors.toList());
+			mensagem = listaProdutosPesquisados.isEmpty() ? "Não há produtos cadastrados no sitema.": "Ultimos produtos cadastrados...";
 			return paginaConsulta;
 		} catch (PermissaoExeption e) {
 			uteis.adicionarMensagemErro(e);

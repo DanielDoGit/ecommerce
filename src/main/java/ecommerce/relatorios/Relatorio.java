@@ -53,7 +53,7 @@ public class Relatorio {
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 		HttpServletResponse response = (HttpServletResponse) context.getResponse();
 		JRPdfExporter exporter = new JRPdfExporter();
-		response.setHeader("Content-disposition", "attachment; filename=relatorio.pdf");
+		response.setHeader("Content-disposition", "inline; filename=relatorio.pdf");
 		response.setContentType("application/pdf");
 		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, response.getOutputStream());
 		exporter.setParameter(JRExporterParameter.JASPER_PRINT, getJasperPrint());
