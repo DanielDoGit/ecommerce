@@ -31,10 +31,16 @@ public class VendaDto {
 
 	private BigDecimal totalVenda;
 	
+	private BigDecimal desconto;
+	
+	private BigDecimal acrescimo;
+	
 	public VendaDto() {
 		this.dataVenda = LocalDate.now();
 		this.totalVenda = BigDecimal.ZERO;
 		this.limiteCredito = BigDecimal.ZERO;
+		this.desconto = BigDecimal.ZERO;
+		this.acrescimo = BigDecimal.ZERO;
 	}
 
 	public Venda toVenda(ClienteDao cliDao, FuncionarioDao funcDao, List<ItemVenda> itensVenda,
@@ -49,6 +55,8 @@ public class VendaDto {
 		venda.setTotalVenda(totalVenda);
 		venda.setItensVenda(itensVenda);
 		venda.setRecebimentos(listaRecebimentos);
+		venda.setAcrescimo(acrescimo);
+		venda.setDesconto(desconto);
 		return venda;
 	}
 
@@ -108,6 +116,31 @@ public class VendaDto {
 		this.totalVenda = totalVenda;
 	}
 	
+	public BigDecimal getLimiteCredito() {
+		return limiteCredito;
+	}
+
+	public void setLimiteCredito(BigDecimal limiteCredito) {
+		this.limiteCredito = limiteCredito;
+	}
+
+	public BigDecimal getDesconto() {
+		return desconto;
+	}
+
+	public void setDesconto(BigDecimal desconto) {
+		this.desconto = desconto;
+	}
+
+	public BigDecimal getAcrescimo() {
+		return acrescimo;
+	}
+
+	public void setAcrescimo(BigDecimal acrescimo) {
+		this.acrescimo = acrescimo;
+	}
+
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(codigo);
@@ -123,14 +156,6 @@ public class VendaDto {
 			return false;
 		VendaDto other = (VendaDto) obj;
 		return Objects.equals(codigo, other.codigo);
-	}
-
-	public BigDecimal getLimiteCredito() {
-		return limiteCredito;
-	}
-
-	public void setLimiteCredito(BigDecimal limiteCredito) {
-		this.limiteCredito = limiteCredito;
 	}
 
 }

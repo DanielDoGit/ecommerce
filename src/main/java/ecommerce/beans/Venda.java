@@ -44,9 +44,13 @@ public class Venda implements Serializable {
 	@OneToMany(mappedBy = "venda", fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<Recebimento> recebimentos = new ArrayList<>();
 	
+	private BigDecimal desconto = BigDecimal.ZERO;
+	
+	private BigDecimal acrescimo = BigDecimal.ZERO;
+	
 	
 	public Venda(Integer codigo, Cliente cliente, Funcionario funcionario, LocalDate dataVenda, BigDecimal totalVenda,
-			List<ItemVenda> itensVenda, List<Recebimento> recebimentos) {
+			List<ItemVenda> itensVenda, List<Recebimento> recebimentos, BigDecimal desconto, BigDecimal acrescimo) {
 		super();
 		this.codigo = codigo;
 		this.cliente = cliente;
@@ -55,14 +59,13 @@ public class Venda implements Serializable {
 		this.totalVenda = totalVenda;
 		this.itensVenda = itensVenda;
 		this.recebimentos = recebimentos;
+		this.desconto = desconto;
+		this.acrescimo = acrescimo;
 	}
 	
 	public Venda() {
 		super();
 	}
-
-
-
 
 	public Integer getCodigo() {
 		return codigo;
@@ -119,6 +122,26 @@ public class Venda implements Serializable {
 	public void setRecebimentos(List<Recebimento> recebimentos) {
 		this.recebimentos = recebimentos;
 	}
+	
+	public BigDecimal getDesconto() {
+		return desconto;
+	}
+
+	public void setDesconto(BigDecimal desconto) {
+		this.desconto = desconto;
+	}
+
+	public BigDecimal getAcrescimo() {
+		return acrescimo;
+	}
+
+	public void setAcrescimo(BigDecimal acrescimo) {
+		this.acrescimo = acrescimo;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	@Override
 	public int hashCode() {
@@ -136,11 +159,5 @@ public class Venda implements Serializable {
 		Venda other = (Venda) obj;
 		return Objects.equals(codigo, other.codigo) && Objects.equals(dataVenda, other.dataVenda);
 	}
-	
-	
-	
-	
-	
-	
 	
 }

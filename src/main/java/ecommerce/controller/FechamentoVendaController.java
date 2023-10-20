@@ -2,8 +2,10 @@ package ecommerce.controller;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 import ecommerce.dto.RecebimentoDto;
+import ecommerce.relatorios.Relatorio;
 import ecommerce.uteis.jsf.GerenciadorConversa;
 import ecommerce.uteis.jsf.GerenciadorToken;
 import ecommerce.uteis.jsf.TokenException;
@@ -34,6 +36,9 @@ public class FechamentoVendaController implements Serializable {
 	@Inject
 	private ItemVendaController itemVendaController;
 	
+	@Inject
+	private Relatorio relatorio;
+	
 	private List<RecebimentoDto> recebimentos;
 	
 	@PostConstruct
@@ -41,9 +46,18 @@ public class FechamentoVendaController implements Serializable {
 		recebimentos = itemVendaController.getListaRecebimentoDto();
 	}
 	
-	public void editarRecebimento(RecebimentoDto recebimentoDto) {
+	public void editarRecebimento(Integer id) {
+		
+		try {
+			relatorio.nomeRelatorio("ComprovanteVenda.jasper");
+			relatorio.executarRelatorio();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		try {
 			token.validarToken();
+			RecebimentoDto recebOptional = recebimentos.stream().filter( e-> e.getCodigo() == id).findFirst().get();
 		} catch (TokenException e) {
 			uteis.adicionarMensagemErro(e);
 		}		

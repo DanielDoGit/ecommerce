@@ -25,7 +25,13 @@ public class ErroGenericoController {
 
 	@PostConstruct
 	public void inicializar() {
-		try (FileInputStream fis = new FileInputStream(new File(servletContext.getInitParameter("caminhoLog")))) {
+		String caminhoLog;
+		if (System.getProperty("os.name").toUpperCase().equals("LINUX")) {
+			caminhoLog = servletContext.getInitParameter("caminhoLogLinux");
+		}else {
+			caminhoLog = servletContext.getInitParameter("caminhoLogWindows");
+		}
+		try (FileInputStream fis = new FileInputStream(new File(caminhoLog))) {
 			byte[] bytes = new byte[fis.available()];
 			fis.read(bytes);
 			mensagem = new String(bytes, Charset.forName("UTF-8"));

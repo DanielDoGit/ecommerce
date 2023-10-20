@@ -1,7 +1,6 @@
 package ecommerce.uteis.jsf;
 
 import java.io.Serializable;
-
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +96,7 @@ public class Uteis implements Serializable {
 		}
 		return listaTransformada;
 	}
-	
+
 	public boolean isNumber(String arg) {
 		try {
 			Integer.parseInt(arg);
@@ -106,7 +105,7 @@ public class Uteis implements Serializable {
 			return false;
 		}
 	}
-	
+
 	public boolean isPositiveNumber(String arg) {
 		try {
 			return Integer.parseInt(arg) > 0;

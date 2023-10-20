@@ -44,17 +44,20 @@
 		<!-- <artifactId>commons-beanutils</artifactId> -->
 		<!-- <version>1.9.4</version> -->
 		<!-- </dependency> -->
+		<!--
+		https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
 		<dependency>
-			<groupId>limasoftware</groupId>
-			<artifactId>ireport</artifactId>
-			<version>3.0.0</version>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>6.20.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>jasperreports-maven-plugin</artifactId>
+			<version>1.0-beta-2</version>
 		</dependency>
 
-		<dependency>
-			<groupId>jasperreports</groupId>
-			<artifactId>jasperreports</artifactId>
-			<version>3.0.0</version>
-		</dependency>
+
 	</dependencies>
 	<properties>
 		<maven.compiler.target>17</maven.compiler.target>
@@ -70,12 +73,13 @@
 					<include>**/*.xml</include>
 				</includes>
 			</resource>
- 			<resource> 
- 				<directory>src/main/java</directory> 
- 				<includes> 
- 					<include>**/*.properties</include> 
- 				</includes> 
- 			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.jasper</include>
+				</includes>
+			</resource>
 		</resources>
 		<plugins>
 			<plugin>
@@ -97,7 +101,7 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -112,18 +116,20 @@
 						<configuration>
 							<target>
 								<echo message="Compilando relatorios" />
-								<taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask">
+								<taskdef name="jrc"
+									classname="net.sf.jasperreports.ant.JRAntCompileTask">
 									<classpath refid="maven.compile.classpath" />
 									<classpath refid="maven.plugin.classpath" />
 								</taskdef>
-								<jrc srcdir="${basedir}" includes="**/*.jrxml" keepjava="false" xmlvalidation="true" />
+								<jrc srcdir="${basedir}" includes="**/*.jrxml"
+									keepjava="false" xmlvalidation="true" />
 							</target>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 		</plugins>
-	<pluginManagement>
+		<pluginManagement>
 			<plugins>
 				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
 				<plugin>
