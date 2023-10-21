@@ -61,7 +61,7 @@
 							</f:facet>
 							<h:commandLink pt:type="button" pt:data-toggle="modal"
 								id="chamarModalEditarParcela" pt:data-target="#modalEdicaoParcela"
-								class="btn btn-success">
+								class="btn btn-success" action="#{fechamentoVendaController.editarRecebimento(s.codigo)}">
 								<span class="fas fa-pen"></span>
 							</h:commandLink>
 						</h:column>
@@ -72,7 +72,7 @@
 			<div class="row mb-2">
 				<div class="form-inline">
 					<div class="form-group">
-						<div class="col-8" style="margin-left: 70%;">
+						<div class="col-8">
 							<label>Troco</label>
 							<h:inputText
 								value="#{itemVendaController.vendaController.vendaDto.totalVenda}"
@@ -81,7 +81,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<div class="col-4" style="margin-left: 70%;">
+						<div class="col-6" >
 							<label>Total Venda</label>
 							<h:inputText
 								value="#{itemVendaController.vendaController.vendaDto.totalVenda}"

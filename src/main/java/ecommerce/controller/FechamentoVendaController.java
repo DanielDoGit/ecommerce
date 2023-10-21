@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
-import com.lowagie.text.Phrase;
-
 import ecommerce.dto.RecebimentoDto;
 import ecommerce.relatorios.Relatorio;
 import ecommerce.uteis.jsf.GerenciadorConversa;
@@ -40,12 +38,26 @@ public class FechamentoVendaController implements Serializable {
 	
 	private List<RecebimentoDto> recebimentos;
 	
+	@Inject
+	private Relatorio relatorio;
+	
 	@PostConstruct
 	public void carregarRecebimentos() {
 		recebimentos = itemVendaController.getListaRecebimentoDto();
 	}
 	
 	public void editarRecebimento(Integer id) {
+		
+		try {
+			relatorio.setDataSource(null);
+			relatorio.nomeRelatorio("ComprovanteVenda.jasper");
+			relatorio.setMap(new HashMap<String, Object>());
+			relatorio.executarRelatorio();
+		} catch (Exception e) {
+			uteis.adicionarMensagemErro(e);
+			e.printStackTrace();
+		}
+		
 		try {
 			token.validarToken();
 			RecebimentoDto recebOptional = recebimentos.stream().filter( e-> e.getCodigo() == id).findFirst().get();
