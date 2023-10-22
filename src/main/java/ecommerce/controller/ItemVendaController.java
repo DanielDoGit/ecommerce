@@ -85,7 +85,7 @@ public class ItemVendaController implements Serializable {
 	private String argumentoBusca;
 
 	private BigDecimal correcao = BigDecimal.ZERO;
-	private BigDecimal resultadoRecebimento = BigDecimal.ZERO;
+	private BigDecimal totalRecebimento = BigDecimal.ZERO;
 
 	@PostConstruct
 	public void carregarDados() {
@@ -118,7 +118,7 @@ public class ItemVendaController implements Serializable {
 	}
 
 	private void criarRecebimento() {
-		resultadoRecebimento = getValorTotalVendaCorrigido();
+		totalRecebimento = getValorTotalVendaCorrigido();
 		listaRecebimentoDto.clear();
 		if (condicaoPagamentoDto.getCodigo() == 1) {
 			RecebimentoDto recebimentoDto = new RecebimentoDto();
@@ -127,12 +127,12 @@ public class ItemVendaController implements Serializable {
 			recebimentoDto.setDataEmissao(LocalDate.now());
 			recebimentoDto.setDataVencimento(LocalDate.now());
 			recebimentoDto.setQuitado(true);
-			recebimentoDto.setValor(resultadoRecebimento);
+			recebimentoDto.setValor(totalRecebimento);
 			listaRecebimentoDto.add(recebimentoDto);
 		} else {
 			String[] array = condicaoPagamentoDto.getDescricao().split("\\s-\\s");
 			String numeroParcelas = condicaoPagamentoDto.getNumeroParcelas().toString();
-			BigDecimal valorCadaParcela = resultadoRecebimento.divide(new BigDecimal(numeroParcelas), 2,RoundingMode.HALF_UP);
+			BigDecimal valorCadaParcela = totalRecebimento.divide(new BigDecimal(numeroParcelas), 2,RoundingMode.HALF_UP);
 			for (String parcela : array) {
 				RecebimentoDto recebimentoDto = new RecebimentoDto();
 				recebimentoDto.setCondicaopagamento(condicaoPagamentoDto);
@@ -396,12 +396,12 @@ public class ItemVendaController implements Serializable {
 		this.correcao = correcao;
 	}
 
-	public BigDecimal getResultadoRecebimento() {
-		return resultadoRecebimento;
+	public BigDecimal getTotalRecebimento() {
+		return totalRecebimento;
 	}
 
-	public void setResultadoRecebimento(BigDecimal resultadoRecebimento) {
-		this.resultadoRecebimento = resultadoRecebimento;
+	public void setTotalRecebimento(BigDecimal resultadoRecebimento) {
+		this.totalRecebimento = resultadoRecebimento;
 	}
 
 }

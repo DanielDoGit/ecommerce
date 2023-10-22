@@ -10,6 +10,7 @@ import ecommerce.dao.ProdutoDao;
 import ecommerce.dto.ItemVendaDto;
 import jakarta.inject.Inject;
 import jakarta.interceptor.AroundInvoke;
+import jakarta.interceptor.AroundTimeout;
 import jakarta.interceptor.Interceptor;
 import jakarta.interceptor.InvocationContext;
 
@@ -35,6 +36,11 @@ public class ItemVendaInterceptor implements Serializable {
 			estoqueDao.processarRemocaoEstoqueTransiente(p, i.getQuantidade());
 		}
 		return context.proceed();
+	}
+	
+	@AroundTimeout
+	public Object limparEstoqueTempoLimite(InvocationContext context) throws Exception {
+		return limparEstoque(context);
 	}
 	
 }

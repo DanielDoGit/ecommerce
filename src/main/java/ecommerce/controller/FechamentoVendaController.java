@@ -92,7 +92,7 @@ public class FechamentoVendaController implements Serializable {
 	
 	private void atualizarSoma() {
 		BigDecimal resultado = recebimentos.stream().map(e -> e.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add);
-		itemVendaController.setResultadoRecebimento(resultado);
+		itemVendaController.setTotalRecebimento(resultado);
 	}
 	
 	public String concluirVenda() {
@@ -109,7 +109,6 @@ public class FechamentoVendaController implements Serializable {
 			criarLancamentoCaixa(venda);
 			vendaDao.editar(venda);
 			uteis.adicionarMensagemSucessoRegistro();
-			conversa.finalizar();
 			return "/ecommerce/paginas/processos/impressosVenda.xhtml";
 		} catch (TokenException e) {
 			uteis.adicionarMensagemErro(e);
@@ -134,19 +133,19 @@ public class FechamentoVendaController implements Serializable {
 		if (vendaDto.getRecebido() == null) {
 			return;
 		}
-		if (vendaDto.getRecebido().compareTo(BigDecimal.ZERO) <= 0 || vendaDto.getRecebido().compareTo(itemVendaController.getResultadoRecebimento()) == -1) {
+		if (vendaDto.getRecebido().compareTo(BigDecimal.ZERO) <= 0 || vendaDto.getRecebido().compareTo(itemVendaController.getTotalRecebimento()) == -1) {
 			vendaDto.setRecebido(BigDecimal.ZERO);
 			vendaDto.setTroco(BigDecimal.ZERO);
 			uteis.adicionarMensagemAdvertencia("O valor recebido deve ser maior que o de venda!");
 			return;
 		}
-		vendaDto.setTroco(vendaDto.getRecebido().subtract(itemVendaController.getResultadoRecebimento()));
+		vendaDto.setTroco(vendaDto.getRecebido().subtract(itemVendaController.getTotalRecebimento()));
 	}
 	
 	private void aplicarCorrecaoValorRecebimento() {
 		VendaDto vendaDto = itemVendaController.getVendaDto();
 		BigDecimal totalVenda = vendaDto.getTotalVenda();
-		BigDecimal somaRecebimentos = itemVendaController.getResultadoRecebimento();
+		BigDecimal somaRecebimentos = itemVendaController.getTotalRecebimento();
 		int aux = somaRecebimentos.compareTo(totalVenda);
 		if (aux == -1) {
 			vendaDto.setDesconto(totalVenda.subtract(somaRecebimentos).add(vendaDto.getDesconto()));

@@ -1,5 +1,3 @@
-var etapaRequisicao = 0;
-
 $(document).ready(() => {
 	verificarNotificacao();
 });
@@ -26,44 +24,25 @@ function verificarNotificacao() {
 	});
 }
 
+var etaparequisiscaoAjax = 0;
+
 function verificarNotificacaoViaAjax() {
-	etapaRequisicao++;
-	if (etapaRequisicao === 3) {
-		var msg = [];
-		msg = msg.concat(Array.from($('.mensagemInfo')));
-		msg = msg.concat(Array.from($('.mensagemWarning')));
-		msg = msg.concat(Array.from($('.mensagemError')));
-		msg.forEach(e => {
-			if (e != undefined) {
-				switch (e.classList[1]) {
-					case 'mensagemInfo':
-						exibirNotificacaoSucesso(e.textContent);
-						break;
-					case 'mensagemWarning':
-						exibirNotificacaoAlerta(e.textContent);
-						break;
-					case 'mensagemError':
-						exibirNotificacaoErro(e.textContent);
-						break;
-				}
-			}
-		});
+	etaparequisiscaoAjax++;
+	if (etaparequisiscaoAjax === 3){
+		verificarNotificacao();
+		etaparequisiscaoAjax = 0;
 	}
 }
 
-$(document).on("ajaxComplete", function() {
-	bloquearBotoesClasseNeedsValidation();
-});
 
-
-var etapaRequisicaoNeedsValidation = 0;
 function bloquearBotoesClasseNeedsValidation() {
-	etapaRequisicaoNeedsValidation++;
+	etaparequisiscaoAjax++;
 	var components = Array.from(document.getElementsByClassName('needs-validation'));
 	if (components != null) {
 		components.forEach(e => e.disabled = true);
-		if (etapaRequisicao === 3) {
+		if (etaparequisiscaoAjax === 3){
 			components.forEach(e => e.disabled = false);
+			etaparequisiscaoAjax = 0;
 		}
 	}
 }
