@@ -3,6 +3,7 @@ package ecommerce.beans;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,18 +23,13 @@ public class Caixa implements Serializable{
 	
 	private String descricao;
 	
-	private BigDecimal valorRecebimento;
+	private BigDecimal valorBaixa;
 	
 	private LocalDateTime dataLancamento;
 	
 	@ManyToOne
 	@JoinColumn(name="parcela")
 	private Parcela parcela;
-
-	@ManyToOne
-	@JoinColumn(name="venda")
-	private Venda venda;	
-	
 
 	public Integer getCodigo() {
 		return codigo;
@@ -49,14 +45,6 @@ public class Caixa implements Serializable{
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public BigDecimal getValorRecebimento() {
-		return valorRecebimento;
-	}
-
-	public void setValorRecebimento(BigDecimal valorRecebimento) {
-		this.valorRecebimento = valorRecebimento;
 	}
 
 	public LocalDateTime getDataLancamento() {
@@ -75,12 +63,33 @@ public class Caixa implements Serializable{
 		this.parcela = parcela;
 	}
 
-	public Venda getVenda() {
-		return venda;
+	public BigDecimal getValorBaixa() {
+		return valorBaixa;
 	}
 
-	public void setVenda(Venda venda) {
-		this.venda = venda;
+	public void setValorBaixa(BigDecimal valorBaixa) {
+		this.valorBaixa = valorBaixa;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(codigo);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Caixa other = (Caixa) obj;
+		return Objects.equals(codigo, other.codigo);
 	}
 	
 

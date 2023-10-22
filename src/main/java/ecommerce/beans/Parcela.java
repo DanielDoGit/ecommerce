@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -30,23 +31,23 @@ public class Parcela implements Serializable {
 	
 	private LocalDate dataPagamento;
 
-	private BigDecimal valorRecebimento;
+	private BigDecimal valorParcela;
 
 	@ManyToOne
 	@JoinColumn(name = "recebimento")
 	private Recebimento recebimento;
 	
-	@OneToMany(mappedBy = "parcela", fetch = FetchType.EAGER, orphanRemoval = true)
+	@OneToMany(mappedBy = "parcela", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<Caixa> listacaixa = new ArrayList<>();
 	
 	public Parcela(Integer codigo, String numeroParcela, LocalDate dataEmissao, LocalDate dataPagamento,
-			BigDecimal valorRecebimento, Recebimento recebimento, List<Caixa> listacaixa) {
+			BigDecimal valorParcela, Recebimento recebimento, List<Caixa> listacaixa) {
 		super();
 		this.codigo = codigo;
 		this.numeroParcela = numeroParcela;
 		this.dataEmissao = dataEmissao;
 		this.dataPagamento = dataPagamento;
-		this.valorRecebimento = valorRecebimento;
+		this.valorParcela = valorParcela;
 		this.recebimento = recebimento;
 		this.listacaixa = listacaixa;
 	}
@@ -87,13 +88,6 @@ public class Parcela implements Serializable {
 		this.dataPagamento = dataPagamento;
 	}
 
-	public BigDecimal getValorRecebimento() {
-		return valorRecebimento;
-	}
-
-	public void setValorRecebimento(BigDecimal valorRecebimento) {
-		this.valorRecebimento = valorRecebimento;
-	}
 
 	public Recebimento getRecebimento() {
 		return recebimento;
@@ -109,6 +103,14 @@ public class Parcela implements Serializable {
 
 	public void setListacaixa(List<Caixa> listacaixa) {
 		this.listacaixa = listacaixa;
+	}
+
+	public BigDecimal getValorParcela() {
+		return valorParcela;
+	}
+
+	public void setValorParcela(BigDecimal valorParcela) {
+		this.valorParcela = valorParcela;
 	}
 	
 	

@@ -22,7 +22,7 @@ public class ParcelaDto implements Serializable {
 	
 	private LocalDate dataPagamento;
 
-	private BigDecimal valorRecebimento;
+	private BigDecimal valorParcela;
 
 	private List<CaixaDto> listacaixa = new ArrayList<>();
 	
@@ -32,10 +32,10 @@ public class ParcelaDto implements Serializable {
 		p.setNumeroParcela(numeroParcela);
 		p.setDataEmissao(dataEmissao);
 		p.setDataPagamento(dataPagamento);
-		p.setValorRecebimento(valorRecebimento);
+		p.setValorParcela(valorParcela);
 		p.setRecebimento(recebimento);
 		for (CaixaDto caixaDto : listacaixa) {
-			p.getListacaixa().add(caixaDto.toCaixa(recebimento.getVenda(), p));
+			p.getListacaixa().add(caixaDto.toCaixa(p));
 		}
 		return p;
 	}
@@ -72,12 +72,12 @@ public class ParcelaDto implements Serializable {
 		this.dataPagamento = dataPagamento;
 	}
 
-	public BigDecimal getValorRecebimento() {
-		return valorRecebimento;
+	public BigDecimal getValorParcela() {
+		return valorParcela;
 	}
 
-	public void setValorRecebimento(BigDecimal valorRecebimento) {
-		this.valorRecebimento = valorRecebimento;
+	public void setValorParcela(BigDecimal valorRecebimento) {
+		this.valorParcela = valorRecebimento;
 	}
 
 	public List<CaixaDto> getListacaixa() {

@@ -57,12 +57,6 @@
 			</exclusions>
 		</dependency>
 
-		<!-- <dependency> -->
-		<!-- <groupId>net.sf.jasperreports</groupId> -->
-		<!-- <artifactId>jasperreports-fonts</artifactId> -->
-		<!-- <version>6.0.0</version> -->
-		<!-- </dependency> -->
-		<!-- https://mvnrepository.com/artifact/com.itextpdf/itext-asian -->
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itext-asian</artifactId>

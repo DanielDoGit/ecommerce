@@ -15,7 +15,7 @@
 		<div class="container bg-light rounded-bottom divcentral">
 			<ui:include src="/ecommerce/paginas/uteis/barramenu.xhtml" />
 			<br></br>
-			<h1 align="center">Itens da Venda</h1>
+			<h2 align="center">Itens da Venda</h2>
 			<br />
 			<div class="row mb-3 ml-5 pl-4">
 				<div class="col-7">
@@ -83,7 +83,7 @@
 							value="#{itemVendaController.itemVendaDto.valorUnitario}"
 							class="form-control" id="txtPrecounitario" autocomplete="off"
 							immediate="true" converter="bigDecimalToCurrency">
-							<f:ajax execute="@this" render="@this"/>
+							<f:ajax execute="@this" render="@this" />
 						</h:inputText>
 						&nbsp;
 						<h:commandLink class="btn btn-primary"
@@ -148,7 +148,6 @@
 			</div>
 			<br></br>
 			<div class="row mb-2">
-
 				<div class="col-3" style="margin-left: 70%;" align="left">
 					<label>Total Venda</label>
 					<h:inputText
@@ -157,7 +156,6 @@
 						autocomplete="off" readonly="true"
 						converter="bigDecimalToCurrency"></h:inputText>
 				</div>
-
 			</div>
 
 			<div class="row mb-2 ml-5 pl-3">
@@ -250,30 +248,45 @@
 							<div class="row mb-3">
 								<div class="col-8 offset-1">
 									<h:outputLabel>Forma de Pagamento</h:outputLabel>
-									<h:selectOneMenu class="form-control" converter="formaPagamentoConverter"
-										value="#{itemVendaController.formaPagamentoDto}"  >
+									<h:selectOneMenu class="form-control"
+										converter="formaPagamentoConverter"
+										value="#{itemVendaController.formaPagamentoDto}">
 										<f:selectItems
 											value="#{itemVendaController.listaFormaPagamentoDto}" var="s"
-											itemLabel="#{s.descricao}" ></f:selectItems>
+											itemLabel="#{s.descricao}"></f:selectItems>
 									</h:selectOneMenu>
 								</div>
 							</div>
 							<div class="row mb-3">
 								<div class="col-8 offset-1">
 									<h:outputLabel>Condição de Pagamento</h:outputLabel>
-									<h:selectOneMenu class="form-control" converter="condicaoPagamentoConverter"
+									<h:selectOneMenu class="form-control"
+										converter="condicaoPagamentoConverter"
 										value="#{itemVendaController.condicaoPagamentoDto}">
 										<f:selectItems
 											value="#{itemVendaController.listaCondicaoPagamentoDto}"
-											var="t" itemLabel="#{t.descricao}" ></f:selectItems>
+											var="t" itemLabel="#{t.descricao}"></f:selectItems>
 									</h:selectOneMenu>
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-8 offset-1">
+									<h:outputLabel>Correção (%)</h:outputLabel>
+									<h:inputText value="#{itemVendaController.correcao}"
+										class="form-control bg-warning" id="txtCorrecao"
+										required="true" autocomplete="off"
+										converter="bigDecimalToNumberWithNegative"></h:inputText>
+									<h:message for="txtCorrecao" showDetail="false"
+										showSummary="true" styleClass="error" />
 								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-primary"
-								data-dismiss="modal">Cancelar</button>
-							<h:commandButton class="btn btn-primary" action="#{itemVendaController.chamarRecebimento}" value="Próximo"></h:commandButton>
+							<h:commandButton pt:type="button" class="btn btn-primary"
+								pt:data-dismiss="modal" value="Cancelar"></h:commandButton>
+							<h:commandButton class="btn btn-primary"
+								action="#{itemVendaController.chamarRecebimento}"
+								value="Próximo"></h:commandButton>
 						</div>
 					</div>
 				</div>

@@ -8,10 +8,10 @@ import java.util.Objects;
 import ecommerce.beans.Cliente;
 import ecommerce.beans.Funcionario;
 import ecommerce.beans.ItemVenda;
-import ecommerce.beans.Recebimento;
 import ecommerce.beans.Venda;
 import ecommerce.dao.ClienteDao;
 import ecommerce.dao.FuncionarioDao;
+import ecommerce.dao.ProdutoDao;
 
 public class VendaDto {
 
@@ -20,7 +20,7 @@ public class VendaDto {
 	private String idCliente;
 
 	private String nomeCliente;
-	
+
 	private BigDecimal limiteCredito;
 
 	private String idFuncionario;
@@ -30,21 +30,26 @@ public class VendaDto {
 	private LocalDate dataVenda;
 
 	private BigDecimal totalVenda;
-	
+
 	private BigDecimal desconto;
-	
+
 	private BigDecimal acrescimo;
-	
+
+	private transient BigDecimal recebido;
+
+	private transient BigDecimal troco;
+
 	public VendaDto() {
 		this.dataVenda = LocalDate.now();
 		this.totalVenda = BigDecimal.ZERO;
 		this.limiteCredito = BigDecimal.ZERO;
 		this.desconto = BigDecimal.ZERO;
 		this.acrescimo = BigDecimal.ZERO;
+		this.recebido = BigDecimal.ZERO;
+		this.troco = BigDecimal.ZERO;
 	}
 
-	public Venda toVenda(ClienteDao cliDao, FuncionarioDao funcDao, List<ItemVenda> itensVenda,
-			List<Recebimento> listaRecebimentos) {
+	public Venda toVenda(ClienteDao cliDao, FuncionarioDao funcDao, ProdutoDao produtoDao, List<ItemVendaDto> listaItensVendaDto) {
 		Cliente c = cliDao.getById(Integer.valueOf(idCliente));
 		Funcionario f = funcDao.getById(Integer.valueOf(idFuncionario));
 		Venda venda = new Venda();
@@ -53,10 +58,12 @@ public class VendaDto {
 		venda.setDataVenda(dataVenda);
 		venda.setFuncionario(f);
 		venda.setTotalVenda(totalVenda);
-		venda.setItensVenda(itensVenda);
-		venda.setRecebimentos(listaRecebimentos);
 		venda.setAcrescimo(acrescimo);
 		venda.setDesconto(desconto);
+		for (ItemVendaDto itemVendaDto : listaItensVendaDto) {
+			ItemVenda iv = itemVendaDto.toItemVenda(produtoDao, venda);
+			venda.getItensVenda().add(iv);
+		}
 		return venda;
 	}
 
@@ -115,7 +122,7 @@ public class VendaDto {
 	public void setTotalVenda(BigDecimal totalVenda) {
 		this.totalVenda = totalVenda;
 	}
-	
+
 	public BigDecimal getLimiteCredito() {
 		return limiteCredito;
 	}
@@ -140,7 +147,22 @@ public class VendaDto {
 		this.acrescimo = acrescimo;
 	}
 
-	
+	public BigDecimal getRecebido() {
+		return recebido;
+	}
+
+	public void setRecebido(BigDecimal recebido) {
+		this.recebido = recebido;
+	}
+
+	public BigDecimal getTroco() {
+		return troco;
+	}
+
+	public void setTroco(BigDecimal troco) {
+		this.troco = troco;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(codigo);

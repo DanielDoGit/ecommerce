@@ -1,30 +1,10 @@
-$(document).ready( () => {
+var etapaRequisicao = 0;
+
+$(document).ready(() => {
 	verificarNotificacao();
 });
 
 function verificarNotificacao() {
-	var msg = [];
-	msg = msg.concat(Array.from($('.mensagemInfo')));
-	msg = msg.concat(Array.from($('.mensagemWarning')));
-	msg = msg.concat(Array.from($('.mensagemError')));
-	msg.forEach(e => {
-		if (e != undefined) {
-			switch (e.classList[1]) {
-			case 'mensagemInfo':
-				exibirNotificacaoSucesso(e.textContent);
-				break;
-			case 'mensagemWarning':
-				exibirNotificacaoAlerta(e.textContent);
-				break;
-			case 'mensagemError':
-				exibirNotificacaoErro(e.textContent);
-				break;
-			}
-		}
-	});
-}
-
-function verificarNotificacaoViaAjax() {
 	var msg = [];
 	msg = msg.concat(Array.from($('.mensagemInfo')));
 	msg = msg.concat(Array.from($('.mensagemWarning')));
@@ -46,29 +26,44 @@ function verificarNotificacaoViaAjax() {
 	});
 }
 
-var etapaRequisicao = 0;
-$( document ).on( "ajaxComplete", function() {
-	 etapaRequisicao++;
-    if (etapaRequisicao === 3) {
-        verificarNotificacaoViaAjax();
-		etapaRequisicao = 0;
-    }
-} );
+function verificarNotificacaoViaAjax() {
+	etapaRequisicao++;
+	if (etapaRequisicao === 3) {
+		var msg = [];
+		msg = msg.concat(Array.from($('.mensagemInfo')));
+		msg = msg.concat(Array.from($('.mensagemWarning')));
+		msg = msg.concat(Array.from($('.mensagemError')));
+		msg.forEach(e => {
+			if (e != undefined) {
+				switch (e.classList[1]) {
+					case 'mensagemInfo':
+						exibirNotificacaoSucesso(e.textContent);
+						break;
+					case 'mensagemWarning':
+						exibirNotificacaoAlerta(e.textContent);
+						break;
+					case 'mensagemError':
+						exibirNotificacaoErro(e.textContent);
+						break;
+				}
+			}
+		});
+	}
+}
 
-
-$(document).on( "ajaxComplete", function() {
+$(document).on("ajaxComplete", function() {
 	bloquearBotoesClasseNeedsValidation();
 });
 
 
-function bloquearBotoesClasseNeedsValidation(){
-	etapaRequisicao++;
+var etapaRequisicaoNeedsValidation = 0;
+function bloquearBotoesClasseNeedsValidation() {
+	etapaRequisicaoNeedsValidation++;
 	var components = Array.from(document.getElementsByClassName('needs-validation'));
 	if (components != null) {
-		components.forEach(  e => e.disabled = true);
+		components.forEach(e => e.disabled = true);
 		if (etapaRequisicao === 3) {
-			components.forEach(  e => e.disabled = false);
-			etapaRequisicao = 0;
+			components.forEach(e => e.disabled = false);
 		}
 	}
 }
@@ -94,18 +89,18 @@ function validarSubmit() {
 function exibirNotificacaoSucesso(str) {
 
 	toastr.options = {
-		"closeButton" : true,
-		"debug" : false,
-		"positionClass" : "toast-top-right",
-		"onclick" : null,
-		"showDuration" : "2000",
-		"hideDuration" : "2000",
-		"timeOut" : "5000",
-		"extendedTimeOut" : "2000",
-		"showEasing" : "swing",
-		"hideEasing" : "linear",
-		"showMethod" : "fadeIn",
-		"hideMethod" : "fadeOut"
+		"closeButton": true,
+		"debug": false,
+		"positionClass": "toast-top-right",
+		"onclick": null,
+		"showDuration": "2000",
+		"hideDuration": "2000",
+		"timeOut": "5000",
+		"extendedTimeOut": "2000",
+		"showEasing": "swing",
+		"hideEasing": "linear",
+		"showMethod": "fadeIn",
+		"hideMethod": "fadeOut"
 	}
 	toastr.success(str, "Notificação")
 }
@@ -113,18 +108,18 @@ function exibirNotificacaoSucesso(str) {
 function exibirNotificacaoAlerta(str) {
 
 	toastr.options = {
-		"closeButton" : true,
-		"debug" : false,
-		"positionClass" : "toast-top-right",
-		"onclick" : null,
-		"showDuration" : "2000",
-		"hideDuration" : "2000",
-		"timeOut" : "5000",
-		"extendedTimeOut" : "2000",
-		"showEasing" : "swing",
-		"hideEasing" : "linear",
-		"showMethod" : "fadeIn",
-		"hideMethod" : "fadeOut"
+		"closeButton": true,
+		"debug": false,
+		"positionClass": "toast-top-right",
+		"onclick": null,
+		"showDuration": "2000",
+		"hideDuration": "2000",
+		"timeOut": "5000",
+		"extendedTimeOut": "2000",
+		"showEasing": "swing",
+		"hideEasing": "linear",
+		"showMethod": "fadeIn",
+		"hideMethod": "fadeOut"
 	}
 	toastr.warning(str, "Notificação")
 }
@@ -132,18 +127,18 @@ function exibirNotificacaoAlerta(str) {
 function exibirNotificacaoErro(str) {
 
 	toastr.options = {
-		"closeButton" : true,
-		"debug" : false,
-		"positionClass" : "toast-top-right",
-		"onclick" : null,
-		"showDuration" : "2000",
-		"hideDuration" : "2000",
-		"timeOut" : "5000",
-		"extendedTimeOut" : "2000",
-		"showEasing" : "swing",
-		"hideEasing" : "linear",
-		"showMethod" : "fadeIn",
-		"hideMethod" : "fadeOut"
+		"closeButton": true,
+		"debug": false,
+		"positionClass": "toast-top-right",
+		"onclick": null,
+		"showDuration": "2000",
+		"hideDuration": "2000",
+		"timeOut": "5000",
+		"extendedTimeOut": "2000",
+		"showEasing": "swing",
+		"hideEasing": "linear",
+		"showMethod": "fadeIn",
+		"hideMethod": "fadeOut"
 	}
 	toastr.error(str, "Notificação")
 }
@@ -151,19 +146,19 @@ function exibirNotificacaoErro(str) {
 function excluir(nomeClasse) {
 	var botao = document.getElementsByClassName(nomeClasse)[0];
 	bootbox.confirm({
-		message : "Deseja realmente prosseguir com esta ação?",
-		animate : true,
-		buttons : {
-			confirm : {
-				label : 'Sim',
-				className : 'btn-success'
+		message: "Deseja realmente prosseguir com esta ação?",
+		animate: true,
+		buttons: {
+			confirm: {
+				label: 'Sim',
+				className: 'btn-success'
 			},
-			cancel : {
-				label : 'Não',
-				className : 'btn-danger'
+			cancel: {
+				label: 'Não',
+				className: 'btn-danger'
 			}
 		},
-		callback : function(result) {
+		callback: function(result) {
 			if (result) {
 				botao.click();
 			}
@@ -235,27 +230,27 @@ function formatarValor(campo, tammax, teclapres, decimal) {
 		}
 		if ((tam > dec) && (tam <= 5)) {
 			campo.value = vr.substr(0, tam - 2) + ","
-					+ vr.substr(tam - dec, tam);
+				+ vr.substr(tam - dec, tam);
 		}
 		if ((tam >= 6) && (tam <= 8)) {
 			campo.value = vr.substr(0, tam - 5) + "." + vr.substr(tam - 5, 3)
-					+ "," + vr.substr(tam - dec, tam);
+				+ "," + vr.substr(tam - dec, tam);
 		}
 		if ((tam >= 9) && (tam <= 11)) {
 			campo.value = vr.substr(0, tam - 8) + "." + vr.substr(tam - 8, 3)
-					+ "." + vr.substr(tam - 5, 3) + ","
-					+ vr.substr(tam - dec, tam);
+				+ "." + vr.substr(tam - 5, 3) + ","
+				+ vr.substr(tam - dec, tam);
 		}
 		if ((tam >= 12) && (tam <= 14)) {
 			campo.value = vr.substr(0, tam - 11) + "." + vr.substr(tam - 11, 3)
-					+ "." + vr.substr(tam - 8, 3) + "." + vr.substr(tam - 5, 3)
-					+ "," + vr.substr(tam - dec, tam);
+				+ "." + vr.substr(tam - 8, 3) + "." + vr.substr(tam - 5, 3)
+				+ "," + vr.substr(tam - dec, tam);
 		}
 		if ((tam >= 15) && (tam <= 17)) {
 			campo.value = vr.substr(0, tam - 14) + "." + vr.substr(tam - 14, 3)
-					+ "." + vr.substr(tam - 11, 3) + "."
-					+ vr.substr(tam - 8, 3) + "." + vr.substr(tam - 5, 3) + ","
-					+ vr.substr(tam - 2, tam);
+				+ "." + vr.substr(tam - 11, 3) + "."
+				+ vr.substr(tam - 8, 3) + "." + vr.substr(tam - 5, 3) + ","
+				+ vr.substr(tam - 2, tam);
 		}
 	}
 }

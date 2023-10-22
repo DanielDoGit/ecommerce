@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 import ecommerce.uteis.jpa.ConverterBoolean;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -40,7 +41,7 @@ public class Recebimento implements Serializable {
 	@JoinColumn(name="venda")
 	private Venda venda;
 	
-	@OneToMany(mappedBy = "recebimento", fetch = FetchType.EAGER, orphanRemoval = true)
+	@OneToMany(mappedBy = "recebimento",cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<Parcela> listaParcelas = new ArrayList<>();
 	
 	@ManyToOne

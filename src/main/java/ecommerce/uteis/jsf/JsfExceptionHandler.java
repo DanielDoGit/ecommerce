@@ -24,7 +24,7 @@ public class JsfExceptionHandler extends ExceptionHandlerWrapper {
 	private ExceptionHandler wrapped;
 
 	private String caminhoLog;
-	
+
 	public JsfExceptionHandler(ExceptionHandler wrapped, String caminhoLog) {
 		this.wrapped = wrapped;
 		this.caminhoLog = caminhoLog;
@@ -43,16 +43,25 @@ public class JsfExceptionHandler extends ExceptionHandlerWrapper {
 			ExceptionQueuedEventContext context = (ExceptionQueuedEventContext) event.getSource();
 			Throwable exception = context.getException();
 			gravarLog(exception);
-			redirect("/ecommerce/paginas/uteis/errogenerico.xhtml");
+			validarexceptions(exception);
 			events.remove();
 		}
 		getWrapped().handle();
 	}
 
+	private void validarexceptions(Throwable e) {
+		Exception ee = (Exception) e;
+		if (ee.getCause().getMessage().contains("WELD-000321")) {
+			redirect("/ecommerce/paginas/uteis/mensagemConversacao.xhtml");
+		} else {
+			redirect("/ecommerce/paginas/uteis/errogenerico.xhtml");
+		}
+	}
+
 	private void gravarLog(Throwable throwable) {
 		try (FileOutputStream fos = new FileOutputStream(new File(caminhoLog))) {
 			PrintWriter pw = new PrintWriter(fos);
-			pw.print(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)+": ");
+			pw.print(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + ": ");
 			throwable.printStackTrace(pw);
 			pw.flush();
 			fos.close();
@@ -71,6 +80,6 @@ public class JsfExceptionHandler extends ExceptionHandlerWrapper {
 		} catch (IOException e) {
 			throw new FacesException(e);
 		}
-	}	
+	}
 
 }

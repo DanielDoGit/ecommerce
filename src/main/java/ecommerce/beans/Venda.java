@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -38,7 +39,7 @@ public class Venda implements Serializable {
 	
 	private BigDecimal totalVenda;
 	
-	@OneToMany(mappedBy = "venda", fetch = FetchType.EAGER, orphanRemoval = true)
+	@OneToMany(mappedBy = "venda", cascade = CascadeType.ALL ,fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<ItemVenda> itensVenda = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "venda", fetch = FetchType.EAGER, orphanRemoval = true)

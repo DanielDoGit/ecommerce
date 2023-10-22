@@ -80,9 +80,12 @@ public class ItemVendaController implements Serializable {
 	private List<CondicaoPagamentoDto> listaCondicaoPagamentoDto = new ArrayList<CondicaoPagamentoDto>();
 	private FormaPagamentoDto formaPagamentoDto;
 	private CondicaoPagamentoDto condicaoPagamentoDto;
-	private List<RecebimentoDto> listaRecebimentoDto = new ArrayList<RecebimentoDto>();;
+	private List<RecebimentoDto> listaRecebimentoDto = new ArrayList<RecebimentoDto>();
 
 	private String argumentoBusca;
+
+	private BigDecimal correcao = BigDecimal.ZERO;
+	private BigDecimal resultadoRecebimento = BigDecimal.ZERO;
 
 	@PostConstruct
 	public void carregarDados() {
@@ -109,7 +112,13 @@ public class ItemVendaController implements Serializable {
 		}
 	}
 
+	public BigDecimal getValorTotalVendaCorrigido() {
+		BigDecimal totalVenda = getVendaDto().getTotalVenda();
+		return totalVenda.add(totalVenda.multiply(correcao).divide(new BigDecimal("100.00"), 2, RoundingMode.HALF_UP));
+	}
+
 	private void criarRecebimento() {
+		resultadoRecebimento = getValorTotalVendaCorrigido();
 		listaRecebimentoDto.clear();
 		if (condicaoPagamentoDto.getCodigo() == 1) {
 			RecebimentoDto recebimentoDto = new RecebimentoDto();
@@ -118,12 +127,12 @@ public class ItemVendaController implements Serializable {
 			recebimentoDto.setDataEmissao(LocalDate.now());
 			recebimentoDto.setDataVencimento(LocalDate.now());
 			recebimentoDto.setQuitado(true);
-			recebimentoDto.setValor(getVendaDto().getTotalVenda());
+			recebimentoDto.setValor(resultadoRecebimento);
 			listaRecebimentoDto.add(recebimentoDto);
 		} else {
 			String[] array = condicaoPagamentoDto.getDescricao().split("\\s-\\s");
 			String numeroParcelas = condicaoPagamentoDto.getNumeroParcelas().toString();
-			BigDecimal valorCadaParcela = getVendaDto().getTotalVenda().divide(new BigDecimal(numeroParcelas), 2, RoundingMode.HALF_UP);
+			BigDecimal valorCadaParcela = resultadoRecebimento.divide(new BigDecimal(numeroParcelas), 2,RoundingMode.HALF_UP);
 			for (String parcela : array) {
 				RecebimentoDto recebimentoDto = new RecebimentoDto();
 				recebimentoDto.setCondicaopagamento(condicaoPagamentoDto);
@@ -160,7 +169,7 @@ public class ItemVendaController implements Serializable {
 
 	public void incrementarTotal(ItemVendaDto itemVendaDto) {
 		BigDecimal totalVenda = vendaController.getVendaDto().getTotalVenda();
-		vendaController.getVendaDto().setTotalVenda(totalVenda.add(itemVendaDto.getTotalUnitario()));
+		getVendaDto().setTotalVenda(totalVenda.add(itemVendaDto.getTotalUnitario()));
 	}
 
 	public void pesquisarProduto() {
@@ -169,8 +178,8 @@ public class ItemVendaController implements Serializable {
 	}
 
 	public void excluirItemVenda(ItemVendaDto item) {
-		BigDecimal totalVenda = vendaController.getVendaDto().getTotalVenda();
-		vendaController.getVendaDto().setTotalVenda(totalVenda.subtract(item.getTotalUnitario()));
+		BigDecimal totalVenda = getVendaDto().getTotalVenda();
+		getVendaDto().setTotalVenda(totalVenda.subtract(item.getTotalUnitario()));
 		removerEstoqueTransiente(item);
 		listItemsVenda.remove(item);
 	}
@@ -213,7 +222,7 @@ public class ItemVendaController implements Serializable {
 		for (Recebimento r : listaRecebimento) {
 			somaRecebimentos = somaRecebimentos.add(r.getValor());
 			for (Parcela parcela : r.getListaParcelas()) {
-				somaParcelasPagas.add(parcela.getValorRecebimento());
+				somaParcelasPagas.add(parcela.getValorParcela());
 			}
 		}
 		return somaRecebimentos.subtract(somaParcelasPagas);
@@ -222,7 +231,7 @@ public class ItemVendaController implements Serializable {
 	public VendaController getVendaController() {
 		return vendaController;
 	}
-	
+
 	public VendaDto getVendaDto() {
 		return vendaController.getVendaDto();
 	}
@@ -377,6 +386,22 @@ public class ItemVendaController implements Serializable {
 
 	public void setListaRecebimentoDto(List<RecebimentoDto> listaRecebimentoDto) {
 		this.listaRecebimentoDto = listaRecebimentoDto;
+	}
+
+	public BigDecimal getCorrecao() {
+		return correcao;
+	}
+
+	public void setCorrecao(BigDecimal correcao) {
+		this.correcao = correcao;
+	}
+
+	public BigDecimal getResultadoRecebimento() {
+		return resultadoRecebimento;
+	}
+
+	public void setResultadoRecebimento(BigDecimal resultadoRecebimento) {
+		this.resultadoRecebimento = resultadoRecebimento;
 	}
 
 }

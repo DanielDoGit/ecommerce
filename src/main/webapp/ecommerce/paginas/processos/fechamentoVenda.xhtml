@@ -59,10 +59,12 @@
 							<f:facet name="header">
 								<h:outputText value="Alterar"></h:outputText>
 							</f:facet>
-							<h:commandLink pt:type="button" pt:data-toggle="modal"
-								id="chamarModalEditarParcela" pt:data-target="#modalEdicaoParcela"
-								class="btn btn-success" action="#{fechamentoVendaController.editarRecebimento(s.codigo)}">
+							<h:commandLink
+								pt:data-toggle="modal"
+								id="chamarModalEditarParcela"
+								pt:data-target="#modalEdicaoParcela" class="btn btn-success">
 								<span class="fas fa-pen"></span>
+								<f:ajax execute="@this" render="@form:modalEdicaoParcela @form:txtDataEmissao @form:txtDataVencimento @form:txtValor @form:formaPagamento" listener="#{fechamentoVendaController.recuperarRecebimento(s)}"></f:ajax>
 							</h:commandLink>
 						</h:column>
 					</h:dataTable>
@@ -70,21 +72,31 @@
 			</div>
 			<br></br>
 			<div class="row mb-2">
-				<div class="form-inline">
+				<div class="form-inline" style="margin-left: 20%;">
 					<div class="form-group">
-						<div class="col-8">
-							<label>Troco</label>
+						<div class="col-12">
+							<label>Recebido</label>
 							<h:inputText
-								value="#{itemVendaController.vendaController.vendaDto.totalVenda}"
-								class="form-control" id="txtTroco" autocomplete="off"
+								value="#{itemVendaController.getVendaDto().recebido}"
+								class="form-control" id="txtRecebido" autocomplete="off"
+								converter="bigDecimalToCurrency">
+								<f:ajax execute="@this" render="@form:txtTroco @form:txtRecebido @form:mensagens" listener="#{fechamentoVendaController.calcularTroco}"></f:ajax>
+							</h:inputText>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-12">
+							<label>Troco</label>
+							<h:inputText value="#{itemVendaController.getVendaDto().troco}"
+								class="form-control" id="txtTroco" autocomplete="off" readonly="true"
 								converter="bigDecimalToCurrency"></h:inputText>
 						</div>
 					</div>
 					<div class="form-group">
-						<div class="col-6" >
+						<div class="col-12">
 							<label>Total Venda</label>
 							<h:inputText
-								value="#{itemVendaController.vendaController.vendaDto.totalVenda}"
+								value="#{itemVendaController.resultadoRecebimento}"
 								class="form-control bg-warning" id="txtTotalVenda"
 								autocomplete="off" readonly="true"
 								converter="bigDecimalToCurrency"></h:inputText>
@@ -94,21 +106,91 @@
 			</div>
 
 			<div class="row mb-2 ml-5 pl-3">
-				<div class="col-6" style="margin-left: 45%;" align="right">
+				<div class="col-6" style="margin-left: 15%;" align="right">
 					<h:commandButton action="#{itemVendaController.cancelar}"
 						value="Cancelar" immediate="true" class="btn btn-primary"
 						style="width: 120px; margin: 5px"></h:commandButton>
 					<h:commandButton action="#{fechamentoVendaController.voltar}"
 						value="Voltar" immediate="true" class="btn btn-primary"
 						style="width: 120px; margin: 5px"></h:commandButton>
-					<h:commandButton 
+					<h:commandButton
+						action="#{fechamentoVendaController.concluirVenda()}"
 						value="Próximo" class="btn btn-primary"
 						style="width: 120px; margin: 5px"></h:commandButton>
 				</div>
 			</div>
 
-			<br></br>
+			<div class="modal" id="modalEdicaoParcela">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Editar Recebimento</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="row mb-3">
+								<div class="col-8 offset-1">
+									<h:outputLabel>Data Emissão</h:outputLabel>
+									<h:inputText pt:type="date"
+										value="#{fechamentoVendaController.recebimentoEncontrado.dataEmissao}"
+										class="form-control" id="txtDataEmissao" required="#{fechamentoVendaController.procedimentorealizado}"
+										autocomplete="off" converter="converterDataInput"></h:inputText>
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-8 offset-1">
+									<h:outputLabel>Data Vencimento</h:outputLabel>
+									<h:inputText pt:type="date" class="form-control" required="#{fechamentoVendaController.procedimentorealizado}"
+										converter="converterDataInput" id="txtDataVencimento"
+										value="#{fechamentoVendaController.recebimentoEncontrado.dataVencimento}">
+									</h:inputText>
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-8 offset-1">
+									<h:outputLabel>Valor</h:outputLabel>
+									<h:inputText
+										value="#{fechamentoVendaController.recebimentoEncontrado.valor}"
+										class="form-control" id="txtValor" required="#{fechamentoVendaController.procedimentorealizado}"
+										autocomplete="off" converter="bigDecimalToCurrency">
+										<f:ajax execute="@this" render="@this"></f:ajax>
+									</h:inputText>
+									<h:message for="txtValor" showDetail="false" showSummary="true"
+										styleClass="error" />
+								</div>
+							</div>
+
+							<div class="row mb-3">
+								<div class="col-8 offset-1">
+									<h:outputLabel>Forma de Pagamento</h:outputLabel>
+									<h:selectOneMenu class="form-control"
+										converter="formaPagamentoConverter" required="#{fechamentoVendaController.procedimentorealizado}"
+										value="#{fechamentoVendaController.recebimentoEncontrado.formaPagamentoDto}" id="formaPagamento">
+										<f:selectItems
+											value="#{itemVendaController.listaFormaPagamentoDto}" var="s"
+											itemLabel="#{s.descricao}"></f:selectItems>
+									</h:selectOneMenu>
+								</div>
+							</div>
+
+						</div>
+						<div class="modal-footer">
+							<h:commandButton pt:type="button" class="btn btn-primary"
+								pt:data-dismiss="modal" value="Cancelar"></h:commandButton>
+							<h:commandLink class="btn btn-primary"
+								action="#{fechamentoVendaController.gravarAlteracao}"
+								value="Próximo">
+								<f:ajax execute="@all" render="@all"></f:ajax>
+							</h:commandLink>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
+		<br></br>
 	</h:form>
 </h:body>
 </html>

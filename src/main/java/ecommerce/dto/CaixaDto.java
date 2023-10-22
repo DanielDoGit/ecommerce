@@ -7,7 +7,6 @@ import java.util.Objects;
 
 import ecommerce.beans.Caixa;
 import ecommerce.beans.Parcela;
-import ecommerce.beans.Venda;
 
 public class CaixaDto implements Serializable{
 
@@ -20,14 +19,14 @@ public class CaixaDto implements Serializable{
 	private BigDecimal valorRecebimento;
 	
 	private LocalDateTime dataLancamento;
-
-	public Caixa toCaixa(Venda venda, Parcela parcela) {
+	
+	public Caixa toCaixa(Parcela parcela) {
 		Caixa c = new Caixa();
 		c.setCodigo(codigo);
 		c.setDataLancamento(dataLancamento);
 		c.setDescricao(descricao);
 		c.setParcela(parcela);
-		c.setVenda(venda);
+		c.setValorBaixa(valorRecebimento);
 		return c;
 	}
 
