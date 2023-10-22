@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Ecommerce</title>
+	<ui:include src="/ecommerce/paginas/uteis/scripts.xhtml" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+<h:body class="bg-info">
+	<h:form>
+		<div class="container bg-light rounded-bottom divcentral">
+			<ui:include src="/ecommerce/paginas/uteis/barramenu.xhtml" />
+			<br></br>
+			<h1 align="center">Abertura de Venda</h1>
+			<br />
+			<div class="row mb-3 ml-5 pl-4">
+				<h:selectOneRadio immediate="true" value="Comprovante de Venda">
+				</h:selectOneRadio>
+			</div>
+			<div class="row mb-2 ml-5 pl-3">
+				<div class="col-6 offset-3" align="right">
+					<h:commandButton action="#{vendaController.cancelarOperacao}"
+						value="Cancelar" immediate="true" class="btn btn-primary"
+						style="width: 120px; margin: 5px"></h:commandButton>
+					<h:commandButton action="#{vendaController.chamarItensVenda}"
+						value="Próximo" class="btn btn-primary needs-validation"
+						style="width: 120px; margin: 5px"
+					></h:commandButton>
+				</div>
+			</div>
+			<br></br>
+		</div>
+	</h:form>
+</h:body>
+</html>
