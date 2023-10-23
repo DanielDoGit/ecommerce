@@ -208,11 +208,14 @@ public class ItemVendaController implements Serializable {
 	}
 
 	public boolean validarCredito() {
-		VendaDto vDto = vendaController.getVendaDto();
-		Cliente c = clienteDao.getById(Integer.valueOf(vDto.getIdCliente()));
-		BigDecimal totalRecebimentos = getSomaRecebimentos(c);
-		BigDecimal totalConsumido = totalRecebimentos.add(vDto.getTotalVenda());
-		return totalConsumido.compareTo(vDto.getLimiteCredito()) <= 0;
+		if (!formaPagamentoDto.isCompensado()) {
+			VendaDto vDto = vendaController.getVendaDto();
+			Cliente c = clienteDao.getById(Integer.valueOf(vDto.getIdCliente()));
+			BigDecimal totalRecebimentos = getSomaRecebimentos(c);
+			BigDecimal totalConsumido = totalRecebimentos.add(vDto.getTotalVenda());
+			return  totalConsumido.compareTo(vDto.getLimiteCredito()) <= 0;
+		}
+		return true;
 	}
 
 	private BigDecimal getSomaRecebimentos(Cliente c) {

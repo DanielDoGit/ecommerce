@@ -31,7 +31,7 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 		e.setHoraIsercao(LocalDateTime.now());
 		this.cadastrar(e);
 	}
-
+	
 	public void processarRemocaoEstoqueTransiente(Produto produto, BigDecimal quantidade) {
 		validarDados(produto, quantidade);
 		EstoqueTransiente e = this.buscarExatidaoInnerJoin(Produto.class, "produto", "codigo", produto.getCodigo().toString());
@@ -49,17 +49,13 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 
 	public void processarAdicaoEstoqueTransiente(Produto produto, BigDecimal quantidade) {
 		validarDados(produto, quantidade);
-		EstoqueTransiente e = this.buscarExatidaoInnerJoin(Produto.class, "produto", "codigo", produto.getCodigo().toString());
+		EstoqueTransiente e = this.buscarExatidaoInnerJoin(Produto.class, "produto", "codigo",produto.getCodigo().toString());
 		if (e == null) {
 			criarEstoqueTransiente(produto, quantidade);
-		}else {
-			if (Duration.between(e.getHoraIsercao(), LocalDateTime.now()).toHours() > 2) {
-				super.excluir(e);
-			}else {
-				e.setQuantidadeAcesso(e.getQuantidadeAcesso() + 1);
-				e.setQuantidadeUso(quantidade.add(e.getQuantidadeUso()));
-				this.editar(e);
-			}
+		} else {
+			e.setQuantidadeAcesso(e.getQuantidadeAcesso() + 1);
+			e.setQuantidadeUso(quantidade.add(e.getQuantidadeUso()));
+			this.editar(e);
 		}
 	}
 
@@ -109,7 +105,7 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 		}
 		return b;
 	}
-	
+
 	public BigDecimal getEstoqueDisponivel(Produto p) {
 		return getEstoque(LocalDate.now(), p);
 	}
@@ -119,12 +115,15 @@ public class EstoqueTransienteDao extends Dao<EstoqueTransiente> {
 		BigDecimal qtdVenda = getQuantidadeVenda(dataApuracao, produto);
 		BigDecimal qtdEstoqueEntrada = getQuantidadeAjusteEstoqueEntrada(dataApuracao, produto);
 		BigDecimal qtdEstoqueSaida = getQuantidadeAjusteEstoqueSaida(dataApuracao, produto);
-		BigDecimal qtdEstoqueTransiente = getEstoqueTransiente(dataApuracao,produto);
+		BigDecimal qtdEstoqueTransiente = getEstoqueTransiente(dataApuracao, produto);
 		return qtdEstoqueEntrada.subtract(qtdEstoqueSaida).subtract(qtdVenda).subtract(qtdEstoqueTransiente);
 	}
 
 	private void validarDados(Object... valores) {
-		Arrays.asList(valores).forEach( e -> {if (e == null) throw new FacesException("Não é possível realizar consultas com parametros nulos");});
+		Arrays.asList(valores).forEach(e -> {
+			if (e == null)
+				throw new FacesException("Não é possível realizar consultas com parametros nulos");
+		});
 	}
 
 }

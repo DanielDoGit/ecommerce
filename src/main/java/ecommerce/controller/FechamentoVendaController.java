@@ -67,6 +67,8 @@ public class FechamentoVendaController implements Serializable {
 	private RecebimentoDto recebimentoEncontrado = new RecebimentoDto();
 	
 	private boolean procedimentorealizado = false;
+	
+	private boolean vendaRealizada = false;
 
 	@PostConstruct
 	public void carregarRecebimentos() {
@@ -108,6 +110,7 @@ public class FechamentoVendaController implements Serializable {
 			vendaDao.cadastrar(venda);
 			criarLancamentoCaixa(venda);
 			vendaDao.editar(venda);
+			vendaRealizada = true;
 			uteis.adicionarMensagemSucessoRegistro();
 			return "/ecommerce/paginas/processos/impressosVenda.xhtml";
 		} catch (TokenException e) {
@@ -290,6 +293,14 @@ public class FechamentoVendaController implements Serializable {
 
 	public void setProcedimentorealizado(boolean procedimentorealizado) {
 		this.procedimentorealizado = procedimentorealizado;
+	}
+
+	public boolean isVendaRealizada() {
+		return vendaRealizada;
+	}
+
+	public void setVendaRealizada(boolean vendaRealizada) {
+		this.vendaRealizada = vendaRealizada;
 	}
 
 }
