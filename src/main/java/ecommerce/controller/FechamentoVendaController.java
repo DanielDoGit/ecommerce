@@ -3,10 +3,10 @@ package ecommerce.controller;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-import ecommerce.beans.Recebimento;
 import ecommerce.beans.Venda;
 import ecommerce.dao.CaixaDao;
 import ecommerce.dao.ClienteDao;
@@ -108,8 +108,7 @@ public class FechamentoVendaController implements Serializable {
 			aplicarCorrecaoValorRecebimento();
 			Venda venda = criarVenda();
 			vendaDao.cadastrar(venda);
-			criarLancamentoCaixa(venda);
-			vendaDao.editar(venda);
+			atualizarDtoIndiceUltimaVendaCadastrada();
 			vendaRealizada = true;
 			uteis.adicionarMensagemSucessoRegistro();
 			return "/ecommerce/paginas/processos/impressosVenda.xhtml";
@@ -161,12 +160,16 @@ public class FechamentoVendaController implements Serializable {
 		ClienteDao cliDao = InjectBean.newInstanceCDI(ClienteDao.class);
 		FuncionarioDao funcDao = InjectBean.newInstanceCDI(FuncionarioDao.class);
 		ProdutoDao prodDao = InjectBean.newInstanceCDI(ProdutoDao.class);
-		return itemVendaController.getVendaDto().toVenda(cliDao, funcDao, prodDao, itemVendaController.getListItemsVenda());
+		VendaDto vendaDto = itemVendaController.getVendaDto();
+		criarLancamentoCaixa(vendaDto);
+		return vendaDto.toVenda(cliDao, funcDao, prodDao, itemVendaController.getListItemsVenda(), recebimentos);
 	}
 
-	public void criarLancamentoCaixa(Venda venda) {
+	public void criarLancamentoCaixa(VendaDto venda) {
 		int numeroParcela = 1;
-		for (RecebimentoDto recebimentoDto : recebimentos) {
+		Iterator<RecebimentoDto> iterator = recebimentos.iterator();
+		while (iterator.hasNext()) {
+			RecebimentoDto recebimentoDto = iterator.next();
 			parcelaDto = new ParcelaDto();
 			parcelaDto.setDataEmissao(venda.getDataVenda());
 			parcelaDto.setDataPagamento(null);
@@ -175,15 +178,19 @@ public class FechamentoVendaController implements Serializable {
 			if (recebimentoDto.isQuitado()) {
 				caixaDto = new CaixaDto();
 				caixaDto.setDataLancamento(LocalDateTime.now());
-				caixaDto.setDescricao("Recebimento: " + venda.getCliente().getNome()+" - Parcela: "+parcelaDto.getNumeroParcela());
+				caixaDto.setDescricao("Recebimento: " + venda.getNomeCliente()+" - Parcela: "+parcelaDto.getNumeroParcela());
 				caixaDto.setValorRecebimento(recebimentoDto.getValor());
 				parcelaDto.setDataPagamento(recebimentoDto.getDataVencimento());
 				parcelaDto.getListacaixa().add(caixaDto);
 			}
-			Recebimento recebimento = recebimentoDto.toRecebimento(venda, parcelaDto);
-			venda.getRecebimentos().add(recebimento);
-			recebimentoDao.cadastrar(recebimento);
+			recebimentoDto.getListaParcelaDto().add(parcelaDto);
 		}
+	}
+	
+	private void atualizarDtoIndiceUltimaVendaCadastrada() {
+		VendaDto vendaDto = itemVendaController.getVendaDto();
+		Integer codigo = vendaDao.getLastCodigoVendaByCliente(vendaDto.getIdCliente());
+		vendaDto.setCodigo(codigo);
 	}
 
 	public String voltar() {

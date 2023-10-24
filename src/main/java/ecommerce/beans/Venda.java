@@ -42,7 +42,7 @@ public class Venda implements Serializable {
 	@OneToMany(mappedBy = "venda", cascade = CascadeType.ALL ,fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<ItemVenda> itensVenda = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "venda", fetch = FetchType.EAGER, orphanRemoval = true)
+	@OneToMany(mappedBy = "venda", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<Recebimento> recebimentos = new ArrayList<>();
 	
 	private BigDecimal desconto = BigDecimal.ZERO;

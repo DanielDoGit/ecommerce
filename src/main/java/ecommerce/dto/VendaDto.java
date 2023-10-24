@@ -49,7 +49,7 @@ public class VendaDto {
 		this.troco = BigDecimal.ZERO;
 	}
 
-	public Venda toVenda(ClienteDao cliDao, FuncionarioDao funcDao, ProdutoDao produtoDao, List<ItemVendaDto> listaItensVendaDto) {
+	public Venda toVenda(ClienteDao cliDao, FuncionarioDao funcDao, ProdutoDao produtoDao, List<ItemVendaDto> listaItensVendaDto, List<RecebimentoDto> listaRecebimentoDto) {
 		Cliente c = cliDao.getById(Integer.valueOf(idCliente));
 		Funcionario f = funcDao.getById(Integer.valueOf(idFuncionario));
 		Venda venda = new Venda();
@@ -63,6 +63,9 @@ public class VendaDto {
 		for (ItemVendaDto itemVendaDto : listaItensVendaDto) {
 			ItemVenda iv = itemVendaDto.toItemVenda(produtoDao, venda);
 			venda.getItensVenda().add(iv);
+		}
+		for (RecebimentoDto recebimentoDto : listaRecebimentoDto) {
+			venda.getRecebimentos().add(recebimentoDto.toRecebimento(venda));
 		}
 		return venda;
 	}

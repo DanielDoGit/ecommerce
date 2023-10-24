@@ -17,13 +17,14 @@
 			<br></br>
 			<h1 align="center">Impressos de Venda</h1>
 			<br />
-			<div class="row mb-3 ml-5 pl-4">
-				<h:selectManyMenu value="#{impressosVendaController.listaOpcoes}" var="s" label="">
-					<h:selectOneMenu immediate="true">
-					</h:selectOneMenu>
-				</h:selectManyMenu>
+				<div class="form-check">
+					<h:selectOneRadio 
+						value="#{impressosVendaController.opcaoSelecionada}" enabledClass="true" class="form-check-input" style="list-style-type: none; margin-left: 50%;" layout="list">
+						<f:selectItems value="#{impressosVendaController.listaOpcoes}"
+							var="s" itemLabel="#{s}" ></f:selectItems>
+					</h:selectOneRadio>
+				</div>
 
-			</div>
 			<div class="row mb-2 ml-5 pl-3">
 				<div class="col-6 offset-3" align="right">
 					<h:commandButton action="#{vendaController.cancelarOperacao}"

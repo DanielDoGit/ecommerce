@@ -3,6 +3,8 @@ package ecommerce.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import ecommerce.beans.CondicaoPagamento;
@@ -28,10 +30,12 @@ public class RecebimentoDto implements Serializable{
 	
 	private CondicaoPagamentoDto condicaopagamento;
 	
+	private List<ParcelaDto> listaParcelaDto = new ArrayList<ParcelaDto>();
+	
 	public RecebimentoDto() {
 	}
 		
-	public Recebimento toRecebimento(Venda venda, ParcelaDto pDto) {
+	public Recebimento toRecebimento(Venda venda) {
 		FormaPagamento fp = formaPagamentoDto.toFormaPagamento();
 		CondicaoPagamento cp = condicaopagamento.toCondicaoPagamento();
 		Recebimento r = new Recebimento();
@@ -44,7 +48,9 @@ public class RecebimentoDto implements Serializable{
 		r.setCondicaopagamento(cp);
 		r.setFormaPagamento(fp);
 		r.setCliente(venda.getCliente());
-		r.getListaParcelas().add(pDto.toParcela(r));
+		for (ParcelaDto parcelaDto : listaParcelaDto) {
+			r.getListaParcelas().add(parcelaDto.toParcela(r));
+		}
 		return r;
 	}
 
@@ -123,5 +129,13 @@ public class RecebimentoDto implements Serializable{
 			return false;
 		RecebimentoDto other = (RecebimentoDto) obj;
 		return Objects.equals(codigo, other.codigo);
+	}
+
+	public List<ParcelaDto> getListaParcelaDto() {
+		return listaParcelaDto;
+	}
+
+	public void setListaParcelaDto(List<ParcelaDto> listaParcelaDto) {
+		this.listaParcelaDto = listaParcelaDto;
 	}
 }

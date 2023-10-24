@@ -9,9 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ecommerce.beans.Cliente;
-import ecommerce.beans.Parcela;
 import ecommerce.beans.Produto;
-import ecommerce.beans.Recebimento;
 import ecommerce.dao.ClienteDao;
 import ecommerce.dao.CondicaoPagamentoDao;
 import ecommerce.dao.EstoqueTransienteDao;
@@ -211,24 +209,15 @@ public class ItemVendaController implements Serializable {
 		if (!formaPagamentoDto.isCompensado()) {
 			VendaDto vDto = vendaController.getVendaDto();
 			Cliente c = clienteDao.getById(Integer.valueOf(vDto.getIdCliente()));
-			BigDecimal totalRecebimentos = getSomaRecebimentos(c);
+			BigDecimal totalRecebimentos = getSomaRecebimentosQuitados(c);
 			BigDecimal totalConsumido = totalRecebimentos.add(vDto.getTotalVenda());
 			return  totalConsumido.compareTo(vDto.getLimiteCredito()) <= 0;
 		}
 		return true;
 	}
 
-	private BigDecimal getSomaRecebimentos(Cliente c) {
-		List<Recebimento> listaRecebimento = recebimentoDao.getRecebimentosByCliente(c);
-		BigDecimal somaRecebimentos = BigDecimal.ZERO;
-		BigDecimal somaParcelasPagas = BigDecimal.ZERO;
-		for (Recebimento r : listaRecebimento) {
-			somaRecebimentos = somaRecebimentos.add(r.getValor());
-			for (Parcela parcela : r.getListaParcelas()) {
-				somaParcelasPagas.add(parcela.getValorParcela());
-			}
-		}
-		return somaRecebimentos.subtract(somaParcelasPagas);
+	private BigDecimal getSomaRecebimentosQuitados(Cliente c) {
+		return recebimentoDao.getRecebimentosQuitadosByCliente(c).stream().map( e-> e.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
 	public VendaController getVendaController() {

@@ -20,7 +20,7 @@ public class RecebimentoDao extends Dao<Recebimento>{
 		super(Recebimento.class);
 	}
 	
-	public List<Recebimento> getRecebimentosByCliente(Cliente c) {
+	public List<Recebimento> getRecebimentosQuitadosByCliente(Cliente c) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Recebimento> cq = cb.createQuery(Recebimento.class);
 		Root<Recebimento> root =  cq.from(Recebimento.class);

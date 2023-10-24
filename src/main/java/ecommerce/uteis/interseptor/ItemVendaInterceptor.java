@@ -1,6 +1,7 @@
 package ecommerce.uteis.interseptor;
 
 import java.io.Serializable;
+
 import java.util.List;
 
 import ecommerce.beans.Produto;
@@ -35,6 +36,5 @@ public class ItemVendaInterceptor implements Serializable {
 			estoqueDao.processarRemocaoEstoqueTransiente(p, i.getQuantidade());
 		}
 		return context.proceed();
-	}
-	
+	}	
 }

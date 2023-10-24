@@ -38,7 +38,7 @@ public class EstoqueTransiente implements Serializable {
 	
 	@Convert(converter = LocalDateTimeToTimeStamp.class)
 	private LocalDateTime horaIsercao;
-
+	
 	public EstoqueTransiente() {
 	}
 
