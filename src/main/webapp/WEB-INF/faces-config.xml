@@ -10,8 +10,11 @@
 
 	<lifecycle>
 		<phase-listener>ecommerce.uteis.jsf.ControleAcessoPhaseListener</phase-listener>
-	</lifecycle>
 
+	</lifecycle>
+	<lifecycle>
+		<phase-listener>ecommerce.uteis.jsf.ControleAcessoVenda</phase-listener>
+	</lifecycle>
 	<application>
 		<message-bundle>ecommerce.uteis.jsf.mensagens</message-bundle>
 	</application>

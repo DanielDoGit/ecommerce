@@ -2,8 +2,10 @@ package ecommerce.relatorios;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
+import ecommerce.uteis.jsf.AppException;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
@@ -20,7 +22,7 @@ import net.sf.jasperreports.engine.export.JRPdfExporter;
 @Named
 @RequestScoped
 @SuppressWarnings("deprecation")
-public class Relatorio {
+public class Relatorio{
 	
 	private String nomeRelatorio;
 	private Map<String, Object> mapa;
@@ -33,7 +35,12 @@ public class Relatorio {
 	}
 	
 	public void setMap(Map<String, Object> mapa) {
-		this.mapa = mapa;
+		if (mapa == null) {
+			this.mapa = new HashMap<String, Object>();
+		}else {
+			this.mapa = mapa;
+		}
+		
 	}
 	
 	public void setDataSource(JRDataSource dataSource) {
@@ -49,16 +56,21 @@ public class Relatorio {
 		return JasperFillManager.fillReport(io, mapa, dataSource);
 	}
 	
-	public void executarRelatorio() throws JRException, IOException{
+	public void executarRelatorio() throws JRException, IOException, AppException{
+		JasperPrint pr = getJasperPrint();
+		if (pr == null) {
+			throw new AppException("Relatório inexistente!");
+		}
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 		HttpServletResponse response = (HttpServletResponse) context.getResponse();
 		JRPdfExporter exporter = new JRPdfExporter();
 		response.setHeader("Content-disposition", "inline; filename=relatorio.pdf");
 		response.setContentType("application/pdf");
 		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, response.getOutputStream());
-		exporter.setParameter(JRExporterParameter.JASPER_PRINT, getJasperPrint());
+		exporter.setParameter(JRExporterParameter.JASPER_PRINT,pr);
 		exporter.exportReport();
 		FacesContext.getCurrentInstance().responseComplete();
 	}
+	
 	
 }

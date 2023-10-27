@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -136,12 +140,20 @@ public class ItemVendaController implements Serializable {
 				recebimentoDto.setCondicaopagamento(condicaoPagamentoDto);
 				recebimentoDto.setFormaPagamentoDto(formaPagamentoDto);
 				recebimentoDto.setDataEmissao(LocalDate.now());
-				recebimentoDto.setDataVencimento(LocalDate.now().plusDays(Long.valueOf(parcela)));
+				recebimentoDto.setDataVencimento(incremetarData(parcela));
 				recebimentoDto.setValor(valorCadaParcela);
 				recebimentoDto.setQuitado(formaPagamentoDto.isCompensado());
 				listaRecebimentoDto.add(recebimentoDto);
 			}
 		}
+	}
+	
+	private LocalDate incremetarData(String valor) {
+		Long longValue = Long.valueOf(valor);
+		ZoneId zone = ZoneId.of("UTC");
+		ZoneId fusoAtual = ZoneId.systemDefault();
+		ZonedDateTime zonedDateTime = LocalDateTime.now().atZone(fusoAtual).withZoneSameInstant(zone);
+		return zonedDateTime.plus(longValue, ChronoUnit.DAYS).toLocalDate();
 	}
 
 	public void adicionarItemVenda(AjaxBehaviorEvent e) {

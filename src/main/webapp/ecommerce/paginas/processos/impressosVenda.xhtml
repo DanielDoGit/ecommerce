@@ -17,26 +17,31 @@
 			<br></br>
 			<h1 align="center">Impressos de Venda</h1>
 			<br />
-				<div class="form-check">
-					<h:selectOneRadio 
-						value="#{impressosVendaController.opcaoSelecionada}" enabledClass="true" class="form-check-input" style="list-style-type: none; margin-left: 50%;" layout="list">
+			<div class="row offset-4 ">
+				<div class="form-check col-6">
+					<h:selectOneRadio
+						value="#{impressosVendaController.opcaoSelecionada}"
+						enabledClass="form-check-label" style="list-style-type: none; " layout="list">
 						<f:selectItems value="#{impressosVendaController.listaOpcoes}"
-							var="s" itemLabel="#{s}" ></f:selectItems>
+							var="s" itemLabel="#{s}" enabledClass="form-check-input" >
+						</f:selectItems>
 					</h:selectOneRadio>
 				</div>
+			</div>
+
 
 			<div class="row mb-2 ml-5 pl-3">
 				<div class="col-6 offset-3" align="right">
-					<h:commandButton action="#{vendaController.cancelarOperacao}"
+					<h:commandButton action="#{impressosVendaController.cancelar}"
 						value="Cancelar" immediate="true" class="btn btn-primary"
 						style="width: 120px; margin: 5px"></h:commandButton>
-					<h:commandButton action="#{vendaController.chamarItensVenda}"
-						value="Próximo" class="btn btn-primary needs-validation"
+					<h:commandButton action="#{impressosVendaController.processarOpcaoSelecionada}"
+						value="Imprimir" class="btn btn-primary"
 						style="width: 120px; margin: 5px"></h:commandButton>
 				</div>
 			</div>
-			<br></br>
 		</div>
+		<br></br>
 	</h:form>
 </h:body>
 </html>

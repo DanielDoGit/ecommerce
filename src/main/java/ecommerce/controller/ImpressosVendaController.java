@@ -1,17 +1,21 @@
 package ecommerce.controller;
 
+import java.io.IOException;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 import ecommerce.dao.VendaDao;
 import ecommerce.relatorios.ComprovanteVendaDataSource;
+import ecommerce.relatorios.Relatorio;
+import ecommerce.uteis.jsf.AppException;
 import ecommerce.uteis.jsf.GerenciadorConversa;
 import ecommerce.uteis.jsf.Uteis;
-import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ConversationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import net.sf.jasperreports.engine.JRException;
 
 @ConversationScoped
 @Named
@@ -31,22 +35,36 @@ public class ImpressosVendaController implements Serializable {
 	@Inject
 	private VendaDao vendaDao;
 	
+	@Inject
+	private Relatorio relatorio;
+	
+	@Inject
+	private FechamentoVendaController fechamentoController;
+	
 	private List<String> listaOpcoes = Arrays.asList("Comprovante venda", "Comprovante de Venda 2 vias");
 	
 	private String opcaoSelecionada;
 	
 	private ComprovanteVendaDataSource dataSourceComprovanteVenda;
 	
-	@PostConstruct
-	public void carregarDados() {
+	public void processarOpcaoSelecionada() throws JRException, IOException, AppException {
 		dataSourceComprovanteVenda = new ComprovanteVendaDataSource(itemVendaController);
+		relatorio.setMap(dataSourceComprovanteVenda.getHasmapDatasource());
+		relatorio.setDataSource(dataSourceComprovanteVenda.getCollectionDataSource());
+		if (listaOpcoes.get(0).equals(opcaoSelecionada)) {
+			relatorio.nomeRelatorio("/ecommerce/relatorios/ComprovanteVenda.jasper");
+		}else {
+			relatorio.nomeRelatorio(opcaoSelecionada);
+		}
+		relatorio.executarRelatorio();
 	}
 	
 	public String cancelar() {
 		conversa.finalizar();
 		return uteis.getCaminhoInicial();
 	}
-
+	
+	
 	public GerenciadorConversa getConversa() {
 		return conversa;
 	}
@@ -106,7 +124,5 @@ public class ImpressosVendaController implements Serializable {
 	public void setOpcaoSelecionada(String opcaoSelecionada) {
 		this.opcaoSelecionada = opcaoSelecionada;
 	}
-	
-	
 
 }

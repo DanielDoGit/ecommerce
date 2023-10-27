@@ -8,7 +8,7 @@ import jakarta.faces.convert.NumberConverter;
 
 @FacesConverter(value = "bigDecimalToNumber")
 public class BigDecimalToNumber extends NumberConverter {
-
+	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		value = removerFormatacao(value);

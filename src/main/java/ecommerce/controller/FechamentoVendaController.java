@@ -51,30 +51,30 @@ public class FechamentoVendaController implements Serializable {
 
 	@Inject
 	private VendaDao vendaDao;
-	
+
 	@Inject
 	private CaixaDao caixaDao;
-	
+
 	@Inject
 	private RecebimentoDao recebimentoDao;
-	
+
 	private List<RecebimentoDto> recebimentos;
 
 	private ParcelaDto parcelaDto;
 
 	private CaixaDto caixaDto;
-	
+
 	private RecebimentoDto recebimentoEncontrado = new RecebimentoDto();
-	
+
 	private boolean procedimentorealizado = false;
-	
+
 	private boolean vendaRealizada = false;
 
 	@PostConstruct
 	public void carregarRecebimentos() {
 		recebimentos = itemVendaController.getListaRecebimentoDto();
 	}
-	
+
 	public void recuperarRecebimento(RecebimentoDto recebimentoDto) {
 		recebimentoEncontrado = recebimentoDto;
 	}
@@ -82,8 +82,9 @@ public class FechamentoVendaController implements Serializable {
 	public void gravarAlteracao() {
 		try {
 			token.validarToken();
-			Optional<RecebimentoDto> optional = recebimentos.stream().filter( e-> e.getCodigo() == recebimentoEncontrado.getCodigo()).findFirst();
-			recebimentos.remove(optional.get());		
+			Optional<RecebimentoDto> optional = recebimentos.stream()
+					.filter(e -> e.getCodigo() == recebimentoEncontrado.getCodigo()).findFirst();
+			recebimentos.remove(optional.get());
 			recebimentos.add(recebimentoEncontrado);
 			atualizarSoma();
 			procedimentorealizado = true;
@@ -91,16 +92,16 @@ public class FechamentoVendaController implements Serializable {
 			uteis.adicionarMensagemErro(e2);
 		}
 	}
-	
+
 	private void atualizarSoma() {
 		BigDecimal resultado = recebimentos.stream().map(e -> e.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add);
 		itemVendaController.setTotalRecebimento(resultado);
 	}
-	
+
 	public String concluirVenda() {
 		try {
 			token.validarToken();
-			if (recebimentos.stream().anyMatch(e -> e.getValor().compareTo(BigDecimal.ZERO) <=0)) {
+			if (recebimentos.stream().anyMatch(e -> e.getValor().compareTo(BigDecimal.ZERO) <= 0)) {
 				uteis.adicionarMensagemAdvertencia("Existem parcelas com o valor zerado! Por favor verifique.");
 				return null;
 			}
@@ -129,13 +130,14 @@ public class FechamentoVendaController implements Serializable {
 			vendaDto.setAcrescimo(resultadoVendaCorrigido.subtract(totalVenda));
 		}
 	}
-	
+
 	public void calcularTroco(AjaxBehaviorEvent e) {
 		VendaDto vendaDto = itemVendaController.getVendaDto();
 		if (vendaDto.getRecebido() == null) {
 			return;
 		}
-		if (vendaDto.getRecebido().compareTo(BigDecimal.ZERO) <= 0 || vendaDto.getRecebido().compareTo(itemVendaController.getTotalRecebimento()) == -1) {
+		if (vendaDto.getRecebido().compareTo(BigDecimal.ZERO) <= 0
+				|| vendaDto.getRecebido().compareTo(itemVendaController.getTotalRecebimento()) == -1) {
 			vendaDto.setRecebido(BigDecimal.ZERO);
 			vendaDto.setTroco(BigDecimal.ZERO);
 			uteis.adicionarMensagemAdvertencia("O valor recebido deve ser maior que o de venda!");
@@ -143,7 +145,7 @@ public class FechamentoVendaController implements Serializable {
 		}
 		vendaDto.setTroco(vendaDto.getRecebido().subtract(itemVendaController.getTotalRecebimento()));
 	}
-	
+
 	private void aplicarCorrecaoValorRecebimento() {
 		VendaDto vendaDto = itemVendaController.getVendaDto();
 		BigDecimal totalVenda = vendaDto.getTotalVenda();
@@ -178,7 +180,8 @@ public class FechamentoVendaController implements Serializable {
 			if (recebimentoDto.isQuitado()) {
 				caixaDto = new CaixaDto();
 				caixaDto.setDataLancamento(LocalDateTime.now());
-				caixaDto.setDescricao("Recebimento: " + venda.getNomeCliente()+" - Parcela: "+parcelaDto.getNumeroParcela());
+				caixaDto.setDescricao(
+						"Recebimento: " + venda.getNomeCliente() + " - Parcela: " + parcelaDto.getNumeroParcela());
 				caixaDto.setValorRecebimento(recebimentoDto.getValor());
 				parcelaDto.setDataPagamento(recebimentoDto.getDataVencimento());
 				parcelaDto.getListacaixa().add(caixaDto);
@@ -186,7 +189,7 @@ public class FechamentoVendaController implements Serializable {
 			recebimentoDto.getListaParcelaDto().add(parcelaDto);
 		}
 	}
-	
+
 	private void atualizarDtoIndiceUltimaVendaCadastrada() {
 		VendaDto vendaDto = itemVendaController.getVendaDto();
 		Integer codigo = vendaDao.getLastCodigoVendaByCliente(vendaDto.getIdCliente());

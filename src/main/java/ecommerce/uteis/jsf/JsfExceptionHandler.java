@@ -51,7 +51,7 @@ public class JsfExceptionHandler extends ExceptionHandlerWrapper {
 
 	private void validarexceptions(Throwable e) {
 		Exception ee = (Exception) e;
-		if (ee.getCause().getMessage().contains("WELD-000321")) {
+		if (ee.getMessage() != null && ee.getMessage().contains("WELD-000321")) {
 			redirect("/ecommerce/paginas/uteis/mensagemConversacao.xhtml");
 		} else {
 			redirect("/ecommerce/paginas/uteis/errogenerico.xhtml");
