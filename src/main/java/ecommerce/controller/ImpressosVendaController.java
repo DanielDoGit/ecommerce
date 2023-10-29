@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import ecommerce.dao.VendaDao;
@@ -15,6 +16,7 @@ import ecommerce.uteis.jsf.Uteis;
 import jakarta.enterprise.context.ConversationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.transaction.Transactional;
 import net.sf.jasperreports.engine.JRException;
 
 @ConversationScoped
@@ -53,12 +55,18 @@ public class ImpressosVendaController implements Serializable {
 		relatorio.setDataSource(dataSourceComprovanteVenda.getCollectionDataSource());
 		if (listaOpcoes.get(0).equals(opcaoSelecionada)) {
 			relatorio.nomeRelatorio("/ecommerce/relatorios/ComprovanteVenda.jasper");
+			relatorio.executarRelatorio();
 		}else {
-			relatorio.nomeRelatorio(opcaoSelecionada);
+			HashMap<String, Object> hashMap = dataSourceComprovanteVenda.getHasmapDatasource();
+			hashMap.put("viaCliente", "VIA DO CLIENTE");
+			hashMap.put("viaEmpresa", "VIA DA EMPRESA");
+			relatorio.nomeRelatorio("/ecommerce/relatorios/ComprovanteVendaDuasVias.jasper");
+			relatorio.executarRelatorio();
 		}
-		relatorio.executarRelatorio();
+		
 	}
 	
+	@Transactional
 	public String cancelar() {
 		conversa.finalizar();
 		return uteis.getCaminhoInicial();

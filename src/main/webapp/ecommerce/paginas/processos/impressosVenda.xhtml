@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
@@ -18,15 +19,20 @@
 			<h1 align="center">Impressos de Venda</h1>
 			<br />
 			<div class="row offset-4 ">
-				<div class="form-check col-6">
-					<h:selectOneRadio
-						value="#{impressosVendaController.opcaoSelecionada}"
-						enabledClass="form-check-label" style="list-style-type: none; " layout="list">
-						<f:selectItems value="#{impressosVendaController.listaOpcoes}"
-							var="s" itemLabel="#{s}" enabledClass="form-check-input" >
-						</f:selectItems>
-					</h:selectOneRadio>
-				</div>
+			
+				<ul class="form-check">
+					<ui:repeat id="items" value="#{impressosVendaController.listaOpcoes}" var="item">
+						<li><input type="radio" jsf:id="item" class="form-check-input"
+							pt:name="#{hiddenItem.clientId}" value="#{item}"
+							pt:checked="#{item eq hiddenItem.value ? 'checked' : null}" /> 
+							<h:outputLabel
+								for="item" value="#{item}" class="form-check-label"/></li>
+					</ui:repeat>
+				</ul>
+
+				<h:inputHidden id="selectedItem" binding="#{hiddenItem}"
+					value="#{impressosVendaController.opcaoSelecionada}"
+					rendered="#{facesContext.currentPhaseId.ordinal ne 6}" />
 			</div>
 
 
@@ -35,7 +41,8 @@
 					<h:commandButton action="#{impressosVendaController.cancelar}"
 						value="Cancelar" immediate="true" class="btn btn-primary"
 						style="width: 120px; margin: 5px"></h:commandButton>
-					<h:commandButton action="#{impressosVendaController.processarOpcaoSelecionada}"
+					<h:commandButton
+						action="#{impressosVendaController.processarOpcaoSelecionada}"
 						value="Imprimir" class="btn btn-primary"
 						style="width: 120px; margin: 5px"></h:commandButton>
 				</div>
