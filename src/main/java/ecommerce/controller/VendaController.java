@@ -8,13 +8,16 @@ import java.util.stream.Collectors;
 
 import ecommerce.beans.Cliente;
 import ecommerce.beans.Funcionario;
+import ecommerce.beans.Venda;
 import ecommerce.dao.CidadeDao;
 import ecommerce.dao.ClienteDao;
 import ecommerce.dao.FuncionarioDao;
 import ecommerce.dao.PermissaoDao;
+import ecommerce.dao.VendaDao;
 import ecommerce.dto.ClienteDto;
 import ecommerce.dto.FuncionarioDto;
 import ecommerce.dto.VendaDto;
+import ecommerce.uteis.jsf.AppException;
 import ecommerce.uteis.jsf.GerenciadorConversa;
 import ecommerce.uteis.jsf.GerenciadorToken;
 import ecommerce.uteis.jsf.InjectBean;
@@ -51,6 +54,9 @@ public class VendaController implements Serializable {
 
 	@Inject
 	private LoginController loginController;
+	
+	@Inject
+	private VendaDao vendaDao;
 
 	private VendaDto vendaDto;
 
@@ -59,6 +65,8 @@ public class VendaController implements Serializable {
 	private List<ClienteDto> listaClienteDto = new ArrayList<ClienteDto>();
 
 	private List<FuncionarioDto> listaFuncionarioDto = new ArrayList<FuncionarioDto>();
+	
+	private String codigoVenda;
 	
 	public String abrirVenda() {
 		try {
@@ -149,6 +157,41 @@ public class VendaController implements Serializable {
 		PermissaoDao pDao = InjectBean.newInstanceCDI(PermissaoDao.class);
 		mostrarFuncionario(funcDto.toFuncionario(pDao, cid));
 	}
+	
+	public String prepararExclusao() {
+		try {
+			conversa.iniciar();
+			loginController.possuiPermissao("Excluir venda");
+			token.gerarToken();
+			return "/ecommerce/paginas/processos/excluirVenda.xhtml";
+		} catch (PermissaoExeption e) {
+			uteis.adicionarMensagemErro(e);
+			return null;
+		}
+	}
+	
+	public String excluir() {
+		try {
+			token.validarToken();
+			Venda e = vendaDao.getById(Integer.valueOf(codigoVenda));
+			if (e == null) {
+				throw new AppException("Não há nenhum registro com esse código!");
+			}
+			vendaDao.excluir(e);
+			uteis.adicionarMensagemSucessoExclusao();
+			return uteis.getCaminhoInicial();
+		} catch (TokenException e) {
+			uteis.adicionarMensagemErro(e);
+			return null;
+		}catch (NumberFormatException e) {
+			uteis.adicionarMensagemAdvertencia("O argumento de consulta é invalido!");
+			return null;
+		}catch (AppException e) {
+			uteis.adicionarMensagemErro(e);
+			return null;
+		}
+		
+	}
 
 	public ClienteDao getClienteDao() {
 		return clienteDao;
@@ -232,5 +275,21 @@ public class VendaController implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public VendaDao getVendaDao() {
+		return vendaDao;
+	}
+
+	public void setVendaDao(VendaDao vendaDao) {
+		this.vendaDao = vendaDao;
+	}
+
+	public String getCodigoVenda() {
+		return codigoVenda;
+	}
+
+	public void setCodigoVenda(String codigoVenda) {
+		this.codigoVenda = codigoVenda;
 	}
 }

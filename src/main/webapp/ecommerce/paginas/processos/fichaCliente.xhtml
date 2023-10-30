@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Ecommerce</title>
+	<ui:include src="/ecommerce/paginas/uteis/scripts.xhtml" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+<h:body class="bg-info">
+	<h:form>
+		<div class="container bg-light rounded-bottom divcentral">
+			<ui:include src="/ecommerce/paginas/uteis/barramenu.xhtml" />
+			<br></br>
+			<h1 align="center">Abertura de Venda</h1>
+			<br />
+			<div class="row mb-3 ml-5 pl-4">
+				<label class="col-12 offset-3">Cliente</label>
+				<div class="form-inline offset-3">
+					<div class="form-group ml-3">
+						<h:inputText value="#{fichaClienteController.clienteDto.idCliente}"
+							class="form-control col-2" id="txtIdCliente" autocomplete="off"
+							required="true">
+							<f:ajax listener="#{vendaController.carregarCliente}" 
+								execute="txtIdCliente" render="txtIdCliente txtNomeCliente txtNomeClienteOculto" event="blur" onevent="bloquearBotoesClasseNeedsValidation"></f:ajax>
+						</h:inputText>
+						<label>&#160;</label>
+						<h:inputText value="#{fichaClienteController.clienteDto.nomeCliente}"
+							class="form-control col-8" id="txtNomeCliente" autocomplete="off"
+							disabled="true"></h:inputText>
+						<label>&#160;</label>
+						<button type="button" class="btn btn-primary" data-toggle="modal"
+							data-target="#pesquisarModalCliente" id="botaoProcurarCliente">
+							<span class="fas fa-search"></span>
+						</button>
+						<h:message for="txtIdCliente" showDetail="false"
+							showSummary="true" styleClass="error" />
+						<label>&#160;</label>
+						<label>&#160;</label>
+						<h:inputHidden value="#{fichaClienteController.clienteDto.nomeCliente}" class="form-control col-8" required="true" id="txtNomeClienteOculto"></h:inputHidden>
+						<h:message for="txtNomeClienteOculto" showDetail="false"
+							showSummary="true" styleClass="error" />
+					</div>
+				</div>
+			</div>
+
+			<div class="row mb-2 ml-5 pl-3">
+				<div class="col-6 offset-3" align="right">
+					<h:commandButton action="#{fichaClienteController.cancelarOperacao}"
+						value="Cancelar" immediate="true" class="btn btn-primary"
+						style="width: 120px; margin: 5px"></h:commandButton>
+					<h:commandButton action="#{fichaClienteController.chamarItensVenda}"
+						value="Próximo" class="btn btn-primary needs-validation"
+						style="width: 120px; margin: 5px"
+					></h:commandButton>
+				</div>
+			</div>
+
+			<div class="modal" id="pesquisarModalCliente">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-body">
+							<h4>Pesquisa de Cliente</h4>
+							<div class="input-group-append">
+								<h:inputText value="#{vendaController.argumentoBusca}"
+									class="form-control" id="nomeClientePesquisa"
+									autocomplete="off" style="width: 100%">
+								</h:inputText>
+								<h:commandLink class="btn btn-primary" type="button"
+									action="#{vendaController.pesquisarCliente}">
+									<span class="fas fa-search"></span>
+									<f:ajax execute="nomeClientePesquisa" render="tabelaCliente"></f:ajax>
+								</h:commandLink>
+							</div>
+							<br /> <br />
+							<h:dataTable border="0"
+								value="#{vendaController.listaClienteDto}" var="t"
+								class="table table-hover"
+								columnClasses="center, left, colunaAceitar" id="tabelaCliente">
+								<h:column id="column1">
+									<f:facet name="header">
+										<h:outputText value="ID"></h:outputText>
+									</f:facet>
+									<h:outputText value="#{t.codigo}"></h:outputText>
+								</h:column>
+								<h:column id="column2">
+									<f:facet name="header">
+										<h:outputText value="Nome"></h:outputText>
+									</f:facet>
+									<h:outputText value="#{t.nome}"></h:outputText>
+								</h:column>
+								<h:column id="column3">
+									<f:facet name="header">
+										<h:outputText value="Selecionar"></h:outputText>
+									</f:facet>
+									<h:commandLink action="#{vendaController.selecionarCliente(t)}"
+										class="btn btn-success" pt:data-dismiss="modal">
+										<span class="fas fa-check"></span>
+										<f:ajax render="@form:txtIdCliente @form:txtNomeCliente"></f:ajax>
+									</h:commandLink>
+								</h:column>
+							</h:dataTable>
+							<br />
+							<div align="right">
+								<button type="button" class="btn btn-danger"
+									data-dismiss="modal" style="width: 120px">Sair</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+
+
+			<br></br>
+		</div>
+	</h:form>
+</h:body>
+</html>

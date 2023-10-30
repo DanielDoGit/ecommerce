@@ -44,11 +44,16 @@
 								value="Cadastrar venda" immediate="true"
 								styleClass="dropdown-item"></h:commandButton>
 							<h:commandButton
-								action="#{ajusteEstoqueController.prepararExclusao}"
+								action="#{vendaController.prepararExclusao}"
 								value="Excluir venda" immediate="true"
 								styleClass="dropdown-item"></h:commandButton>
 						</div>
 					</div>
+				</div>
+			</div>
+			<div class="row mb-3" align="center">
+				<div class="col-12">
+					<h:commandLink action="#{fichaClienteController.identificarCliente}" value="Ficha do cliente" immediate="true" styleClass="btn btn-info" style="width: 180px"></h:commandLink>	
 				</div>
 			</div>
 
