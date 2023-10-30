@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ComprovanteVenda" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="61da0364-347a-4d5b-af44-daa20f2d4f48">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ComprovanteVenda" printOrder="Horizontal" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="61da0364-347a-4d5b-af44-daa20f2d4f48">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -10,6 +20,9 @@
 	<parameter name="dataVenda" class="java.time.LocalDate"/>
 	<parameter name="totalRecebimentos" class="java.math.BigDecimal"/>
 	<parameter name="codigoCliente" class="java.lang.String"/>
+	<parameter name="descontos" class="java.math.BigDecimal"/>
+	<parameter name="totalVenda" class="java.math.BigDecimal"/>
+	<parameter name="acrescimos" class="java.math.BigDecimal"/>
 	<parameter name="nomeCliente" class="java.lang.String"/>
 	<field name="totalUnitario" class="java.math.BigDecimal"/>
 	<field name="valorUnitario" class="java.math.BigDecimal"/>
@@ -19,7 +32,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="53" splitType="Stretch">
+		<band height="35" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="530" height="30" uuid="d0b05a9c-5ef9-43f7-b168-80befae28949"/>
 				<textElement textAlignment="Center">
@@ -27,17 +40,13 @@
 				</textElement>
 				<text><![CDATA[Comprovante de venda]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="400" y="30" width="60" height="20" uuid="b4859a7f-7eeb-4fe6-a6dc-196a2f0088de"/>
-				<text><![CDATA[V2]]></text>
-			</staticText>
 		</band>
 	</title>
 	<pageHeader>
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="38" splitType="Stretch">
+		<band height="40" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
 				<reportElement x="2" y="1" width="61" height="15" uuid="c2534233-ab50-4b74-b8cb-2db05a739b51"/>
@@ -56,7 +65,7 @@
 				<textFieldExpression><![CDATA[$P{codigoVenda}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="36" width="530" height="1" uuid="4af221da-eab1-411b-9e19-f571eebde2db"/>
+				<reportElement x="0" y="36" width="535" height="1" uuid="4af221da-eab1-411b-9e19-f571eebde2db"/>
 			</line>
 			<textField>
 				<reportElement x="70" y="17" width="176" height="18" uuid="d7ef65cc-a94a-4eff-95ca-231f44e559d4"/>
@@ -79,27 +88,27 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="20" splitType="Stretch">
+		<band height="22" splitType="Stretch">
 			<textField>
-				<reportElement x="16" y="2" width="172" height="16" uuid="5430a1e1-2089-4f2b-a187-8418fe5cf1c6">
+				<reportElement positionType="Float" x="16" y="2" width="172" height="16" uuid="5430a1e1-2089-4f2b-a187-8418fe5cf1c6">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e1cae610-8531-4c83-b9d3-9c3b957837c6"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{nomeProduto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="190" y="2" width="54" height="16" uuid="64ce2749-3a2e-40d8-8bcd-36640346f3cc">
+				<reportElement positionType="Float" x="190" y="2" width="54" height="16" uuid="64ce2749-3a2e-40d8-8bcd-36640346f3cc">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e1cae610-8531-4c83-b9d3-9c3b957837c6"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{quantidade}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00####;¤-#,##0.00####">
-				<reportElement x="246" y="2" width="120" height="16" uuid="38c8b838-9ad5-4da9-b3f0-c4bdec02844f">
+				<reportElement positionType="Float" x="246" y="2" width="120" height="16" uuid="38c8b838-9ad5-4da9-b3f0-c4bdec02844f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e1cae610-8531-4c83-b9d3-9c3b957837c6"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{valorUnitario}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00;¤-#,##0.00">
-				<reportElement x="370" y="2" width="120" height="16" uuid="7d84ca39-48a0-43f0-9888-26cbda71a6d4">
+				<reportElement positionType="Float" x="370" y="2" width="120" height="16" uuid="7d84ca39-48a0-43f0-9888-26cbda71a6d4">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e1cae610-8531-4c83-b9d3-9c3b957837c6"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{totalUnitario}]]></textFieldExpression>
@@ -107,19 +116,43 @@
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="9" splitType="Stretch">
+		<band height="66" splitType="Stretch">
 			<line>
-				<reportElement positionType="Float" x="2" y="2" width="530" height="1" isPrintWhenDetailOverflows="true" uuid="ba04807e-d3b8-4613-84db-8d9f7aa198af"/>
+				<reportElement positionType="Float" x="0" y="2" width="535" height="1" uuid="ec7826d0-0940-4c87-9562-6507cb0ed182"/>
 			</line>
+			<staticText>
+				<reportElement x="270" y="6" width="98" height="15" uuid="e418cb54-2ed1-4fc2-b7c7-e889d9511070"/>
+				<text><![CDATA[Total Venda]]></text>
+			</staticText>
+			<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<reportElement x="370" y="5" width="160" height="16" uuid="1d117277-8d06-4945-8c2a-f1ffbd87c7a2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e1cae610-8531-4c83-b9d3-9c3b957837c6"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{totalVenda}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<reportElement x="370" y="21" width="160" height="16" uuid="f2fc0140-6bca-4fb0-8fd0-20f3e8baf1fb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e1cae610-8531-4c83-b9d3-9c3b957837c6"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{descontos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="270" y="22" width="98" height="15" uuid="3373b16e-f485-4d9d-9136-66698b716f5f"/>
+				<text><![CDATA[Descontos]]></text>
+			</staticText>
+			<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<reportElement x="370" y="37" width="160" height="16" uuid="2dd3665c-eb49-491b-b340-49fac5eb7388">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e1cae610-8531-4c83-b9d3-9c3b957837c6"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{acrescimos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="270" y="38" width="98" height="15" uuid="3e5e947a-5083-40e3-9c37-d4ea771d2f19"/>
+				<text><![CDATA[Acrecimos]]></text>
+			</staticText>
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="50" splitType="Stretch"/>
+		<band height="50"/>
 	</pageFooter>
-	<lastPageFooter>
-		<band height="50" splitType="Stretch"/>
-	</lastPageFooter>
-	<summary>
-		<band height="50" splitType="Stretch"/>
-	</summary>
 </jasperReport>
