@@ -82,8 +82,7 @@ public class FechamentoVendaController implements Serializable {
 	public void gravarAlteracao() {
 		try {
 			token.validarToken();
-			Optional<RecebimentoDto> optional = recebimentos.stream()
-					.filter(e -> e.getCodigo() == recebimentoEncontrado.getCodigo()).findFirst();
+			Optional<RecebimentoDto> optional = recebimentos.stream().filter(e -> e.getCodigo() == recebimentoEncontrado.getCodigo()).findFirst();
 			recebimentos.remove(optional.get());
 			recebimentos.add(recebimentoEncontrado);
 			atualizarSoma();
@@ -136,8 +135,7 @@ public class FechamentoVendaController implements Serializable {
 		if (vendaDto.getRecebido() == null) {
 			return;
 		}
-		if (vendaDto.getRecebido().compareTo(BigDecimal.ZERO) <= 0
-				|| vendaDto.getRecebido().compareTo(itemVendaController.getTotalRecebimento()) == -1) {
+		if (vendaDto.getRecebido().compareTo(BigDecimal.ZERO) <= 0	|| vendaDto.getRecebido().compareTo(itemVendaController.getTotalRecebimento()) == -1) {
 			vendaDto.setRecebido(BigDecimal.ZERO);
 			vendaDto.setTroco(BigDecimal.ZERO);
 			uteis.adicionarMensagemAdvertencia("O valor recebido deve ser maior que o de venda!");
@@ -180,8 +178,7 @@ public class FechamentoVendaController implements Serializable {
 			if (recebimentoDto.isQuitado()) {
 				caixaDto = new CaixaDto();
 				caixaDto.setDataLancamento(LocalDateTime.now());
-				caixaDto.setDescricao(
-						"Recebimento: " + venda.getNomeCliente() + " - Parcela: " + parcelaDto.getNumeroParcela());
+				caixaDto.setDescricao("Recebimento: " + venda.getNomeCliente() + " - Parcela: " + parcelaDto.getNumeroParcela());
 				caixaDto.setValorRecebimento(recebimentoDto.getValor());
 				parcelaDto.setDataPagamento(recebimentoDto.getDataVencimento());
 				parcelaDto.getListacaixa().add(caixaDto);

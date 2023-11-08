@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import ecommerce.beans.Caixa;
+import ecommerce.beans.Funcionario;
 import ecommerce.beans.Parcela;
 
 public class CaixaDto implements Serializable{
@@ -20,16 +21,26 @@ public class CaixaDto implements Serializable{
 	
 	private LocalDateTime dataLancamento;
 	
-	public Caixa toCaixa(Parcela parcela) {
+	public Caixa toCaixa(Parcela parcela, Funcionario funcionario) {
 		Caixa c = new Caixa();
 		c.setCodigo(codigo);
 		c.setDataLancamento(dataLancamento);
 		c.setDescricao(descricao);
 		c.setParcela(parcela);
 		c.setValorBaixa(valorRecebimento);
+		c.setFuncionario(funcionario);
 		return c;
 	}
-
+	
+	public CaixaDto() {}
+	
+	public CaixaDto(Caixa c) {
+		this.codigo = c.getCodigo();
+		this.dataLancamento = c.getDataLancamento();
+		this.descricao = c.getDescricao();
+		this.valorRecebimento = c.getValorBaixa();
+	}
+	
 	public Integer getCodigo() {
 		return codigo;
 	}

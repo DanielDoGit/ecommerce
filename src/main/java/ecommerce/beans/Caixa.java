@@ -30,6 +30,10 @@ public class Caixa implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="parcela")
 	private Parcela parcela;
+	
+	@ManyToOne
+	@JoinColumn(name="funcionario")
+	private Funcionario funcionario;
 
 	public Integer getCodigo() {
 		return codigo;
@@ -90,6 +94,14 @@ public class Caixa implements Serializable{
 			return false;
 		Caixa other = (Caixa) obj;
 		return Objects.equals(codigo, other.codigo);
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
 	}
 	
 

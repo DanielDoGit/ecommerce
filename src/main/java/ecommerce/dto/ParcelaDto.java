@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import ecommerce.beans.Funcionario;
 import ecommerce.beans.Parcela;
 import ecommerce.beans.Recebimento;
 
@@ -34,8 +35,9 @@ public class ParcelaDto implements Serializable {
 		p.setDataPagamento(dataPagamento);
 		p.setValorParcela(valorParcela);
 		p.setRecebimento(recebimento);
+		Funcionario funcionario = recebimento.getVenda().getFuncionario();
 		for (CaixaDto caixaDto : listacaixa) {
-			p.getListacaixa().add(caixaDto.toCaixa(p));
+			p.getListacaixa().add(caixaDto.toCaixa(p, funcionario));
 		}
 		return p;
 	}

@@ -106,6 +106,18 @@ public class Dao<T> implements Serializable{
 	public void setEm(EntityManager em) {
 		this.em = em;
 	}
+
+	public Class<T> getKlass() {
+		return klass;
+	}
+
+	public void setKlass(Class<T> klass) {
+		this.klass = klass;
+	}
+
+	public Integer getQuantidade_registros() {
+		return quantidade_registros;
+	}
 	
 	
 }
