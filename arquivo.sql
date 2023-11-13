@@ -67,7 +67,8 @@ CREATE TABLE public.caixa (
     datalancamento timestamp without time zone,
     valorbaixa numeric(10,3),
     tipo character varying(50),
-    parcela integer
+    parcela integer,
+    funcionario integer
 );
 
 
@@ -574,6 +575,7 @@ COPY public.ajusteestoque (codigo, motivo, dataajuste, quantidade, produto, tipo
 1	teste	2023-08-16	5.00	1	2
 4		2023-08-21	23.00	1	2
 5	Em estoque	2023-09-12	100.00	2	2
+6	Em estoque	2023-10-23	100.00	1	2
 \.
 
 
@@ -581,19 +583,38 @@ COPY public.ajusteestoque (codigo, motivo, dataajuste, quantidade, produto, tipo
 -- Data for Name: caixa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.caixa (codigo, descricao, datalancamento, valorbaixa, tipo, parcela) FROM stdin;
-1	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-21 22:49:59.130676	50.000	\N	4
-2	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-21 23:07:26.533946	14.670	\N	5
-3	Recebimento: Daniel Ausech Esperandio - Parcela: 3	2023-10-21 23:07:27.489648	14.670	\N	6
-4	Recebimento: Daniel Ausech Esperandio - Parcela: 4	2023-10-21 23:07:27.988273	14.670	\N	7
-5	Recebimento: Daniel Ausech Esperandio - Parcela: 5	2023-10-21 23:07:28.47794	14.670	\N	8
-6	Recebimento: Daniel Ausech Esperandio - Parcela: 6	2023-10-21 23:07:28.963264	14.670	\N	9
-7	Recebimento: Daniel Ausech Esperandio - Parcela: 7	2023-10-21 23:07:29.760355	14.670	\N	10
-8	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-21 23:29:16.236034	40.000	\N	11
-9	Recebimento: Bruno de Oliveira Alves - Parcela: 2	2023-10-21 23:36:26.991727	40.000	\N	12
-10	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-21 23:44:08.180205	50.000	\N	13
-11	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-22 01:24:24.744036	40.000	\N	14
-12	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-22 01:35:00.787054	40.000	\N	15
+COPY public.caixa (codigo, descricao, datalancamento, valorbaixa, tipo, parcela, funcionario) FROM stdin;
+1	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-21 22:49:59.130676	50.000	\N	4	1
+2	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-21 23:07:26.533946	14.670	\N	5	1
+3	Recebimento: Daniel Ausech Esperandio - Parcela: 3	2023-10-21 23:07:27.489648	14.670	\N	6	1
+4	Recebimento: Daniel Ausech Esperandio - Parcela: 4	2023-10-21 23:07:27.988273	14.670	\N	7	1
+5	Recebimento: Daniel Ausech Esperandio - Parcela: 5	2023-10-21 23:07:28.47794	14.670	\N	8	1
+6	Recebimento: Daniel Ausech Esperandio - Parcela: 6	2023-10-21 23:07:28.963264	14.670	\N	9	1
+7	Recebimento: Daniel Ausech Esperandio - Parcela: 7	2023-10-21 23:07:29.760355	14.670	\N	10	1
+8	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-21 23:29:16.236034	40.000	\N	11	1
+9	Recebimento: Bruno de Oliveira Alves - Parcela: 2	2023-10-21 23:36:26.991727	40.000	\N	12	1
+10	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-21 23:44:08.180205	50.000	\N	13	1
+11	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-22 01:24:24.744036	40.000	\N	14	1
+12	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-22 01:35:00.787054	40.000	\N	15	1
+13	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-23 16:23:50.527091	40.000	\N	16	1
+14	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-27 10:32:55.780039	50.000	\N	17	1
+15	Recebimento: Bruno de Oliveira Alves - Parcela: 2	2023-10-27 10:33:29.326506	50.000	\N	18	1
+16	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-27 10:41:53.442953	40.000	\N	19	1
+17	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-27 10:45:52.204573	50.000	\N	20	1
+18	Recebimento: Bruno de Oliveira Alves - Parcela: 2	2023-10-27 10:47:47.784629	50.000	\N	21	1
+19	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-27 10:51:41.571376	50.000	\N	22	1
+20	Recebimento: Bruno de Oliveira Alves - Parcela: 2	2023-10-27 11:08:07.376569	50.000	\N	23	1
+21	Recebimento: Bruno de Oliveira Alves - Parcela: 2	2023-10-27 11:09:53.353603	50.000	\N	24	1
+22	Recebimento: Bruno de Oliveira Alves - Parcela: 2	2023-10-27 11:12:23.580795	50.000	\N	25	1
+23	Recebimento: Bruno de Oliveira Alves - Parcela: 2	2023-10-27 11:23:01.153731	50.000	\N	26	1
+24	Recebimento: Bruno de Oliveira Alves - Parcela: 2	2023-10-27 11:24:36.125002	50.000	\N	27	1
+25	Recebimento: Bruno de Oliveira Alves - Parcela: 2	2023-10-27 11:27:45.56529	50.000	\N	28	1
+26	Recebimento: Bruno de Oliveira Alves - Parcela: 2	2023-10-27 11:28:13.113575	50.000	\N	29	1
+27	Recebimento: Bruno de Oliveira Alves - Parcela: 2	2023-10-27 11:29:14.479137	50.000	\N	30	1
+28	Recebimento: Bruno de Oliveira Alves - Parcela: 2	2023-10-27 11:30:42.1518	50.000	\N	31	1
+29	Recebimento: Bruno de Oliveira Alves - Parcela: 2	2023-10-27 11:35:03.754355	50.000	\N	32	1
+30	Recebimento: Bruno de Oliveira Alves - Parcela: 2	2023-10-27 11:38:17.172515	50.000	\N	33	1
+31	Recebimento: Daniel Ausech Esperandio - Parcela: 2	2023-10-27 11:40:45.922531	50.000	\N	34	1
 \.
 
 
@@ -644,7 +665,7 @@ COPY public.estabelecimento (codigo, nome, contato, endereco, bairro, cnpj, cida
 --
 
 COPY public.estoque_transiente (codigo, produto, quantidade_uso, quantidade_acesso, horaisercao) FROM stdin;
-33	1	5.000	1	2023-10-21 23:41:49.869531
+37	2	15.000	15	2023-10-27 10:31:40.529517
 \.
 
 
@@ -775,6 +796,25 @@ COPY public.itemvenda (codigo, quantidade, valorunitario, totalunitario, produto
 3	1.000	50.000	50.000	2	10
 4	1.000	40.000	40.000	1	11
 5	1.000	40.000	40.000	1	12
+6	1.000	40.000	40.000	1	13
+7	1.000	50.000	50.000	2	14
+8	1.000	50.000	50.000	2	15
+9	1.000	40.000	40.000	1	16
+10	1.000	50.000	50.000	2	17
+11	1.000	50.000	50.000	2	18
+12	1.000	50.000	50.000	2	19
+13	1.000	50.000	50.000	2	20
+14	1.000	50.000	50.000	2	21
+15	1.000	50.000	50.000	2	22
+16	1.000	50.000	50.000	2	23
+17	1.000	50.000	50.000	2	24
+18	1.000	50.000	50.000	2	25
+19	1.000	50.000	50.000	2	26
+20	1.000	50.000	50.000	2	27
+21	1.000	50.000	50.000	2	28
+22	1.000	50.000	50.000	2	29
+23	1.000	50.000	50.000	2	30
+24	1.000	50.000	50.000	2	31
 \.
 
 
@@ -795,6 +835,25 @@ COPY public.parcela (codigo, valorparcela, dataemissao, datapagamento, quitada, 
 13	50.000	2023-10-21	2023-10-22	T	2	15
 14	40.000	2023-10-22	2023-10-22	T	2	16
 15	40.000	2023-10-22	2023-10-22	T	2	17
+16	40.000	2023-10-23	2023-10-23	T	2	18
+17	50.000	2023-10-27	2023-10-27	T	2	19
+18	50.000	2023-10-27	2023-10-27	T	2	20
+19	40.000	2023-10-27	2023-10-27	T	2	21
+20	50.000	2023-10-27	2023-10-27	T	2	22
+21	50.000	2023-10-27	2023-10-27	T	2	23
+22	50.000	2023-10-27	2023-10-27	T	2	24
+23	50.000	2023-10-27	2023-10-27	T	2	25
+24	50.000	2023-10-27	2023-10-27	T	2	26
+25	50.000	2023-10-27	2023-10-27	T	2	27
+26	50.000	2023-10-27	2023-10-27	T	2	28
+27	50.000	2023-10-27	2023-10-27	T	2	29
+28	50.000	2023-10-27	2023-10-27	T	2	30
+29	50.000	2023-10-27	2023-10-27	T	2	31
+30	50.000	2023-10-27	2023-10-27	T	2	32
+31	50.000	2023-10-27	2023-10-27	T	2	33
+32	50.000	2023-10-27	2023-10-27	T	2	34
+33	50.000	2023-10-03	2023-10-27	T	2	35
+34	50.000	2023-10-27	2023-10-27	T	2	36
 \.
 
 
@@ -869,6 +928,25 @@ COPY public.recebimento (codigo, valor, dataemissao, datavencimento, quitada, ve
 15	50.000	2023-10-21	2023-10-22	T	10	1	5	2	T
 16	40.000	2023-10-22	2023-10-22	T	11	1	1	2	T
 17	40.000	2023-10-22	2023-10-22	T	12	1	1	2	T
+18	40.000	2023-10-23	2023-10-23	T	13	1	1	2	T
+19	50.000	2023-10-27	2023-10-27	T	14	1	1	2	T
+20	50.000	2023-10-27	2023-10-27	T	15	1	1	3	T
+21	40.000	2023-10-27	2023-10-27	T	16	1	1	2	T
+22	50.000	2023-10-27	2023-10-27	T	17	1	1	2	T
+23	50.000	2023-10-27	2023-10-27	T	18	1	1	3	T
+24	50.000	2023-10-27	2023-10-27	T	19	1	1	2	T
+25	50.000	2023-10-27	2023-10-27	T	20	1	1	3	T
+26	50.000	2023-10-27	2023-10-27	T	21	1	1	3	T
+27	50.000	2023-10-27	2023-10-27	T	22	1	1	3	T
+28	50.000	2023-10-27	2023-10-27	T	23	1	1	3	T
+29	50.000	2023-10-27	2023-10-27	T	24	1	1	3	T
+30	50.000	2023-10-27	2023-10-27	T	25	1	1	3	T
+31	50.000	2023-10-27	2023-10-27	T	26	1	1	3	T
+32	50.000	2023-10-27	2023-10-27	T	27	1	1	3	T
+33	50.000	2023-10-27	2023-10-27	T	28	1	1	3	T
+34	50.000	2023-10-27	2023-10-27	T	29	1	1	3	T
+35	50.000	2023-10-27	2023-10-27	T	30	1	1	3	T
+36	50.000	2023-10-27	2023-10-27	T	31	1	1	2	T
 \.
 
 
@@ -885,6 +963,25 @@ COPY public.venda (codigo, datavenda, totalvenda, cliente, desconto, acrescimo, 
 10	2023-10-21	50.00	2	0.000	0.000	3
 11	2023-10-22	40.00	2	0.000	0.000	1
 12	2023-10-22	40.00	2	0.000	0.000	1
+13	2023-10-23	40.00	2	0.000	0.000	3
+14	2023-10-27	50.00	2	0.000	0.000	3
+15	2023-10-27	50.00	3	0.000	0.000	3
+16	2023-10-27	40.00	2	0.000	0.000	3
+17	2023-10-27	50.00	2	0.000	0.000	3
+18	2023-10-27	50.00	3	0.000	0.000	3
+19	2023-10-27	50.00	2	0.000	0.000	3
+20	2023-10-27	50.00	3	0.000	0.000	3
+21	2023-10-27	50.00	3	0.000	0.000	3
+22	2023-10-27	50.00	3	0.000	0.000	3
+23	2023-10-27	50.00	3	0.000	0.000	3
+24	2023-10-27	50.00	3	0.000	0.000	3
+25	2023-10-27	50.00	3	0.000	0.000	3
+26	2023-10-27	50.00	3	0.000	0.000	3
+27	2023-10-27	50.00	3	0.000	0.000	3
+28	2023-10-27	50.00	3	0.000	0.000	3
+29	2023-10-27	50.00	3	0.000	0.000	3
+30	2023-10-03	50.00	3	0.000	0.000	3
+31	2023-10-27	50.00	2	0.000	0.000	3
 \.
 
 
@@ -892,14 +989,14 @@ COPY public.venda (codigo, datavenda, totalvenda, cliente, desconto, acrescimo, 
 -- Name: ajusteestoque_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.ajusteestoque_codigo_seq', 5, true);
+SELECT pg_catalog.setval('public.ajusteestoque_codigo_seq', 6, true);
 
 
 --
 -- Name: caixa_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.caixa_codigo_seq', 12, true);
+SELECT pg_catalog.setval('public.caixa_codigo_seq', 31, true);
 
 
 --
@@ -934,7 +1031,7 @@ SELECT pg_catalog.setval('public.estabelecimento_codigo_seq', 1, false);
 -- Name: estoque_transiente_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.estoque_transiente_codigo_seq', 34, true);
+SELECT pg_catalog.setval('public.estoque_transiente_codigo_seq', 37, true);
 
 
 --
@@ -976,14 +1073,14 @@ SELECT pg_catalog.setval('public.grupo_codigo_seq', 2, true);
 -- Name: itemvenda_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.itemvenda_codigo_seq', 5, true);
+SELECT pg_catalog.setval('public.itemvenda_codigo_seq', 24, true);
 
 
 --
 -- Name: parcela_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.parcela_codigo_seq', 15, true);
+SELECT pg_catalog.setval('public.parcela_codigo_seq', 34, true);
 
 
 --
@@ -1004,14 +1101,14 @@ SELECT pg_catalog.setval('public.produto_codigo_seq', 2, true);
 -- Name: recebimento_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.recebimento_codigo_seq', 17, true);
+SELECT pg_catalog.setval('public.recebimento_codigo_seq', 36, true);
 
 
 --
 -- Name: venda_codigo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.venda_codigo_seq', 12, true);
+SELECT pg_catalog.setval('public.venda_codigo_seq', 31, true);
 
 
 --
@@ -1228,6 +1325,14 @@ ALTER TABLE ONLY public.cidade
 
 ALTER TABLE ONLY public.cidade
     ADD CONSTRAINT nome_cidade_un UNIQUE (nome);
+
+
+--
+-- Name: caixa caixa_funcionario_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.caixa
+    ADD CONSTRAINT caixa_funcionario_fk FOREIGN KEY (funcionario) REFERENCES public.funcionario(codigo);
 
 
 --
