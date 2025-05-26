@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dependencies>
+	<!-- Outras dependências existentes -->
+
+	<!-- Adicione dependências faltantes do JasperReports -->
+	<dependency>
+		<groupId>commons-collections</groupId>
+		<artifactId>commons-collections</artifactId>
+		<version>3.2.2</version>
+	</dependency>
+	<dependency>
+		<groupId>commons-logging</groupId>
+		<artifactId>commons-logging</artifactId>
+		<version>1.2</version>
+	</dependency>
+	<dependency>
+		<groupId>org.codehaus.groovy</groupId>
+		<artifactId>groovy-all</artifactId>
+		<version>2.4.21</version>
+		<classifier>indy</classifier>
+	</dependency>
+</dependencies>
+
+<build>
+	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-antrun-plugin</artifactId>
+			<version>3.1.0</version>
+			
+			<dependencies>
+				
+			</dependencies>
+			<dependencies>
+				<!-- Dependências adicionais para o plugin Antrun -->
+				<dependency>
+					<groupId>net.sf.jasperreports</groupId>
+					<artifactId>jasperreports</artifactId>
+					<version>7.0.2</version>
+				</dependency>
+
+			</dependencies>
+		</plugin>
+	</plugins>
+</build>

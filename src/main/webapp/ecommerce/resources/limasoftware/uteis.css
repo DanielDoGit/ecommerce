@@ -47,7 +47,7 @@ a mesma espessura das demais linhas da TABLE */
 .divcentral {
 	width: 1280px;
 	box-shadow: 1px 1px 15px black;
-	min-height: 95vh;
+	min-height: 108vh;
 }
 
 .error {
