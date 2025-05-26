@@ -37,9 +37,6 @@ public class LoginController implements Serializable {
 	@Inject
 	private Uteis uteis;
 	
-	@Inject
-	private EstoqueTransienteDao estDao;
-
 	private FuncionarioDto funcionarioDto;
 	private String login;
 	private String senha;

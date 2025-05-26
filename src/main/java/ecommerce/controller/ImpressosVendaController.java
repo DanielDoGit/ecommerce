@@ -40,12 +40,9 @@ public class ImpressosVendaController implements Serializable {
 	@Inject
 	private Relatorio relatorio;
 	
-	@Inject
-	private FechamentoVendaController fechamentoController;
-	
 	private List<String> listaOpcoes = Arrays.asList("Comprovante venda", "Comprovante de Venda 2 vias");
 	
-	private String opcaoSelecionada;
+	private String opcaoSelecionada = listaOpcoes.get(0);
 	
 	private ComprovanteVendaDataSource dataSourceComprovanteVenda;
 	

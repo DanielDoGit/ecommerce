@@ -27,5 +27,13 @@ public class RecebimentoDao extends Dao<Recebimento>{
 		cq.select(root).where(cb.and(cb.equal(root.get("cliente"), c), cb.equal(root.get("quitado"), true)));
 		return em.createQuery(cq).getResultList();
 	}
+	
+	public List<Recebimento> getRecebimentosAReceberByCliente(Cliente c) {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Recebimento> cq = cb.createQuery(Recebimento.class);
+		Root<Recebimento> root =  cq.from(Recebimento.class);
+		cq.select(root).where(cb.and(cb.equal(root.get("cliente"), c), cb.equal(root.get("quitado"), false)));
+		return em.createQuery(cq).getResultList();
+	}
 
 }

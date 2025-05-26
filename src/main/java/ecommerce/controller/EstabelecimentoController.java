@@ -16,7 +16,6 @@ import ecommerce.uteis.jsf.GerenciadorToken;
 import ecommerce.uteis.jsf.PermissaoExeption;
 import ecommerce.uteis.jsf.TokenException;
 import ecommerce.uteis.jsf.Uteis;
-import ecommerce.uteis.jsf.ValidadorBean;
 import jakarta.enterprise.context.ConversationScoped;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import jakarta.inject.Inject;
@@ -41,9 +40,6 @@ public class EstabelecimentoController implements Serializable {
 
 	@Inject
 	private LoginController controller;
-	
-	@Inject
-	private ValidadorBean<Estabelecimento> validador;
 
 	@Inject
 	private GerenciadorToken token;
@@ -56,7 +52,7 @@ public class EstabelecimentoController implements Serializable {
 	private String argumentoBusca = "";
 
 	private List<CidadeDto> listaCidadePesquisada;
-	
+
 	private Formatadores formatadores = new Formatadores();
 
 	public String alterarEstabelecimento() {

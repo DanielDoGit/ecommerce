@@ -8,9 +8,7 @@ import java.util.List;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
-import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import jakarta.servlet.ServletContext;
 
 @Named
 @RequestScoped
@@ -18,9 +16,6 @@ public class Uteis implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private DateTimeFormatter padraoFormatacaoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-	@Inject
-	private ServletContext servletContext;
 
 	public String getCaminhoInicial() {
 		return "/ecommerce/paginas/uteis/inicial.xhtml";

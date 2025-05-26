@@ -49,6 +49,8 @@ public class FichaClienteController implements Serializable{
 			return null;
 		}
 	}
+	
+	
 
 	public ClienteDao getClienteDao() {
 		return clienteDao;

@@ -61,9 +61,7 @@ public class CondicaoPagamentoController implements Serializable {
 			login.possuiPermissao("Consultar condicao de pagamento");
 			List<CondicaoPagamento> lista = condicaoPagamentoDao.buscarUltimosCadastrados();
 			listaCondicaoPagamentoPesquisado = uteis.transformListToDto(lista, CondicaoPagamentoDto.class);
-			mensagem = listaCondicaoPagamentoPesquisado.isEmpty()
-					? "Não há condições de pagamento cadastradas no sistema..."
-					: "Ultimas condições de pagamento registradas...";
+			mensagem = listaCondicaoPagamentoPesquisado.isEmpty() ? "Não há condições de pagamento cadastradas no sistema..." : "Ultimas condições de pagamento registradas...";
 			return paginaConsulta;
 		} catch (PermissaoExeption e) {
 			uteis.adicionarMensagemErro(e);
@@ -83,9 +81,7 @@ public class CondicaoPagamentoController implements Serializable {
 				List<CondicaoPagamento> lista = condicaoPagamentoDao.buscarSimilaridade("descricao", argumentoBusca);
 				listaCondicaoPagamentoPesquisado = uteis.transformListToDto(lista, CondicaoPagamentoDto.class);
 			}
-			mensagem = listaCondicaoPagamentoPesquisado.isEmpty()
-					? "Não há formas de pagamento cadastradas com esse argumento."
-					: "Quantidade de formas de pagamento cadastradas: " + listaCondicaoPagamentoPesquisado.size();
+			mensagem = listaCondicaoPagamentoPesquisado.isEmpty() ? "Não há formas de pagamento cadastradas com esse argumento." : "Quantidade de formas de pagamento cadastradas: " + listaCondicaoPagamentoPesquisado.size();
 		} catch (NumberFormatException e) {
 			uteis.adicionarMensagemAdvertencia("O argumento de pesquisa é inválido!");
 		} catch (Exception e) {
@@ -213,9 +209,9 @@ public class CondicaoPagamentoController implements Serializable {
 		if (descricao != null) {
 			String[] split = descricao.split(" \\- ");
 			StringBuilder st = new StringBuilder();
-			for (int i = 0; i < split.length-1; i++) {
+			for (int i = 0; i < split.length - 1; i++) {
 				st.append(split[i]);
-				if (i < split.length-2) {
+				if (i < split.length - 2) {
 					st.append(" - ");
 				}
 			}
@@ -223,11 +219,11 @@ public class CondicaoPagamentoController implements Serializable {
 			if (!resultante.isBlank()) {
 				condicaoPagamentoDto.setDescricao(resultante);
 				condicaoPagamentoDto.setNumeroParcelas(condicaoPagamentoDto.getNumeroParcelas() - 1);
-			}else {
+			} else {
 				condicaoPagamentoDto.setDescricao(null);
 				condicaoPagamentoDto.setNumeroParcelas(0);
 			}
-			
+
 		}
 	}
 

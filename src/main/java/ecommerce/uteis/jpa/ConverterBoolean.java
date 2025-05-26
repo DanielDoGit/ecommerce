@@ -8,7 +8,7 @@ public class ConverterBoolean implements AttributeConverter<Boolean, String> {
 
 	@Override
 	public String convertToDatabaseColumn(Boolean attribute) {
-		return attribute.equals(Boolean.TRUE) ? "T" : "F";
+		return Boolean.TRUE.equals(attribute) ? "T" : "F";
 	}
 
 	@Override

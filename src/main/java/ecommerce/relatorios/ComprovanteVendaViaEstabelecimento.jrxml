@@ -28,9 +28,12 @@
 	<field name="nomeProduto" class="java.lang.String"/>
 	<field name="quantidade" class="java.math.BigDecimal"/>
 	<background splitType="Stretch"/>
-	<title height="35" splitType="Stretch">
+	<title height="52" splitType="Stretch">
 		<element kind="staticText" uuid="d0b05a9c-5ef9-43f7-b168-80befae28949" x="0" y="0" width="530" height="30" fontSize="20.0" hTextAlign="Center">
 			<text><![CDATA[Comprovante de venda]]></text>
+		</element>
+		<element kind="textField" uuid="3dbfcbcc-5a0a-440e-9de9-d597813483c8" x="0" y="32" width="530" height="18" fontSize="12.0" underline="true" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA["VIA DO ESTABELECIMENTO"]]></expression>
 		</element>
 	</title>
 	<pageHeader splitType="Stretch"/>
@@ -48,7 +51,7 @@
 			<expression><![CDATA[$P{codigoVenda}]]></expression>
 		</element>
 		<element kind="line" uuid="4af221da-eab1-411b-9e19-f571eebde2db" x="0" y="36" width="535" height="1"/>
-		<element kind="textField" uuid="d7ef65cc-a94a-4eff-95ca-231f44e559d4" x="70" y="17" width="176" height="18" markup="none">
+		<element kind="textField" uuid="d7ef65cc-a94a-4eff-95ca-231f44e559d4" x="70" y="17" width="176" height="18" markup="styled">
 			<expression><![CDATA[$P{codigoCliente} +" - "+ $P{nomeCliente}]]></expression>
 		</element>
 		<element kind="textField" uuid="90993a24-575b-4a83-86cc-b925d18d6ecc" x="256" y="17" width="92" height="18">
@@ -107,5 +110,4 @@
 			<text><![CDATA[Acrecimos]]></text>
 		</element>
 	</columnFooter>
-	<pageFooter height="50"/>
 </jasperReport>

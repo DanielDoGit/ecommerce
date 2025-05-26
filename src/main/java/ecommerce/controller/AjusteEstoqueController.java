@@ -59,11 +59,17 @@ public class AjusteEstoqueController implements Serializable{
 	private String codigoAjuste;
 	private String argumentoBusca;
 	
+	private void teste() {
+		System.out.println("teste 5");
+		System.out.println("teste 6");
+	}
+	
 	public String prepararAjusteEstoque() {
 		try {
 			conversa.iniciar();
 			loginController.possuiPermissao("Cadastrar ajuste estoque");
 			token.gerarToken();
+			teste();
 			ajusteEstoqueDto = new AjusteEstoqueDto();
 			ajusteEstoqueDto.setDataAjuste(LocalDate.now());
 			argumentoBusca = "";
